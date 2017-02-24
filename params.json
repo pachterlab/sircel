@@ -1,0 +1,5 @@
+{
+	"kallisto" : "/Users/atambe/Documents/Lab/Software/kallisto/kallisto",
+	"zcat" : "gzcat",
+	"redis-server" : "redis-server"
+}
