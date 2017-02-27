@@ -114,7 +114,6 @@ def get_kmer_index_db(params):
 	
 	read_count = 0
 	for reads_chunk in IO_utils.get_read_chunks(
-		args,
 		barcodes_unzipped,
 		reads_unzipped,
 		lines=None):
@@ -383,6 +382,9 @@ def get_histogram_thresholded(paths):
 """
 
 def assign_all_reads(top_paths, reads_unzipped, barcodes_unzipped):
+	MIN_KMER_SIZE = 4
+	MAX_KMER_SIZE = args['barcode_end'] - args['barcode_start']
+	
 	#initialize vars
 	reads_assigned_db, reads_assigned_pipe = IO_utils.initialize_redis_pipeline(db=1)
 	kmers_to_paths = {}
@@ -390,57 +392,72 @@ def assign_all_reads(top_paths, reads_unzipped, barcodes_unzipped):
 	print('\tGetting kmers in paths')
 	for path in top_paths:
 		cell_barcode = path[0]
-		kmers = path[3]
-		for kmer in kmers:
-			if(kmer not in kmers_to_paths.keys()):
-				kmers_to_paths[kmer] = []
-			kmers_to_paths[kmer].append(cell_barcode)
-		#####
-		#also do this for k-1 mers etc
-		#####
+		#kmers = path[3]
+		for kmer_size in range(MIN_KMER_SIZE, MAX_KMER_SIZE):
+			kmers = IO_utils.get_cyclic_kmers(
+				['na', cell_barcode, 'na', cell_barcode],
+				kmer_size,
+				0,
+				len(cell_barcode),
+				indel=False)
+			for (kmer, _) in kmers:
+				if(kmer not in kmers_to_paths.keys()):
+					kmers_to_paths[kmer] = []
+				kmers_to_paths[kmer].append(cell_barcode)
+
 	print('\tAssigning reads to paths')
 	pool = Pool(processes = args['threads'])	
 	read_count = 0
+	unassigned_count = 0
 	for reads_chunk in IO_utils.get_read_chunks(
-		args,
 		barcodes_unzipped,
 		reads_unzipped,
 		lines=None):
 		
 		read_count += len(reads_chunk)
 		assignments = pool.map(assign_read, 
-			zip(itertools.repeat(kmers_to_paths), reads_chunk))
+			zip(itertools.repeat(kmers_to_paths),
+			itertools.repeat(MIN_KMER_SIZE),
+			itertools.repeat(MAX_KMER_SIZE),
+			reads_chunk))
 		for (assignment, offset1, offset2) in assignments:
+			if(assignment == 'unassigned'):
+				num_unassigned += 1
 			reads_assigned_pipe.append(
 				assignment.encode('utf-8'), 
 				('%i,%i,' % (offset1, offset2)).encode('utf-8'))
 		reads_assigned_pipe.execute()
 		print('\t%i reads assigned' % read_count)
-		
+	print('%i reads could not be assigned' % unassigned_count)
 	return(reads_assigned_db, reads_assigned_pipe)
 	
 def assign_read(params):
 	(kmers_to_paths,
+		min_kmer_size,
+		max_kmer_size,
 		(reads_data,
 		reads_offset,
 		barcodes_data, 
 		barcodes_offset)) = params
-	read_kmers = IO_utils.get_cyclic_kmers(
-		barcodes_data, 
-		args['kmer_size'],
-		args['barcode_start'], 
-		args['barcode_end'])
-	read_assignment = collections.Counter()
 	
-	for (kmer, _ ) in read_kmers:
-		paths_with_kmer = kmers_to_paths.get(kmer, [])
-		for path in paths_with_kmer:
-			read_assignment[path] += 1
-	most_common = read_assignment.most_common(1)
-	assignment = 'unassigned'
-	if(len(most_common) == 1):
-		assignment = most_common[0][0]
-	return (assignment, reads_offset, barcodes_offset)
+	for kmer_size in range(max_kmer_size, min_kmer_size, -1):
+		read_assignment = collections.Counter()
+		read_kmers = IO_utils.get_cyclic_kmers(
+			barcodes_data, 
+			kmer_size,
+			args['barcode_start'], 
+			args['barcode_end'])
+	
+		for (kmer, _ ) in read_kmers:
+			paths_with_kmer = kmers_to_paths.get(kmer, [])
+			for path in paths_with_kmer:
+				read_assignment[path] += 1
+		most_common = read_assignment.most_common(1)
+		if(len(most_common) == 1):
+			assignment = most_common[0][0]
+			return (assignment, reads_offset, barcodes_offset)
+		#else decremenet kmer size
+	return ('unassigned', reads_offset, barcodes_offset)
 
 def write_split_fastqs(params):
 	import gzip

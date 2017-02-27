@@ -41,10 +41,7 @@ def get_cyclic_kmers(read, k, start, end, indel=True):
 	Returns list
 			list of tuples (string kmer, string qual)
 			the input read is circularized
-	"""
-	#print(read, k, start, end)
-	
-	
+	"""	
 	seq = read[1]
 	seq = seq[:start] + '$' + seq[start:]
 	qual = read[3]
@@ -93,7 +90,20 @@ def unzip(gzipped):
 	out_file.close()
 	return out_file.name
 
-def get_read_chunks(args, barcodes, reads, lines=None):
+def get_read_chunks(barcodes, reads, lines=None):
+	"""
+	Args: 
+		barcodes (unzipped fq file)
+		reads (unzipped fq file)
+		lines (list)
+	yields
+		data_buffer (list of tuples)
+	
+	simultaneously reads two fastq files (line-by-line) and stores data in a list
+	yields this list (chunks of the datasets)
+	"""
+	
+	
 	BUFFER_SIZE = 100000#number of reads in each chunk
 	#size is set to be quite large because updating kmer_idx database is slow
 	if(lines == None):
@@ -117,6 +127,14 @@ def get_read_chunks(args, barcodes, reads, lines=None):
 		yield data_buffer
 
 def read_fastq_sequential(fq_file, gzip=False):
+	"""
+	Args:
+		fq_file (path to a fastq format file)
+	gzip:
+		binary, whether 
+	
+	"""
+	
 	offset = 0
 	if(gzip):
 		cat = subprocess.Popen(
