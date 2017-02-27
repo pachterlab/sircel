@@ -1,3 +1,8 @@
+"""
+Akshay Tambe
+Pachter and Doudna groups
+"""
+
 
 import IO_utils
 import Split_reads
