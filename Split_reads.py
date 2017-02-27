@@ -71,7 +71,7 @@ def run_all(cmdline_args):
 	print('\t%i cyclic paths found' % len(cyclic_paths))
 	output_files['all_paths'] = IO_utils.save_paths_text(
 		output_dir, cyclic_paths, prefix='all')		
-	print('Merging similar paths')
+	print('Merging similar paths by Hamming distance')
 	merged_paths = merge_paths(cyclic_paths)
 	output_files['merged_paths'] = IO_utils.save_paths_text(
 		output_dir, merged_paths, prefix='merged')	
@@ -301,7 +301,7 @@ def threshold_paths(output_dir, paths):
 		hist, bins = np.histogram(weights, bins=bins)
 		bin_centers = (bins[:-1] + bins[1:])/2
 
-		p0 = [100, 25, 10]
+		p0 = [100, 10, 10]
 		fit_x = range(0, len(hist))#xrange corresponding to bins only
 		coeff, var_matrix = curve_fit(gaussian, fit_x, hist, p0=p0)
 		hist_fit = gaussian(fit_x, *coeff)
