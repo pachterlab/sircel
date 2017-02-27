@@ -22,46 +22,44 @@ This path weight can be interpreted as the number of reads that support a given 
 
 We assign each read in our dataset to a consensus barcode by how many kmers the read shares with the consensus barcode. When computing kmers for this assignment, the value of k can differ from the value used to produce the barcode De Bruijn graph. This allows us to assign reads which might include 2 or more errors.
 
-
-
-
-
-
 Requirements
 
 	python3
 	numpy
 	scipy
+	redis
+		In-memory database structure: https://redis.io/
+	redis-py
+		Python binding for redis servr
 	scikit-learn (for TCCs)
 	kallisto (0.43.0 or higher)
 		Optional. Not needed if only splitting reads by barcode (not quantifying single-cell expression levels)
-	Tested with linux (Ubuntu 14.04.5) and mac OSX (10.12.1)
-		Note: the zcat command on OSX is broken (see https://github.com/dalibo/pgbadger/issues/70)
-
-
 
 
 Commandline arguments
 
-	--barcodes			Fastq.gz file from read 1 (beads / UMI)
-	--reads				Fastq.gz file from read 2 (RNA-seq / 3' sequence tags)
-	--barcode_start	First base of the barcode within reads 1 file. For Dropseq, this is 0
-	--barcode_end		Last base of the barcode within reads 1 file. For Dropseq, this is 12
-	--umi_start			First base of the UMI within reads 1 file. For Dropseq, this is 12
-	--umi_end			Last base of the UMI within reads 1 file. For Dropseq, this is 20
-	--kmer_size			Kmer size used to build barcode De Bruijn graph.
-							Higher value is more specific, lower value might work better for low-quality data
-							Suggested value: 10
+	--dropseq			Use barcode / umi positions from Macosko et al.
+	--10xgenomics		Use barcodes / umi coordinates from 10xGenomics version2 chemistry
+	--barcodes			Fastq.gz file from bead barcodes (Reads 1 for dropseq, reads 1 for 10xGenomics)
+	--reads				Fastq.gz file from RNA-seq / 3' sequence tags (Reads 2 for dropseq, reads 2 for 10xGenomics)
+	--umis				UMIs file. (Index I1 file, only required for 10xGenomics )
+	--output_dir		Directory where output files are written
+	--kmer_size			Size of k-mer to use for building the barcode graph
+	--depth				Search depth at each node [Default: 4]
+	--breadth			Search breadth through the graph [Default: 1000]
+	--threads			Number of threads to use [Default: 1]
 	
-	--phred_min			Minimum phred score to use when building De Bruijn graph. Note that all reads are assigned afterwards. 
-	--kmer_min			Minimum kmer size used when assigning reads to consensus barcodes
-	--kmer_max			Maximum kmer size used when assigning reads to consensus barcodes
-	--threads			Number of threads for multithreading
-	--kallisto_idx		[Optional]. Kallisto transcriptiome index for quantifying abundances
-	--output_dir		Output files are written here. Requires read / write permission
+Optional arguments
 
-Note about barcode and UMI coordinate indexing
+	--kallisto_idx		Path to pre-computed kallisto index. If this is provided the script will quantify single-cell expression profiles using kallisto
+	--barcode_start	First position of cell barcode within read in --barcode file. Not needed if --dropseq or --10xgenomics arguments are provided
+	--barcode_end		Last position of cell barcode within read in --barcode file. Not needed if --dropseq or --10xgenomics arguments are provided
+	--umi_start			First position of unique molecule ID within read in --barcode file. Not needed if --dropseq or --10xgenomics arguments are provided
+	--umi_end			Last position of unique molecule ID within read in --barcode file. Not needed if --dropseq or --10xgenomics arguments are provided
+	
+Note about barcode and UMI position indexing
 Barcode and UMI positions within a read follow the same indexing convension as python strings. For example, the string BARCODEUMI would have coordinates:
+
 	barcode_start		0
 	barcode_end			7
 	umi_start			7
@@ -75,66 +73,42 @@ This follows from the following python snippet:
 'UMI'
 
 
+Use example: Dropseq data from Macosko 2015
 
-Use example
+This tutorial will run this software on an example dataset from Macosko et al (SRR1873277). According to the authors' software we expect ~570 single cells from this dataset. To speed things up we only use the first 1 million reads in the file (rather than ~400 million).Note that if you are not using kallisto to quantify expression levels, omit the --kallisto_idx option. This command will run a complete singe-cell RNA-seq analysis, going from raw, un-split reads to single-cell expression profiles.
 
-This tutorial will run this software on an example dataset from Macosko et al (SRR1873277). According to the authors' software we expect ~570 single cells from this dataset. To speed things up we only use the first 1 million reads in the file (rather than ~400 million). Use the command below to split reads note that if you are not using kallisto to quantify expression levels, omit the --kallisto_idx option.
+	python3 scripts/circular_kmers_pipeline/Split_reads_master.py
+		--threads 32
+		--dropseq
+		--output_dir example
+		--reads macosko/1m_reads/SRR1873277_1m_r2.fastq.gz
+		--barcodes macosko/1m_reads/SRR1873277_1m_r1.fastq.gz
+		--threads 32
+		--kallisto_idx kallisto_idx/hgmm_kallisto.idx
 
-python3 Dropseq_complete_pipeline.py 
-	--barcodes macosko/1m_reads/SRR1873277_1m_r1.fastq.gz 
-	--reads macosko/1m_reads/SRR1873277_1m_r2.fastq.gz 
-	--barcode_start 0 
-	--barcode_end 12 
-	--umi_start 12
-	--umi_end 20 
-	--kmer_size 10
-	--phred_min 30
-	--kmer_min 8
-	--kmer_max 12
-	--threads 32
-	--kallisto_idx kallisto_idx/hgmm_kallisto.idx
-	--output_dir macosko/1m_reads/TEST
+The following output files will be produced in the example/ directory:
 
-
-
-Outputs
+		all_paths.txt
+			Tab-delimited file containing all circular paths (putative barcodes) found in the graph 
+		merged_paths.txt
+			Tab-delimited file containing circular paths after Hamming correction	
+		paths_plotted.pdf
+			Plots / histograms of circular path weights
+		fits.txt
+			Tab-delimited file containing Gaussian fits for plots above
+		kallisto/
+			Folder containing kallisto and TCC output files
+			See Pachterlab scRNA-seq TCC pipeline for more:
+				https://github.com/pachterlab/scRNA-Seq-TCC-prep
+		reads_split/
+			Folder containing fastq.gz files split by read.
+			Also contains umi.txt and batch.txt files for kalisto single-cell
+		run_log.txt
+		run_outputs.json
 	
-[STUFF GOES HERE]
 
+Use example: 10xGenomics data 
 
-
-
-
-
-Run time (1 million reads from SRR1873277)
-Using python 3.4.3 on Ubuntu 14.04.5 with 32 cores
-
-	Step							Time (s)
-	Find paths					948.24
-		Count kmers				49.53		Runtime increases linerly with reads
-		Build graph				6.48		Runtime does not depend on the number of reads
-		Find paths				889.30	Runtime does not depend on the number of reads
-		Misc						2.93
-		
-	Split reads					108.85			
-		Assign reads			50.07		Runtime increases lineraly with reads
-		Write output files	54.91		Runtime increases linearly with reads
-		Misc						3.87
-		
-	kallisto						32.30		This is embarassingly fast
-	Compute TCCs				16.92
-	Total							1106.31					
-
-
-Known issues / to to list
-
-Proper setup.py; none of this janky stuff	
-Cannot handle 10xGenomics data (because of the interleaved data format. This will be addressed soon)
-Consnesus barcodes containing long tracts of homopolymer (such as a barcode with the sequence AAAAAAAAAAAA) produce junk output. Such sequences produce self-edges in the barcode De Bruijn graph, which are currently not handled well (or rather at all). Note that this problem does not affect other consensus barcodes; output is only garbage for homopolymeric barcodes. 
-
-
-
-
-
+	[TO DO]
 
 
