@@ -1,0 +1,2944 @@
+{
+   "split": {
+      "cell_GAAAGATGTATA": {
+         "barcodes": "example/reads_split/cell_GAAAGATGTATA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GAAAGATGTATA.umi.txt",
+         "reads": "example/reads_split/cell_GAAAGATGTATA_reads.fastq.gz"
+      },
+      "cell_ACCGTTTAAAAA": {
+         "barcodes": "example/reads_split/cell_ACCGTTTAAAAA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_ACCGTTTAAAAA.umi.txt",
+         "reads": "example/reads_split/cell_ACCGTTTAAAAA_reads.fastq.gz"
+      },
+      "cell_AGTATTTCGCCA": {
+         "barcodes": "example/reads_split/cell_AGTATTTCGCCA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_AGTATTTCGCCA.umi.txt",
+         "reads": "example/reads_split/cell_AGTATTTCGCCA_reads.fastq.gz"
+      },
+      "cell_TAATCTAGTCTC": {
+         "barcodes": "example/reads_split/cell_TAATCTAGTCTC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TAATCTAGTCTC.umi.txt",
+         "reads": "example/reads_split/cell_TAATCTAGTCTC_reads.fastq.gz"
+      },
+      "cell_GGTCTTATGTTA": {
+         "barcodes": "example/reads_split/cell_GGTCTTATGTTA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GGTCTTATGTTA.umi.txt",
+         "reads": "example/reads_split/cell_GGTCTTATGTTA_reads.fastq.gz"
+      },
+      "cell_TTGTATAGCGCA": {
+         "barcodes": "example/reads_split/cell_TTGTATAGCGCA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TTGTATAGCGCA.umi.txt",
+         "reads": "example/reads_split/cell_TTGTATAGCGCA_reads.fastq.gz"
+      },
+      "cell_GTTCTCGTACAA": {
+         "barcodes": "example/reads_split/cell_GTTCTCGTACAA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GTTCTCGTACAA.umi.txt",
+         "reads": "example/reads_split/cell_GTTCTCGTACAA_reads.fastq.gz"
+      },
+      "cell_TACTCTACAATC": {
+         "barcodes": "example/reads_split/cell_TACTCTACAATC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TACTCTACAATC.umi.txt",
+         "reads": "example/reads_split/cell_TACTCTACAATC_reads.fastq.gz"
+      },
+      "cell_TGAAGAGGTATT": {
+         "barcodes": "example/reads_split/cell_TGAAGAGGTATT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TGAAGAGGTATT.umi.txt",
+         "reads": "example/reads_split/cell_TGAAGAGGTATT_reads.fastq.gz"
+      },
+      "cell_TGAGTGAGGCAG": {
+         "barcodes": "example/reads_split/cell_TGAGTGAGGCAG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TGAGTGAGGCAG.umi.txt",
+         "reads": "example/reads_split/cell_TGAGTGAGGCAG_reads.fastq.gz"
+      },
+      "cell_GGGTAGGTACCC": {
+         "barcodes": "example/reads_split/cell_GGGTAGGTACCC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GGGTAGGTACCC.umi.txt",
+         "reads": "example/reads_split/cell_GGGTAGGTACCC_reads.fastq.gz"
+      },
+      "cell_TCCAAAATAGAA": {
+         "barcodes": "example/reads_split/cell_TCCAAAATAGAA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TCCAAAATAGAA.umi.txt",
+         "reads": "example/reads_split/cell_TCCAAAATAGAA_reads.fastq.gz"
+      },
+      "cell_CCGTTGCCCGTA": {
+         "barcodes": "example/reads_split/cell_CCGTTGCCCGTA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CCGTTGCCCGTA.umi.txt",
+         "reads": "example/reads_split/cell_CCGTTGCCCGTA_reads.fastq.gz"
+      },
+      "cell_GCTGATTTCAAG": {
+         "barcodes": "example/reads_split/cell_GCTGATTTCAAG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GCTGATTTCAAG.umi.txt",
+         "reads": "example/reads_split/cell_GCTGATTTCAAG_reads.fastq.gz"
+      },
+      "cell_AGCGATGTGAGA": {
+         "barcodes": "example/reads_split/cell_AGCGATGTGAGA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_AGCGATGTGAGA.umi.txt",
+         "reads": "example/reads_split/cell_AGCGATGTGAGA_reads.fastq.gz"
+      },
+      "cell_CAAAAACGTTGA": {
+         "barcodes": "example/reads_split/cell_CAAAAACGTTGA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CAAAAACGTTGA.umi.txt",
+         "reads": "example/reads_split/cell_CAAAAACGTTGA_reads.fastq.gz"
+      },
+      "cell_GGTTATCAAATT": {
+         "barcodes": "example/reads_split/cell_GGTTATCAAATT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GGTTATCAAATT.umi.txt",
+         "reads": "example/reads_split/cell_GGTTATCAAATT_reads.fastq.gz"
+      },
+      "cell_ATCTTTACTCGA": {
+         "barcodes": "example/reads_split/cell_ATCTTTACTCGA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_ATCTTTACTCGA.umi.txt",
+         "reads": "example/reads_split/cell_ATCTTTACTCGA_reads.fastq.gz"
+      },
+      "cell_GCCTATGACAGT": {
+         "barcodes": "example/reads_split/cell_GCCTATGACAGT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GCCTATGACAGT.umi.txt",
+         "reads": "example/reads_split/cell_GCCTATGACAGT_reads.fastq.gz"
+      },
+      "cell_TTTGTGAGGGTC": {
+         "barcodes": "example/reads_split/cell_TTTGTGAGGGTC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TTTGTGAGGGTC.umi.txt",
+         "reads": "example/reads_split/cell_TTTGTGAGGGTC_reads.fastq.gz"
+      },
+      "cell_ACGCGGCAGCCG": {
+         "barcodes": "example/reads_split/cell_ACGCGGCAGCCG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_ACGCGGCAGCCG.umi.txt",
+         "reads": "example/reads_split/cell_ACGCGGCAGCCG_reads.fastq.gz"
+      },
+      "cell_TGGCCAAGTCTC": {
+         "barcodes": "example/reads_split/cell_TGGCCAAGTCTC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TGGCCAAGTCTC.umi.txt",
+         "reads": "example/reads_split/cell_TGGCCAAGTCTC_reads.fastq.gz"
+      },
+      "cell_TAATATGGCGTG": {
+         "barcodes": "example/reads_split/cell_TAATATGGCGTG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TAATATGGCGTG.umi.txt",
+         "reads": "example/reads_split/cell_TAATATGGCGTG_reads.fastq.gz"
+      },
+      "cell_CCATGTGATGTC": {
+         "barcodes": "example/reads_split/cell_CCATGTGATGTC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CCATGTGATGTC.umi.txt",
+         "reads": "example/reads_split/cell_CCATGTGATGTC_reads.fastq.gz"
+      },
+      "cell_TTCACGTCTTTC": {
+         "barcodes": "example/reads_split/cell_TTCACGTCTTTC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TTCACGTCTTTC.umi.txt",
+         "reads": "example/reads_split/cell_TTCACGTCTTTC_reads.fastq.gz"
+      },
+      "cell_ACGATGTGATGG": {
+         "barcodes": "example/reads_split/cell_ACGATGTGATGG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_ACGATGTGATGG.umi.txt",
+         "reads": "example/reads_split/cell_ACGATGTGATGG_reads.fastq.gz"
+      },
+      "cell_TACAAGCTAGGT": {
+         "barcodes": "example/reads_split/cell_TACAAGCTAGGT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TACAAGCTAGGT.umi.txt",
+         "reads": "example/reads_split/cell_TACAAGCTAGGT_reads.fastq.gz"
+      },
+      "cell_TCTACCATAGTA": {
+         "barcodes": "example/reads_split/cell_TCTACCATAGTA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TCTACCATAGTA.umi.txt",
+         "reads": "example/reads_split/cell_TCTACCATAGTA_reads.fastq.gz"
+      },
+      "cell_GATAGGGAGGTG": {
+         "barcodes": "example/reads_split/cell_GATAGGGAGGTG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GATAGGGAGGTG.umi.txt",
+         "reads": "example/reads_split/cell_GATAGGGAGGTG_reads.fastq.gz"
+      },
+      "cell_AGAGCATAGCGC": {
+         "barcodes": "example/reads_split/cell_AGAGCATAGCGC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_AGAGCATAGCGC.umi.txt",
+         "reads": "example/reads_split/cell_AGAGCATAGCGC_reads.fastq.gz"
+      },
+      "cell_TTTCCGAACTCA": {
+         "barcodes": "example/reads_split/cell_TTTCCGAACTCA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TTTCCGAACTCA.umi.txt",
+         "reads": "example/reads_split/cell_TTTCCGAACTCA_reads.fastq.gz"
+      },
+      "cell_GGAGATAATGGT": {
+         "barcodes": "example/reads_split/cell_GGAGATAATGGT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GGAGATAATGGT.umi.txt",
+         "reads": "example/reads_split/cell_GGAGATAATGGT_reads.fastq.gz"
+      },
+      "cell_CCTTGCCTCGTC": {
+         "barcodes": "example/reads_split/cell_CCTTGCCTCGTC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CCTTGCCTCGTC.umi.txt",
+         "reads": "example/reads_split/cell_CCTTGCCTCGTC_reads.fastq.gz"
+      },
+      "cell_GAGTTAAAGGCC": {
+         "barcodes": "example/reads_split/cell_GAGTTAAAGGCC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GAGTTAAAGGCC.umi.txt",
+         "reads": "example/reads_split/cell_GAGTTAAAGGCC_reads.fastq.gz"
+      },
+      "cell_GAGTTTAATCTC": {
+         "barcodes": "example/reads_split/cell_GAGTTTAATCTC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GAGTTTAATCTC.umi.txt",
+         "reads": "example/reads_split/cell_GAGTTTAATCTC_reads.fastq.gz"
+      },
+      "cell_TGGGACTACGGG": {
+         "barcodes": "example/reads_split/cell_TGGGACTACGGG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TGGGACTACGGG.umi.txt",
+         "reads": "example/reads_split/cell_TGGGACTACGGG_reads.fastq.gz"
+      },
+      "cell_TGACTATACTCG": {
+         "barcodes": "example/reads_split/cell_TGACTATACTCG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TGACTATACTCG.umi.txt",
+         "reads": "example/reads_split/cell_TGACTATACTCG_reads.fastq.gz"
+      },
+      "cell_CGGTGACTCCTA": {
+         "barcodes": "example/reads_split/cell_CGGTGACTCCTA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CGGTGACTCCTA.umi.txt",
+         "reads": "example/reads_split/cell_CGGTGACTCCTA_reads.fastq.gz"
+      },
+      "cell_AAGTGGGCATGA": {
+         "barcodes": "example/reads_split/cell_AAGTGGGCATGA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_AAGTGGGCATGA.umi.txt",
+         "reads": "example/reads_split/cell_AAGTGGGCATGA_reads.fastq.gz"
+      },
+      "cell_CAACGCACTAGA": {
+         "barcodes": "example/reads_split/cell_CAACGCACTAGA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CAACGCACTAGA.umi.txt",
+         "reads": "example/reads_split/cell_CAACGCACTAGA_reads.fastq.gz"
+      },
+      "cell_CAGCCCAGAGAG": {
+         "barcodes": "example/reads_split/cell_CAGCCCAGAGAG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CAGCCCAGAGAG.umi.txt",
+         "reads": "example/reads_split/cell_CAGCCCAGAGAG_reads.fastq.gz"
+      },
+      "cell_CAGCCACTGCTC": {
+         "barcodes": "example/reads_split/cell_CAGCCACTGCTC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CAGCCACTGCTC.umi.txt",
+         "reads": "example/reads_split/cell_CAGCCACTGCTC_reads.fastq.gz"
+      },
+      "cell_ATTCAACTTCGA": {
+         "barcodes": "example/reads_split/cell_ATTCAACTTCGA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_ATTCAACTTCGA.umi.txt",
+         "reads": "example/reads_split/cell_ATTCAACTTCGA_reads.fastq.gz"
+      },
+      "cell_ATTAATGAGAAT": {
+         "barcodes": "example/reads_split/cell_ATTAATGAGAAT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_ATTAATGAGAAT.umi.txt",
+         "reads": "example/reads_split/cell_ATTAATGAGAAT_reads.fastq.gz"
+      },
+      "cell_CCTTGGATATAT": {
+         "barcodes": "example/reads_split/cell_CCTTGGATATAT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CCTTGGATATAT.umi.txt",
+         "reads": "example/reads_split/cell_CCTTGGATATAT_reads.fastq.gz"
+      },
+      "cell_CCTTTAAATGCG": {
+         "barcodes": "example/reads_split/cell_CCTTTAAATGCG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CCTTTAAATGCG.umi.txt",
+         "reads": "example/reads_split/cell_CCTTTAAATGCG_reads.fastq.gz"
+      },
+      "cell_CAACAGCCCCTC": {
+         "barcodes": "example/reads_split/cell_CAACAGCCCCTC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CAACAGCCCCTC.umi.txt",
+         "reads": "example/reads_split/cell_CAACAGCCCCTC_reads.fastq.gz"
+      },
+      "cell_TTGTTACTATTT": {
+         "barcodes": "example/reads_split/cell_TTGTTACTATTT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TTGTTACTATTT.umi.txt",
+         "reads": "example/reads_split/cell_TTGTTACTATTT_reads.fastq.gz"
+      },
+      "cell_GCCCATCCACGG": {
+         "barcodes": "example/reads_split/cell_GCCCATCCACGG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GCCCATCCACGG.umi.txt",
+         "reads": "example/reads_split/cell_GCCCATCCACGG_reads.fastq.gz"
+      },
+      "cell_TCCGCAGCAGAA": {
+         "barcodes": "example/reads_split/cell_TCCGCAGCAGAA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TCCGCAGCAGAA.umi.txt",
+         "reads": "example/reads_split/cell_TCCGCAGCAGAA_reads.fastq.gz"
+      },
+      "cell_GGTAACGTTCTG": {
+         "barcodes": "example/reads_split/cell_GGTAACGTTCTG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GGTAACGTTCTG.umi.txt",
+         "reads": "example/reads_split/cell_GGTAACGTTCTG_reads.fastq.gz"
+      },
+      "cell_CAGTCAATCTAA": {
+         "barcodes": "example/reads_split/cell_CAGTCAATCTAA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CAGTCAATCTAA.umi.txt",
+         "reads": "example/reads_split/cell_CAGTCAATCTAA_reads.fastq.gz"
+      },
+      "cell_AGCACATCACTT": {
+         "barcodes": "example/reads_split/cell_AGCACATCACTT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_AGCACATCACTT.umi.txt",
+         "reads": "example/reads_split/cell_AGCACATCACTT_reads.fastq.gz"
+      },
+      "cell_TGGGCCATACAG": {
+         "barcodes": "example/reads_split/cell_TGGGCCATACAG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TGGGCCATACAG.umi.txt",
+         "reads": "example/reads_split/cell_TGGGCCATACAG_reads.fastq.gz"
+      },
+      "cell_CAGCGGATCGTC": {
+         "barcodes": "example/reads_split/cell_CAGCGGATCGTC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CAGCGGATCGTC.umi.txt",
+         "reads": "example/reads_split/cell_CAGCGGATCGTC_reads.fastq.gz"
+      },
+      "cell_ATAGTTTTTTAA": {
+         "barcodes": "example/reads_split/cell_ATAGTTTTTTAA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_ATAGTTTTTTAA.umi.txt",
+         "reads": "example/reads_split/cell_ATAGTTTTTTAA_reads.fastq.gz"
+      },
+      "cell_CACTGGAACCCT": {
+         "barcodes": "example/reads_split/cell_CACTGGAACCCT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CACTGGAACCCT.umi.txt",
+         "reads": "example/reads_split/cell_CACTGGAACCCT_reads.fastq.gz"
+      },
+      "cell_AGGAGATTGTGC": {
+         "barcodes": "example/reads_split/cell_AGGAGATTGTGC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_AGGAGATTGTGC.umi.txt",
+         "reads": "example/reads_split/cell_AGGAGATTGTGC_reads.fastq.gz"
+      },
+      "cell_GGGCAATCCGCT": {
+         "barcodes": "example/reads_split/cell_GGGCAATCCGCT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GGGCAATCCGCT.umi.txt",
+         "reads": "example/reads_split/cell_GGGCAATCCGCT_reads.fastq.gz"
+      },
+      "cell_ATCGGAAAAGCC": {
+         "barcodes": "example/reads_split/cell_ATCGGAAAAGCC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_ATCGGAAAAGCC.umi.txt",
+         "reads": "example/reads_split/cell_ATCGGAAAAGCC_reads.fastq.gz"
+      },
+      "cell_GAACGGAAGCAC": {
+         "barcodes": "example/reads_split/cell_GAACGGAAGCAC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GAACGGAAGCAC.umi.txt",
+         "reads": "example/reads_split/cell_GAACGGAAGCAC_reads.fastq.gz"
+      },
+      "cell_GCATTCACTTAG": {
+         "barcodes": "example/reads_split/cell_GCATTCACTTAG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GCATTCACTTAG.umi.txt",
+         "reads": "example/reads_split/cell_GCATTCACTTAG_reads.fastq.gz"
+      },
+      "cell_ACGTTTGACAGC": {
+         "barcodes": "example/reads_split/cell_ACGTTTGACAGC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_ACGTTTGACAGC.umi.txt",
+         "reads": "example/reads_split/cell_ACGTTTGACAGC_reads.fastq.gz"
+      },
+      "cell_CTGAGGCGGCCG": {
+         "barcodes": "example/reads_split/cell_CTGAGGCGGCCG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CTGAGGCGGCCG.umi.txt",
+         "reads": "example/reads_split/cell_CTGAGGCGGCCG_reads.fastq.gz"
+      },
+      "cell_TGGCGCCGTATA": {
+         "barcodes": "example/reads_split/cell_TGGCGCCGTATA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TGGCGCCGTATA.umi.txt",
+         "reads": "example/reads_split/cell_TGGCGCCGTATA_reads.fastq.gz"
+      },
+      "cell_GTGGCGCACGCT": {
+         "barcodes": "example/reads_split/cell_GTGGCGCACGCT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GTGGCGCACGCT.umi.txt",
+         "reads": "example/reads_split/cell_GTGGCGCACGCT_reads.fastq.gz"
+      },
+      "cell_ACCTTGCCCTGC": {
+         "barcodes": "example/reads_split/cell_ACCTTGCCCTGC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_ACCTTGCCCTGC.umi.txt",
+         "reads": "example/reads_split/cell_ACCTTGCCCTGC_reads.fastq.gz"
+      },
+      "cell_ATATCACCCTGC": {
+         "barcodes": "example/reads_split/cell_ATATCACCCTGC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_ATATCACCCTGC.umi.txt",
+         "reads": "example/reads_split/cell_ATATCACCCTGC_reads.fastq.gz"
+      },
+      "cell_CCGACGCGGCTA": {
+         "barcodes": "example/reads_split/cell_CCGACGCGGCTA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CCGACGCGGCTA.umi.txt",
+         "reads": "example/reads_split/cell_CCGACGCGGCTA_reads.fastq.gz"
+      },
+      "cell_TAAAGAGAGAGA": {
+         "barcodes": "example/reads_split/cell_TAAAGAGAGAGA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TAAAGAGAGAGA.umi.txt",
+         "reads": "example/reads_split/cell_TAAAGAGAGAGA_reads.fastq.gz"
+      },
+      "cell_GAGTAGAGGTGC": {
+         "barcodes": "example/reads_split/cell_GAGTAGAGGTGC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GAGTAGAGGTGC.umi.txt",
+         "reads": "example/reads_split/cell_GAGTAGAGGTGC_reads.fastq.gz"
+      },
+      "cell_ACAATCGTAGAA": {
+         "barcodes": "example/reads_split/cell_ACAATCGTAGAA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_ACAATCGTAGAA.umi.txt",
+         "reads": "example/reads_split/cell_ACAATCGTAGAA_reads.fastq.gz"
+      },
+      "cell_ACCGGCCCCGGT": {
+         "barcodes": "example/reads_split/cell_ACCGGCCCCGGT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_ACCGGCCCCGGT.umi.txt",
+         "reads": "example/reads_split/cell_ACCGGCCCCGGT_reads.fastq.gz"
+      },
+      "cell_AATAAAACCGCA": {
+         "barcodes": "example/reads_split/cell_AATAAAACCGCA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_AATAAAACCGCA.umi.txt",
+         "reads": "example/reads_split/cell_AATAAAACCGCA_reads.fastq.gz"
+      },
+      "cell_GCAGAGTCGTTC": {
+         "barcodes": "example/reads_split/cell_GCAGAGTCGTTC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GCAGAGTCGTTC.umi.txt",
+         "reads": "example/reads_split/cell_GCAGAGTCGTTC_reads.fastq.gz"
+      },
+      "cell_TTCGCCTTATCG": {
+         "barcodes": "example/reads_split/cell_TTCGCCTTATCG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TTCGCCTTATCG.umi.txt",
+         "reads": "example/reads_split/cell_TTCGCCTTATCG_reads.fastq.gz"
+      },
+      "cell_GACAGGCTACCA": {
+         "barcodes": "example/reads_split/cell_GACAGGCTACCA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GACAGGCTACCA.umi.txt",
+         "reads": "example/reads_split/cell_GACAGGCTACCA_reads.fastq.gz"
+      },
+      "cell_AGCTACCTTGGC": {
+         "barcodes": "example/reads_split/cell_AGCTACCTTGGC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_AGCTACCTTGGC.umi.txt",
+         "reads": "example/reads_split/cell_AGCTACCTTGGC_reads.fastq.gz"
+      },
+      "cell_AGGGAGTACATG": {
+         "barcodes": "example/reads_split/cell_AGGGAGTACATG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_AGGGAGTACATG.umi.txt",
+         "reads": "example/reads_split/cell_AGGGAGTACATG_reads.fastq.gz"
+      },
+      "cell_AATATTCAACGC": {
+         "barcodes": "example/reads_split/cell_AATATTCAACGC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_AATATTCAACGC.umi.txt",
+         "reads": "example/reads_split/cell_AATATTCAACGC_reads.fastq.gz"
+      },
+      "cell_CCCAAGCGCCTG": {
+         "barcodes": "example/reads_split/cell_CCCAAGCGCCTG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CCCAAGCGCCTG.umi.txt",
+         "reads": "example/reads_split/cell_CCCAAGCGCCTG_reads.fastq.gz"
+      },
+      "cell_CATCTCAGGTAA": {
+         "barcodes": "example/reads_split/cell_CATCTCAGGTAA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CATCTCAGGTAA.umi.txt",
+         "reads": "example/reads_split/cell_CATCTCAGGTAA_reads.fastq.gz"
+      },
+      "cell_AACCGTCCACCT": {
+         "barcodes": "example/reads_split/cell_AACCGTCCACCT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_AACCGTCCACCT.umi.txt",
+         "reads": "example/reads_split/cell_AACCGTCCACCT_reads.fastq.gz"
+      },
+      "cell_GAAGGCGAAGAG": {
+         "barcodes": "example/reads_split/cell_GAAGGCGAAGAG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GAAGGCGAAGAG.umi.txt",
+         "reads": "example/reads_split/cell_GAAGGCGAAGAG_reads.fastq.gz"
+      },
+      "cell_GGCATGATACTA": {
+         "barcodes": "example/reads_split/cell_GGCATGATACTA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GGCATGATACTA.umi.txt",
+         "reads": "example/reads_split/cell_GGCATGATACTA_reads.fastq.gz"
+      },
+      "cell_AATAGGTTGCGC": {
+         "barcodes": "example/reads_split/cell_AATAGGTTGCGC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_AATAGGTTGCGC.umi.txt",
+         "reads": "example/reads_split/cell_AATAGGTTGCGC_reads.fastq.gz"
+      },
+      "cell_TGGCGTTGCACC": {
+         "barcodes": "example/reads_split/cell_TGGCGTTGCACC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TGGCGTTGCACC.umi.txt",
+         "reads": "example/reads_split/cell_TGGCGTTGCACC_reads.fastq.gz"
+      },
+      "cell_ATAAGGCATTAC": {
+         "barcodes": "example/reads_split/cell_ATAAGGCATTAC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_ATAAGGCATTAC.umi.txt",
+         "reads": "example/reads_split/cell_ATAAGGCATTAC_reads.fastq.gz"
+      },
+      "cell_ACGGGATGGGCC": {
+         "barcodes": "example/reads_split/cell_ACGGGATGGGCC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_ACGGGATGGGCC.umi.txt",
+         "reads": "example/reads_split/cell_ACGGGATGGGCC_reads.fastq.gz"
+      },
+      "cell_TGTCATTCGTAC": {
+         "barcodes": "example/reads_split/cell_TGTCATTCGTAC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TGTCATTCGTAC.umi.txt",
+         "reads": "example/reads_split/cell_TGTCATTCGTAC_reads.fastq.gz"
+      },
+      "cell_TCACCCCTGTTT": {
+         "barcodes": "example/reads_split/cell_TCACCCCTGTTT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TCACCCCTGTTT.umi.txt",
+         "reads": "example/reads_split/cell_TCACCCCTGTTT_reads.fastq.gz"
+      },
+      "cell_GGGACCTTCGGT": {
+         "barcodes": "example/reads_split/cell_GGGACCTTCGGT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GGGACCTTCGGT.umi.txt",
+         "reads": "example/reads_split/cell_GGGACCTTCGGT_reads.fastq.gz"
+      },
+      "cell_TCAACACTAAAC": {
+         "barcodes": "example/reads_split/cell_TCAACACTAAAC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TCAACACTAAAC.umi.txt",
+         "reads": "example/reads_split/cell_TCAACACTAAAC_reads.fastq.gz"
+      },
+      "cell_TCGCGAGAAAAT": {
+         "barcodes": "example/reads_split/cell_TCGCGAGAAAAT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TCGCGAGAAAAT.umi.txt",
+         "reads": "example/reads_split/cell_TCGCGAGAAAAT_reads.fastq.gz"
+      },
+      "cell_AACCGGGCGCAA": {
+         "barcodes": "example/reads_split/cell_AACCGGGCGCAA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_AACCGGGCGCAA.umi.txt",
+         "reads": "example/reads_split/cell_AACCGGGCGCAA_reads.fastq.gz"
+      },
+      "cell_TAACCCCTAGCC": {
+         "barcodes": "example/reads_split/cell_TAACCCCTAGCC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TAACCCCTAGCC.umi.txt",
+         "reads": "example/reads_split/cell_TAACCCCTAGCC_reads.fastq.gz"
+      },
+      "cell_GCCAGAAACGTA": {
+         "barcodes": "example/reads_split/cell_GCCAGAAACGTA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GCCAGAAACGTA.umi.txt",
+         "reads": "example/reads_split/cell_GCCAGAAACGTA_reads.fastq.gz"
+      },
+      "cell_ATCCCTGCCGTC": {
+         "barcodes": "example/reads_split/cell_ATCCCTGCCGTC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_ATCCCTGCCGTC.umi.txt",
+         "reads": "example/reads_split/cell_ATCCCTGCCGTC_reads.fastq.gz"
+      },
+      "cell_ATTCGTGTTATC": {
+         "barcodes": "example/reads_split/cell_ATTCGTGTTATC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_ATTCGTGTTATC.umi.txt",
+         "reads": "example/reads_split/cell_ATTCGTGTTATC_reads.fastq.gz"
+      },
+      "cell_ATAAAAACATTA": {
+         "barcodes": "example/reads_split/cell_ATAAAAACATTA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_ATAAAAACATTA.umi.txt",
+         "reads": "example/reads_split/cell_ATAAAAACATTA_reads.fastq.gz"
+      },
+      "cell_TCCTAGGACCCG": {
+         "barcodes": "example/reads_split/cell_TCCTAGGACCCG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TCCTAGGACCCG.umi.txt",
+         "reads": "example/reads_split/cell_TCCTAGGACCCG_reads.fastq.gz"
+      },
+      "cell_CCTGTGGCTGGT": {
+         "barcodes": "example/reads_split/cell_CCTGTGGCTGGT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CCTGTGGCTGGT.umi.txt",
+         "reads": "example/reads_split/cell_CCTGTGGCTGGT_reads.fastq.gz"
+      },
+      "cell_AGCAAATTTTGT": {
+         "barcodes": "example/reads_split/cell_AGCAAATTTTGT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_AGCAAATTTTGT.umi.txt",
+         "reads": "example/reads_split/cell_AGCAAATTTTGT_reads.fastq.gz"
+      },
+      "cell_CCCAGACACACT": {
+         "barcodes": "example/reads_split/cell_CCCAGACACACT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CCCAGACACACT.umi.txt",
+         "reads": "example/reads_split/cell_CCCAGACACACT_reads.fastq.gz"
+      },
+      "cell_GCATGAAAACGG": {
+         "barcodes": "example/reads_split/cell_GCATGAAAACGG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GCATGAAAACGG.umi.txt",
+         "reads": "example/reads_split/cell_GCATGAAAACGG_reads.fastq.gz"
+      },
+      "cell_CACCCGAGCCTA": {
+         "barcodes": "example/reads_split/cell_CACCCGAGCCTA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CACCCGAGCCTA.umi.txt",
+         "reads": "example/reads_split/cell_CACCCGAGCCTA_reads.fastq.gz"
+      },
+      "cell_ATCCTCCTCATC": {
+         "barcodes": "example/reads_split/cell_ATCCTCCTCATC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_ATCCTCCTCATC.umi.txt",
+         "reads": "example/reads_split/cell_ATCCTCCTCATC_reads.fastq.gz"
+      },
+      "cell_GACGGAAGGAGC": {
+         "barcodes": "example/reads_split/cell_GACGGAAGGAGC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GACGGAAGGAGC.umi.txt",
+         "reads": "example/reads_split/cell_GACGGAAGGAGC_reads.fastq.gz"
+      },
+      "cell_TGTTATACCTGT": {
+         "barcodes": "example/reads_split/cell_TGTTATACCTGT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TGTTATACCTGT.umi.txt",
+         "reads": "example/reads_split/cell_TGTTATACCTGT_reads.fastq.gz"
+      },
+      "cell_CGGAGTCAGGGC": {
+         "barcodes": "example/reads_split/cell_CGGAGTCAGGGC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CGGAGTCAGGGC.umi.txt",
+         "reads": "example/reads_split/cell_CGGAGTCAGGGC_reads.fastq.gz"
+      },
+      "cell_GTTCGGCGATCT": {
+         "barcodes": "example/reads_split/cell_GTTCGGCGATCT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GTTCGGCGATCT.umi.txt",
+         "reads": "example/reads_split/cell_GTTCGGCGATCT_reads.fastq.gz"
+      },
+      "cell_AATTGGAAGATT": {
+         "barcodes": "example/reads_split/cell_AATTGGAAGATT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_AATTGGAAGATT.umi.txt",
+         "reads": "example/reads_split/cell_AATTGGAAGATT_reads.fastq.gz"
+      },
+      "cell_AACAGCGAATGA": {
+         "barcodes": "example/reads_split/cell_AACAGCGAATGA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_AACAGCGAATGA.umi.txt",
+         "reads": "example/reads_split/cell_AACAGCGAATGA_reads.fastq.gz"
+      },
+      "cell_CACGATTGTTAG": {
+         "barcodes": "example/reads_split/cell_CACGATTGTTAG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CACGATTGTTAG.umi.txt",
+         "reads": "example/reads_split/cell_CACGATTGTTAG_reads.fastq.gz"
+      },
+      "cell_TGGAAATCAGGA": {
+         "barcodes": "example/reads_split/cell_TGGAAATCAGGA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TGGAAATCAGGA.umi.txt",
+         "reads": "example/reads_split/cell_TGGAAATCAGGA_reads.fastq.gz"
+      },
+      "cell_GCTTAGAGCTGT": {
+         "barcodes": "example/reads_split/cell_GCTTAGAGCTGT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GCTTAGAGCTGT.umi.txt",
+         "reads": "example/reads_split/cell_GCTTAGAGCTGT_reads.fastq.gz"
+      },
+      "cell_TCGCATTCACTT": {
+         "barcodes": "example/reads_split/cell_TCGCATTCACTT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TCGCATTCACTT.umi.txt",
+         "reads": "example/reads_split/cell_TCGCATTCACTT_reads.fastq.gz"
+      },
+      "cell_GACGACCATAAT": {
+         "barcodes": "example/reads_split/cell_GACGACCATAAT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GACGACCATAAT.umi.txt",
+         "reads": "example/reads_split/cell_GACGACCATAAT_reads.fastq.gz"
+      },
+      "cell_CTCGTAATGATG": {
+         "barcodes": "example/reads_split/cell_CTCGTAATGATG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CTCGTAATGATG.umi.txt",
+         "reads": "example/reads_split/cell_CTCGTAATGATG_reads.fastq.gz"
+      },
+      "cell_GGCGATGGTCAA": {
+         "barcodes": "example/reads_split/cell_GGCGATGGTCAA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GGCGATGGTCAA.umi.txt",
+         "reads": "example/reads_split/cell_GGCGATGGTCAA_reads.fastq.gz"
+      },
+      "cell_ATCGTAGGGAGC": {
+         "barcodes": "example/reads_split/cell_ATCGTAGGGAGC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_ATCGTAGGGAGC.umi.txt",
+         "reads": "example/reads_split/cell_ATCGTAGGGAGC_reads.fastq.gz"
+      },
+      "cell_CCCCATTGGGGC": {
+         "barcodes": "example/reads_split/cell_CCCCATTGGGGC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CCCCATTGGGGC.umi.txt",
+         "reads": "example/reads_split/cell_CCCCATTGGGGC_reads.fastq.gz"
+      },
+      "cell_AGTTGTTGAGCT": {
+         "barcodes": "example/reads_split/cell_AGTTGTTGAGCT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_AGTTGTTGAGCT.umi.txt",
+         "reads": "example/reads_split/cell_AGTTGTTGAGCT_reads.fastq.gz"
+      },
+      "cell_AATCACGATCAA": {
+         "barcodes": "example/reads_split/cell_AATCACGATCAA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_AATCACGATCAA.umi.txt",
+         "reads": "example/reads_split/cell_AATCACGATCAA_reads.fastq.gz"
+      },
+      "cell_GAACAGACATCA": {
+         "barcodes": "example/reads_split/cell_GAACAGACATCA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GAACAGACATCA.umi.txt",
+         "reads": "example/reads_split/cell_GAACAGACATCA_reads.fastq.gz"
+      },
+      "cell_GGTTGGAGTTGC": {
+         "barcodes": "example/reads_split/cell_GGTTGGAGTTGC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GGTTGGAGTTGC.umi.txt",
+         "reads": "example/reads_split/cell_GGTTGGAGTTGC_reads.fastq.gz"
+      },
+      "cell_TGCTGTCCAGTC": {
+         "barcodes": "example/reads_split/cell_TGCTGTCCAGTC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TGCTGTCCAGTC.umi.txt",
+         "reads": "example/reads_split/cell_TGCTGTCCAGTC_reads.fastq.gz"
+      },
+      "cell_GAGAGGTGGTTC": {
+         "barcodes": "example/reads_split/cell_GAGAGGTGGTTC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GAGAGGTGGTTC.umi.txt",
+         "reads": "example/reads_split/cell_GAGAGGTGGTTC_reads.fastq.gz"
+      },
+      "cell_TTGACTAGTACT": {
+         "barcodes": "example/reads_split/cell_TTGACTAGTACT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TTGACTAGTACT.umi.txt",
+         "reads": "example/reads_split/cell_TTGACTAGTACT_reads.fastq.gz"
+      },
+      "cell_GATCACTATTTT": {
+         "barcodes": "example/reads_split/cell_GATCACTATTTT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GATCACTATTTT.umi.txt",
+         "reads": "example/reads_split/cell_GATCACTATTTT_reads.fastq.gz"
+      },
+      "cell_TCAAAGCCCTAG": {
+         "barcodes": "example/reads_split/cell_TCAAAGCCCTAG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TCAAAGCCCTAG.umi.txt",
+         "reads": "example/reads_split/cell_TCAAAGCCCTAG_reads.fastq.gz"
+      },
+      "cell_CCCTGGTCCGCA": {
+         "barcodes": "example/reads_split/cell_CCCTGGTCCGCA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CCCTGGTCCGCA.umi.txt",
+         "reads": "example/reads_split/cell_CCCTGGTCCGCA_reads.fastq.gz"
+      },
+      "cell_ACGGCACGCGCT": {
+         "barcodes": "example/reads_split/cell_ACGGCACGCGCT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_ACGGCACGCGCT.umi.txt",
+         "reads": "example/reads_split/cell_ACGGCACGCGCT_reads.fastq.gz"
+      },
+      "cell_CAAAAAACGTTG": {
+         "barcodes": "example/reads_split/cell_CAAAAAACGTTG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CAAAAAACGTTG.umi.txt",
+         "reads": "example/reads_split/cell_CAAAAAACGTTG_reads.fastq.gz"
+      },
+      "cell_CGACAGGCGATC": {
+         "barcodes": "example/reads_split/cell_CGACAGGCGATC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CGACAGGCGATC.umi.txt",
+         "reads": "example/reads_split/cell_CGACAGGCGATC_reads.fastq.gz"
+      },
+      "cell_TTCGGGCCTGCT": {
+         "barcodes": "example/reads_split/cell_TTCGGGCCTGCT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TTCGGGCCTGCT.umi.txt",
+         "reads": "example/reads_split/cell_TTCGGGCCTGCT_reads.fastq.gz"
+      },
+      "cell_CCGGCTTAATAG": {
+         "barcodes": "example/reads_split/cell_CCGGCTTAATAG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CCGGCTTAATAG.umi.txt",
+         "reads": "example/reads_split/cell_CCGGCTTAATAG_reads.fastq.gz"
+      },
+      "cell_GTTATCCCTAGC": {
+         "barcodes": "example/reads_split/cell_GTTATCCCTAGC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GTTATCCCTAGC.umi.txt",
+         "reads": "example/reads_split/cell_GTTATCCCTAGC_reads.fastq.gz"
+      },
+      "cell_GTGTGATAATCC": {
+         "barcodes": "example/reads_split/cell_GTGTGATAATCC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GTGTGATAATCC.umi.txt",
+         "reads": "example/reads_split/cell_GTGTGATAATCC_reads.fastq.gz"
+      },
+      "cell_GCTGTGTGGCGA": {
+         "barcodes": "example/reads_split/cell_GCTGTGTGGCGA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GCTGTGTGGCGA.umi.txt",
+         "reads": "example/reads_split/cell_GCTGTGTGGCGA_reads.fastq.gz"
+      },
+      "cell_GTGTGGGTCTCT": {
+         "barcodes": "example/reads_split/cell_GTGTGGGTCTCT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GTGTGGGTCTCT.umi.txt",
+         "reads": "example/reads_split/cell_GTGTGGGTCTCT_reads.fastq.gz"
+      },
+      "cell_GGGCTCGATGCG": {
+         "barcodes": "example/reads_split/cell_GGGCTCGATGCG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GGGCTCGATGCG.umi.txt",
+         "reads": "example/reads_split/cell_GGGCTCGATGCG_reads.fastq.gz"
+      },
+      "cell_GCTTAAGTTTCC": {
+         "barcodes": "example/reads_split/cell_GCTTAAGTTTCC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GCTTAAGTTTCC.umi.txt",
+         "reads": "example/reads_split/cell_GCTTAAGTTTCC_reads.fastq.gz"
+      },
+      "cell_CTAGTTGAACAC": {
+         "barcodes": "example/reads_split/cell_CTAGTTGAACAC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CTAGTTGAACAC.umi.txt",
+         "reads": "example/reads_split/cell_CTAGTTGAACAC_reads.fastq.gz"
+      },
+      "cell_GGGTCAAGGCGA": {
+         "barcodes": "example/reads_split/cell_GGGTCAAGGCGA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GGGTCAAGGCGA.umi.txt",
+         "reads": "example/reads_split/cell_GGGTCAAGGCGA_reads.fastq.gz"
+      },
+      "cell_ATCTGAAGCCTT": {
+         "barcodes": "example/reads_split/cell_ATCTGAAGCCTT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_ATCTGAAGCCTT.umi.txt",
+         "reads": "example/reads_split/cell_ATCTGAAGCCTT_reads.fastq.gz"
+      },
+      "cell_CCTGTGCTGCGG": {
+         "barcodes": "example/reads_split/cell_CCTGTGCTGCGG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CCTGTGCTGCGG.umi.txt",
+         "reads": "example/reads_split/cell_CCTGTGCTGCGG_reads.fastq.gz"
+      },
+      "cell_ACTAAGGACCGC": {
+         "barcodes": "example/reads_split/cell_ACTAAGGACCGC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_ACTAAGGACCGC.umi.txt",
+         "reads": "example/reads_split/cell_ACTAAGGACCGC_reads.fastq.gz"
+      },
+      "cell_ATCCTCGGGCAG": {
+         "barcodes": "example/reads_split/cell_ATCCTCGGGCAG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_ATCCTCGGGCAG.umi.txt",
+         "reads": "example/reads_split/cell_ATCCTCGGGCAG_reads.fastq.gz"
+      },
+      "cell_CCTCCCCTGATA": {
+         "barcodes": "example/reads_split/cell_CCTCCCCTGATA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CCTCCCCTGATA.umi.txt",
+         "reads": "example/reads_split/cell_CCTCCCCTGATA_reads.fastq.gz"
+      },
+      "cell_GTCTCGTGCACC": {
+         "barcodes": "example/reads_split/cell_GTCTCGTGCACC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GTCTCGTGCACC.umi.txt",
+         "reads": "example/reads_split/cell_GTCTCGTGCACC_reads.fastq.gz"
+      },
+      "cell_TGACGCTAAGGG": {
+         "barcodes": "example/reads_split/cell_TGACGCTAAGGG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TGACGCTAAGGG.umi.txt",
+         "reads": "example/reads_split/cell_TGACGCTAAGGG_reads.fastq.gz"
+      },
+      "cell_CCTGACGAGCAG": {
+         "barcodes": "example/reads_split/cell_CCTGACGAGCAG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CCTGACGAGCAG.umi.txt",
+         "reads": "example/reads_split/cell_CCTGACGAGCAG_reads.fastq.gz"
+      },
+      "cell_AACTAGTCGCAG": {
+         "barcodes": "example/reads_split/cell_AACTAGTCGCAG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_AACTAGTCGCAG.umi.txt",
+         "reads": "example/reads_split/cell_AACTAGTCGCAG_reads.fastq.gz"
+      },
+      "cell_CTAAAGGCCGCA": {
+         "barcodes": "example/reads_split/cell_CTAAAGGCCGCA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CTAAAGGCCGCA.umi.txt",
+         "reads": "example/reads_split/cell_CTAAAGGCCGCA_reads.fastq.gz"
+      },
+      "cell_CCGTTCTACCGG": {
+         "barcodes": "example/reads_split/cell_CCGTTCTACCGG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CCGTTCTACCGG.umi.txt",
+         "reads": "example/reads_split/cell_CCGTTCTACCGG_reads.fastq.gz"
+      },
+      "cell_GGATGCGTTCCC": {
+         "barcodes": "example/reads_split/cell_GGATGCGTTCCC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GGATGCGTTCCC.umi.txt",
+         "reads": "example/reads_split/cell_GGATGCGTTCCC_reads.fastq.gz"
+      },
+      "cell_TGCGTAGATATG": {
+         "barcodes": "example/reads_split/cell_TGCGTAGATATG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TGCGTAGATATG.umi.txt",
+         "reads": "example/reads_split/cell_TGCGTAGATATG_reads.fastq.gz"
+      },
+      "cell_TGGCGTCGAGCT": {
+         "barcodes": "example/reads_split/cell_TGGCGTCGAGCT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TGGCGTCGAGCT.umi.txt",
+         "reads": "example/reads_split/cell_TGGCGTCGAGCT_reads.fastq.gz"
+      },
+      "cell_CGACACGGCTAA": {
+         "barcodes": "example/reads_split/cell_CGACACGGCTAA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CGACACGGCTAA.umi.txt",
+         "reads": "example/reads_split/cell_CGACACGGCTAA_reads.fastq.gz"
+      },
+      "cell_CCTTTAGTAAAC": {
+         "barcodes": "example/reads_split/cell_CCTTTAGTAAAC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CCTTTAGTAAAC.umi.txt",
+         "reads": "example/reads_split/cell_CCTTTAGTAAAC_reads.fastq.gz"
+      },
+      "cell_CCGGTCGTGCTG": {
+         "barcodes": "example/reads_split/cell_CCGGTCGTGCTG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CCGGTCGTGCTG.umi.txt",
+         "reads": "example/reads_split/cell_CCGGTCGTGCTG_reads.fastq.gz"
+      },
+      "cell_TCTTCTAGTCGG": {
+         "barcodes": "example/reads_split/cell_TCTTCTAGTCGG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TCTTCTAGTCGG.umi.txt",
+         "reads": "example/reads_split/cell_TCTTCTAGTCGG_reads.fastq.gz"
+      },
+      "cell_TGCTATGAATAA": {
+         "barcodes": "example/reads_split/cell_TGCTATGAATAA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TGCTATGAATAA.umi.txt",
+         "reads": "example/reads_split/cell_TGCTATGAATAA_reads.fastq.gz"
+      },
+      "cell_ATTTAGCAGACG": {
+         "barcodes": "example/reads_split/cell_ATTTAGCAGACG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_ATTTAGCAGACG.umi.txt",
+         "reads": "example/reads_split/cell_ATTTAGCAGACG_reads.fastq.gz"
+      },
+      "cell_TGTGTGGGTTCC": {
+         "barcodes": "example/reads_split/cell_TGTGTGGGTTCC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TGTGTGGGTTCC.umi.txt",
+         "reads": "example/reads_split/cell_TGTGTGGGTTCC_reads.fastq.gz"
+      },
+      "cell_TATAACATTGGC": {
+         "barcodes": "example/reads_split/cell_TATAACATTGGC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TATAACATTGGC.umi.txt",
+         "reads": "example/reads_split/cell_TATAACATTGGC_reads.fastq.gz"
+      },
+      "cell_GCCTCATGTGAA": {
+         "barcodes": "example/reads_split/cell_GCCTCATGTGAA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GCCTCATGTGAA.umi.txt",
+         "reads": "example/reads_split/cell_GCCTCATGTGAA_reads.fastq.gz"
+      },
+      "cell_TTTTGTATCACG": {
+         "barcodes": "example/reads_split/cell_TTTTGTATCACG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TTTTGTATCACG.umi.txt",
+         "reads": "example/reads_split/cell_TTTTGTATCACG_reads.fastq.gz"
+      },
+      "cell_TTAGGTAACGTG": {
+         "barcodes": "example/reads_split/cell_TTAGGTAACGTG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TTAGGTAACGTG.umi.txt",
+         "reads": "example/reads_split/cell_TTAGGTAACGTG_reads.fastq.gz"
+      },
+      "cell_CTCTCGGCTGAA": {
+         "barcodes": "example/reads_split/cell_CTCTCGGCTGAA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CTCTCGGCTGAA.umi.txt",
+         "reads": "example/reads_split/cell_CTCTCGGCTGAA_reads.fastq.gz"
+      },
+      "cell_ATTTTCGAAGGC": {
+         "barcodes": "example/reads_split/cell_ATTTTCGAAGGC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_ATTTTCGAAGGC.umi.txt",
+         "reads": "example/reads_split/cell_ATTTTCGAAGGC_reads.fastq.gz"
+      },
+      "cell_AGCTCTAAGTCG": {
+         "barcodes": "example/reads_split/cell_AGCTCTAAGTCG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_AGCTCTAAGTCG.umi.txt",
+         "reads": "example/reads_split/cell_AGCTCTAAGTCG_reads.fastq.gz"
+      },
+      "cell_GCTGTCTCTTAT": {
+         "barcodes": "example/reads_split/cell_GCTGTCTCTTAT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GCTGTCTCTTAT.umi.txt",
+         "reads": "example/reads_split/cell_GCTGTCTCTTAT_reads.fastq.gz"
+      },
+      "cell_CTGGATGTTCAA": {
+         "barcodes": "example/reads_split/cell_CTGGATGTTCAA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CTGGATGTTCAA.umi.txt",
+         "reads": "example/reads_split/cell_CTGGATGTTCAA_reads.fastq.gz"
+      },
+      "cell_CCACTCCCCCCT": {
+         "barcodes": "example/reads_split/cell_CCACTCCCCCCT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CCACTCCCCCCT.umi.txt",
+         "reads": "example/reads_split/cell_CCACTCCCCCCT_reads.fastq.gz"
+      },
+      "cell_ACTAATCCAGCC": {
+         "barcodes": "example/reads_split/cell_ACTAATCCAGCC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_ACTAATCCAGCC.umi.txt",
+         "reads": "example/reads_split/cell_ACTAATCCAGCC_reads.fastq.gz"
+      },
+      "cell_GCAGTGGGAACA": {
+         "barcodes": "example/reads_split/cell_GCAGTGGGAACA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GCAGTGGGAACA.umi.txt",
+         "reads": "example/reads_split/cell_GCAGTGGGAACA_reads.fastq.gz"
+      },
+      "cell_AAGCCCTTTTGG": {
+         "barcodes": "example/reads_split/cell_AAGCCCTTTTGG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_AAGCCCTTTTGG.umi.txt",
+         "reads": "example/reads_split/cell_AAGCCCTTTTGG_reads.fastq.gz"
+      },
+      "cell_GCGACCAGGAAT": {
+         "barcodes": "example/reads_split/cell_GCGACCAGGAAT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GCGACCAGGAAT.umi.txt",
+         "reads": "example/reads_split/cell_GCGACCAGGAAT_reads.fastq.gz"
+      },
+      "cell_CAATGGATGTGC": {
+         "barcodes": "example/reads_split/cell_CAATGGATGTGC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CAATGGATGTGC.umi.txt",
+         "reads": "example/reads_split/cell_CAATGGATGTGC_reads.fastq.gz"
+      },
+      "cell_CGCCACTCCCCG": {
+         "barcodes": "example/reads_split/cell_CGCCACTCCCCG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CGCCACTCCCCG.umi.txt",
+         "reads": "example/reads_split/cell_CGCCACTCCCCG_reads.fastq.gz"
+      },
+      "cell_CGTTCGGAAGCG": {
+         "barcodes": "example/reads_split/cell_CGTTCGGAAGCG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CGTTCGGAAGCG.umi.txt",
+         "reads": "example/reads_split/cell_CGTTCGGAAGCG_reads.fastq.gz"
+      },
+      "cell_ACAACAGCCCCT": {
+         "barcodes": "example/reads_split/cell_ACAACAGCCCCT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_ACAACAGCCCCT.umi.txt",
+         "reads": "example/reads_split/cell_ACAACAGCCCCT_reads.fastq.gz"
+      },
+      "cell_ATAAGTCCTTTA": {
+         "barcodes": "example/reads_split/cell_ATAAGTCCTTTA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_ATAAGTCCTTTA.umi.txt",
+         "reads": "example/reads_split/cell_ATAAGTCCTTTA_reads.fastq.gz"
+      },
+      "cell_CCGCGTAGAGGA": {
+         "barcodes": "example/reads_split/cell_CCGCGTAGAGGA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CCGCGTAGAGGA.umi.txt",
+         "reads": "example/reads_split/cell_CCGCGTAGAGGA_reads.fastq.gz"
+      },
+      "cell_CCAACTTCAGAG": {
+         "barcodes": "example/reads_split/cell_CCAACTTCAGAG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CCAACTTCAGAG.umi.txt",
+         "reads": "example/reads_split/cell_CCAACTTCAGAG_reads.fastq.gz"
+      },
+      "cell_CCACTTCGAACG": {
+         "barcodes": "example/reads_split/cell_CCACTTCGAACG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CCACTTCGAACG.umi.txt",
+         "reads": "example/reads_split/cell_CCACTTCGAACG_reads.fastq.gz"
+      },
+      "cell_AGGCGTAGTTCC": {
+         "barcodes": "example/reads_split/cell_AGGCGTAGTTCC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_AGGCGTAGTTCC.umi.txt",
+         "reads": "example/reads_split/cell_AGGCGTAGTTCC_reads.fastq.gz"
+      },
+      "cell_GTACAGGATTAG": {
+         "barcodes": "example/reads_split/cell_GTACAGGATTAG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GTACAGGATTAG.umi.txt",
+         "reads": "example/reads_split/cell_GTACAGGATTAG_reads.fastq.gz"
+      },
+      "cell_CAACGCTGTCGG": {
+         "barcodes": "example/reads_split/cell_CAACGCTGTCGG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CAACGCTGTCGG.umi.txt",
+         "reads": "example/reads_split/cell_CAACGCTGTCGG_reads.fastq.gz"
+      },
+      "cell_ATTAGGAAGGTA": {
+         "barcodes": "example/reads_split/cell_ATTAGGAAGGTA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_ATTAGGAAGGTA.umi.txt",
+         "reads": "example/reads_split/cell_ATTAGGAAGGTA_reads.fastq.gz"
+      },
+      "cell_CATCAAAAGGTA": {
+         "barcodes": "example/reads_split/cell_CATCAAAAGGTA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CATCAAAAGGTA.umi.txt",
+         "reads": "example/reads_split/cell_CATCAAAAGGTA_reads.fastq.gz"
+      },
+      "cell_CCAGCCGAACGA": {
+         "barcodes": "example/reads_split/cell_CCAGCCGAACGA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CCAGCCGAACGA.umi.txt",
+         "reads": "example/reads_split/cell_CCAGCCGAACGA_reads.fastq.gz"
+      },
+      "cell_CTCGACGACAAG": {
+         "barcodes": "example/reads_split/cell_CTCGACGACAAG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CTCGACGACAAG.umi.txt",
+         "reads": "example/reads_split/cell_CTCGACGACAAG_reads.fastq.gz"
+      },
+      "cell_TCAAGGTCCTTC": {
+         "barcodes": "example/reads_split/cell_TCAAGGTCCTTC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TCAAGGTCCTTC.umi.txt",
+         "reads": "example/reads_split/cell_TCAAGGTCCTTC_reads.fastq.gz"
+      },
+      "cell_GGTCGCTGTGTG": {
+         "barcodes": "example/reads_split/cell_GGTCGCTGTGTG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GGTCGCTGTGTG.umi.txt",
+         "reads": "example/reads_split/cell_GGTCGCTGTGTG_reads.fastq.gz"
+      },
+      "cell_TAACGTACAGGA": {
+         "barcodes": "example/reads_split/cell_TAACGTACAGGA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TAACGTACAGGA.umi.txt",
+         "reads": "example/reads_split/cell_TAACGTACAGGA_reads.fastq.gz"
+      },
+      "cell_TCAATTAGAGGG": {
+         "barcodes": "example/reads_split/cell_TCAATTAGAGGG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TCAATTAGAGGG.umi.txt",
+         "reads": "example/reads_split/cell_TCAATTAGAGGG_reads.fastq.gz"
+      },
+      "cell_CCAGCATACTGC": {
+         "barcodes": "example/reads_split/cell_CCAGCATACTGC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CCAGCATACTGC.umi.txt",
+         "reads": "example/reads_split/cell_CCAGCATACTGC_reads.fastq.gz"
+      },
+      "cell_CGTGTTAGACAC": {
+         "barcodes": "example/reads_split/cell_CGTGTTAGACAC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CGTGTTAGACAC.umi.txt",
+         "reads": "example/reads_split/cell_CGTGTTAGACAC_reads.fastq.gz"
+      },
+      "cell_GGCAATGTGCCT": {
+         "barcodes": "example/reads_split/cell_GGCAATGTGCCT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GGCAATGTGCCT.umi.txt",
+         "reads": "example/reads_split/cell_GGCAATGTGCCT_reads.fastq.gz"
+      },
+      "cell_GCTTAGAGAGAA": {
+         "barcodes": "example/reads_split/cell_GCTTAGAGAGAA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GCTTAGAGAGAA.umi.txt",
+         "reads": "example/reads_split/cell_GCTTAGAGAGAA_reads.fastq.gz"
+      },
+      "cell_CCCACGCGGAAG": {
+         "barcodes": "example/reads_split/cell_CCCACGCGGAAG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CCCACGCGGAAG.umi.txt",
+         "reads": "example/reads_split/cell_CCCACGCGGAAG_reads.fastq.gz"
+      },
+      "cell_CTCAACACGCAT": {
+         "barcodes": "example/reads_split/cell_CTCAACACGCAT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CTCAACACGCAT.umi.txt",
+         "reads": "example/reads_split/cell_CTCAACACGCAT_reads.fastq.gz"
+      },
+      "cell_AGTCACACCAAA": {
+         "barcodes": "example/reads_split/cell_AGTCACACCAAA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_AGTCACACCAAA.umi.txt",
+         "reads": "example/reads_split/cell_AGTCACACCAAA_reads.fastq.gz"
+      },
+      "cell_CACTAATAATGG": {
+         "barcodes": "example/reads_split/cell_CACTAATAATGG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CACTAATAATGG.umi.txt",
+         "reads": "example/reads_split/cell_CACTAATAATGG_reads.fastq.gz"
+      },
+      "cell_CGGGACATTCGT": {
+         "barcodes": "example/reads_split/cell_CGGGACATTCGT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CGGGACATTCGT.umi.txt",
+         "reads": "example/reads_split/cell_CGGGACATTCGT_reads.fastq.gz"
+      },
+      "cell_TACCGACGCGCT": {
+         "barcodes": "example/reads_split/cell_TACCGACGCGCT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TACCGACGCGCT.umi.txt",
+         "reads": "example/reads_split/cell_TACCGACGCGCT_reads.fastq.gz"
+      },
+      "cell_CGGCTCGGGTAG": {
+         "barcodes": "example/reads_split/cell_CGGCTCGGGTAG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CGGCTCGGGTAG.umi.txt",
+         "reads": "example/reads_split/cell_CGGCTCGGGTAG_reads.fastq.gz"
+      },
+      "cell_ATTACGATTACA": {
+         "barcodes": "example/reads_split/cell_ATTACGATTACA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_ATTACGATTACA.umi.txt",
+         "reads": "example/reads_split/cell_ATTACGATTACA_reads.fastq.gz"
+      },
+      "cell_AGGTTCCGAAGG": {
+         "barcodes": "example/reads_split/cell_AGGTTCCGAAGG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_AGGTTCCGAAGG.umi.txt",
+         "reads": "example/reads_split/cell_AGGTTCCGAAGG_reads.fastq.gz"
+      },
+      "cell_ATATACAACCCT": {
+         "barcodes": "example/reads_split/cell_ATATACAACCCT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_ATATACAACCCT.umi.txt",
+         "reads": "example/reads_split/cell_ATATACAACCCT_reads.fastq.gz"
+      },
+      "cell_TCGTCAATTGTC": {
+         "barcodes": "example/reads_split/cell_TCGTCAATTGTC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TCGTCAATTGTC.umi.txt",
+         "reads": "example/reads_split/cell_TCGTCAATTGTC_reads.fastq.gz"
+      },
+      "cell_ATCGTGGAAGTC": {
+         "barcodes": "example/reads_split/cell_ATCGTGGAAGTC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_ATCGTGGAAGTC.umi.txt",
+         "reads": "example/reads_split/cell_ATCGTGGAAGTC_reads.fastq.gz"
+      },
+      "cell_TATGATGCTACT": {
+         "barcodes": "example/reads_split/cell_TATGATGCTACT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TATGATGCTACT.umi.txt",
+         "reads": "example/reads_split/cell_TATGATGCTACT_reads.fastq.gz"
+      },
+      "cell_AAGTTGCGCGAG": {
+         "barcodes": "example/reads_split/cell_AAGTTGCGCGAG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_AAGTTGCGCGAG.umi.txt",
+         "reads": "example/reads_split/cell_AAGTTGCGCGAG_reads.fastq.gz"
+      },
+      "cell_TGGGCCGAAGCC": {
+         "barcodes": "example/reads_split/cell_TGGGCCGAAGCC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TGGGCCGAAGCC.umi.txt",
+         "reads": "example/reads_split/cell_TGGGCCGAAGCC_reads.fastq.gz"
+      },
+      "cell_CTGCTCTTTGCA": {
+         "barcodes": "example/reads_split/cell_CTGCTCTTTGCA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CTGCTCTTTGCA.umi.txt",
+         "reads": "example/reads_split/cell_CTGCTCTTTGCA_reads.fastq.gz"
+      },
+      "cell_TTCACCGCCCCC": {
+         "barcodes": "example/reads_split/cell_TTCACCGCCCCC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TTCACCGCCCCC.umi.txt",
+         "reads": "example/reads_split/cell_TTCACCGCCCCC_reads.fastq.gz"
+      },
+      "cell_TAAGGTCGCCCA": {
+         "barcodes": "example/reads_split/cell_TAAGGTCGCCCA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TAAGGTCGCCCA.umi.txt",
+         "reads": "example/reads_split/cell_TAAGGTCGCCCA_reads.fastq.gz"
+      },
+      "cell_CCCAGGCTAGGG": {
+         "barcodes": "example/reads_split/cell_CCCAGGCTAGGG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CCCAGGCTAGGG.umi.txt",
+         "reads": "example/reads_split/cell_CCCAGGCTAGGG_reads.fastq.gz"
+      },
+      "cell_GGAGCCTAGGCG": {
+         "barcodes": "example/reads_split/cell_GGAGCCTAGGCG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GGAGCCTAGGCG.umi.txt",
+         "reads": "example/reads_split/cell_GGAGCCTAGGCG_reads.fastq.gz"
+      },
+      "cell_GCCCGCACTACC": {
+         "barcodes": "example/reads_split/cell_GCCCGCACTACC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GCCCGCACTACC.umi.txt",
+         "reads": "example/reads_split/cell_GCCCGCACTACC_reads.fastq.gz"
+      },
+      "cell_CTCGCTGCCTCC": {
+         "barcodes": "example/reads_split/cell_CTCGCTGCCTCC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CTCGCTGCCTCC.umi.txt",
+         "reads": "example/reads_split/cell_CTCGCTGCCTCC_reads.fastq.gz"
+      },
+      "cell_TGGTGACACAGG": {
+         "barcodes": "example/reads_split/cell_TGGTGACACAGG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TGGTGACACAGG.umi.txt",
+         "reads": "example/reads_split/cell_TGGTGACACAGG_reads.fastq.gz"
+      },
+      "cell_GTGGAATCACTC": {
+         "barcodes": "example/reads_split/cell_GTGGAATCACTC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GTGGAATCACTC.umi.txt",
+         "reads": "example/reads_split/cell_GTGGAATCACTC_reads.fastq.gz"
+      },
+      "cell_CTTACCCGGATG": {
+         "barcodes": "example/reads_split/cell_CTTACCCGGATG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CTTACCCGGATG.umi.txt",
+         "reads": "example/reads_split/cell_CTTACCCGGATG_reads.fastq.gz"
+      },
+      "cell_GTGTGACGTATT": {
+         "barcodes": "example/reads_split/cell_GTGTGACGTATT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GTGTGACGTATT.umi.txt",
+         "reads": "example/reads_split/cell_GTGTGACGTATT_reads.fastq.gz"
+      },
+      "cell_TGTAAGTTATCT": {
+         "barcodes": "example/reads_split/cell_TGTAAGTTATCT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TGTAAGTTATCT.umi.txt",
+         "reads": "example/reads_split/cell_TGTAAGTTATCT_reads.fastq.gz"
+      },
+      "cell_ATGCACAGGGTA": {
+         "barcodes": "example/reads_split/cell_ATGCACAGGGTA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_ATGCACAGGGTA.umi.txt",
+         "reads": "example/reads_split/cell_ATGCACAGGGTA_reads.fastq.gz"
+      },
+      "cell_CCTCCCCGTTGA": {
+         "barcodes": "example/reads_split/cell_CCTCCCCGTTGA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CCTCCCCGTTGA.umi.txt",
+         "reads": "example/reads_split/cell_CCTCCCCGTTGA_reads.fastq.gz"
+      },
+      "cell_ACGCTGTAGGGT": {
+         "barcodes": "example/reads_split/cell_ACGCTGTAGGGT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_ACGCTGTAGGGT.umi.txt",
+         "reads": "example/reads_split/cell_ACGCTGTAGGGT_reads.fastq.gz"
+      },
+      "cell_AGGTTAAGCACT": {
+         "barcodes": "example/reads_split/cell_AGGTTAAGCACT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_AGGTTAAGCACT.umi.txt",
+         "reads": "example/reads_split/cell_AGGTTAAGCACT_reads.fastq.gz"
+      },
+      "cell_CGTTTTACCTTG": {
+         "barcodes": "example/reads_split/cell_CGTTTTACCTTG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CGTTTTACCTTG.umi.txt",
+         "reads": "example/reads_split/cell_CGTTTTACCTTG_reads.fastq.gz"
+      },
+      "cell_CCAGATTAATCT": {
+         "barcodes": "example/reads_split/cell_CCAGATTAATCT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CCAGATTAATCT.umi.txt",
+         "reads": "example/reads_split/cell_CCAGATTAATCT_reads.fastq.gz"
+      },
+      "cell_AACCTGTAGGTG": {
+         "barcodes": "example/reads_split/cell_AACCTGTAGGTG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_AACCTGTAGGTG.umi.txt",
+         "reads": "example/reads_split/cell_AACCTGTAGGTG_reads.fastq.gz"
+      },
+      "cell_AATGTGCCACCC": {
+         "barcodes": "example/reads_split/cell_AATGTGCCACCC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_AATGTGCCACCC.umi.txt",
+         "reads": "example/reads_split/cell_AATGTGCCACCC_reads.fastq.gz"
+      },
+      "cell_TCTCTCCCCTTG": {
+         "barcodes": "example/reads_split/cell_TCTCTCCCCTTG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TCTCTCCCCTTG.umi.txt",
+         "reads": "example/reads_split/cell_TCTCTCCCCTTG_reads.fastq.gz"
+      },
+      "cell_TGTAACGCACGA": {
+         "barcodes": "example/reads_split/cell_TGTAACGCACGA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TGTAACGCACGA.umi.txt",
+         "reads": "example/reads_split/cell_TGTAACGCACGA_reads.fastq.gz"
+      },
+      "cell_GCTACGTACCCA": {
+         "barcodes": "example/reads_split/cell_GCTACGTACCCA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GCTACGTACCCA.umi.txt",
+         "reads": "example/reads_split/cell_GCTACGTACCCA_reads.fastq.gz"
+      },
+      "cell_AAACCTCATACT": {
+         "barcodes": "example/reads_split/cell_AAACCTCATACT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_AAACCTCATACT.umi.txt",
+         "reads": "example/reads_split/cell_AAACCTCATACT_reads.fastq.gz"
+      },
+      "cell_GAGTATGCGACC": {
+         "barcodes": "example/reads_split/cell_GAGTATGCGACC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GAGTATGCGACC.umi.txt",
+         "reads": "example/reads_split/cell_GAGTATGCGACC_reads.fastq.gz"
+      },
+      "cell_GATCGTGTCTCC": {
+         "barcodes": "example/reads_split/cell_GATCGTGTCTCC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GATCGTGTCTCC.umi.txt",
+         "reads": "example/reads_split/cell_GATCGTGTCTCC_reads.fastq.gz"
+      },
+      "cell_AGTGGGGATGGG": {
+         "barcodes": "example/reads_split/cell_AGTGGGGATGGG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_AGTGGGGATGGG.umi.txt",
+         "reads": "example/reads_split/cell_AGTGGGGATGGG_reads.fastq.gz"
+      },
+      "cell_TTAGATTTTAGC": {
+         "barcodes": "example/reads_split/cell_TTAGATTTTAGC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TTAGATTTTAGC.umi.txt",
+         "reads": "example/reads_split/cell_TTAGATTTTAGC_reads.fastq.gz"
+      },
+      "cell_CCAGACTTCGGG": {
+         "barcodes": "example/reads_split/cell_CCAGACTTCGGG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CCAGACTTCGGG.umi.txt",
+         "reads": "example/reads_split/cell_CCAGACTTCGGG_reads.fastq.gz"
+      },
+      "cell_TACTCGTTATGA": {
+         "barcodes": "example/reads_split/cell_TACTCGTTATGA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TACTCGTTATGA.umi.txt",
+         "reads": "example/reads_split/cell_TACTCGTTATGA_reads.fastq.gz"
+      },
+      "cell_ACGTACATGACT": {
+         "barcodes": "example/reads_split/cell_ACGTACATGACT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_ACGTACATGACT.umi.txt",
+         "reads": "example/reads_split/cell_ACGTACATGACT_reads.fastq.gz"
+      },
+      "cell_TTGCTACTGACG": {
+         "barcodes": "example/reads_split/cell_TTGCTACTGACG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TTGCTACTGACG.umi.txt",
+         "reads": "example/reads_split/cell_TTGCTACTGACG_reads.fastq.gz"
+      },
+      "cell_ATAACCAGACAA": {
+         "barcodes": "example/reads_split/cell_ATAACCAGACAA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_ATAACCAGACAA.umi.txt",
+         "reads": "example/reads_split/cell_ATAACCAGACAA_reads.fastq.gz"
+      },
+      "cell_CCTTTGAACAGG": {
+         "barcodes": "example/reads_split/cell_CCTTTGAACAGG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CCTTTGAACAGG.umi.txt",
+         "reads": "example/reads_split/cell_CCTTTGAACAGG_reads.fastq.gz"
+      },
+      "cell_AACTCACGACTC": {
+         "barcodes": "example/reads_split/cell_AACTCACGACTC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_AACTCACGACTC.umi.txt",
+         "reads": "example/reads_split/cell_AACTCACGACTC_reads.fastq.gz"
+      },
+      "cell_ACAAGATCTCGC": {
+         "barcodes": "example/reads_split/cell_ACAAGATCTCGC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_ACAAGATCTCGC.umi.txt",
+         "reads": "example/reads_split/cell_ACAAGATCTCGC_reads.fastq.gz"
+      },
+      "cell_GCTGTCCTGGGT": {
+         "barcodes": "example/reads_split/cell_GCTGTCCTGGGT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GCTGTCCTGGGT.umi.txt",
+         "reads": "example/reads_split/cell_GCTGTCCTGGGT_reads.fastq.gz"
+      },
+      "cell_TGCGTAATGCCG": {
+         "barcodes": "example/reads_split/cell_TGCGTAATGCCG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TGCGTAATGCCG.umi.txt",
+         "reads": "example/reads_split/cell_TGCGTAATGCCG_reads.fastq.gz"
+      },
+      "cell_TGTTTTTAATAC": {
+         "barcodes": "example/reads_split/cell_TGTTTTTAATAC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TGTTTTTAATAC.umi.txt",
+         "reads": "example/reads_split/cell_TGTTTTTAATAC_reads.fastq.gz"
+      },
+      "cell_GTACGAATACCT": {
+         "barcodes": "example/reads_split/cell_GTACGAATACCT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GTACGAATACCT.umi.txt",
+         "reads": "example/reads_split/cell_GTACGAATACCT_reads.fastq.gz"
+      },
+      "cell_CGTACTGACTAC": {
+         "barcodes": "example/reads_split/cell_CGTACTGACTAC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CGTACTGACTAC.umi.txt",
+         "reads": "example/reads_split/cell_CGTACTGACTAC_reads.fastq.gz"
+      },
+      "cell_GTTATATTAGGC": {
+         "barcodes": "example/reads_split/cell_GTTATATTAGGC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GTTATATTAGGC.umi.txt",
+         "reads": "example/reads_split/cell_GTTATATTAGGC_reads.fastq.gz"
+      },
+      "cell_CTGTCTCTTATA": {
+         "barcodes": "example/reads_split/cell_CTGTCTCTTATA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CTGTCTCTTATA.umi.txt",
+         "reads": "example/reads_split/cell_CTGTCTCTTATA_reads.fastq.gz"
+      },
+      "cell_CGTATGAAGGTC": {
+         "barcodes": "example/reads_split/cell_CGTATGAAGGTC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CGTATGAAGGTC.umi.txt",
+         "reads": "example/reads_split/cell_CGTATGAAGGTC_reads.fastq.gz"
+      },
+      "cell_ACATACGGTTAG": {
+         "barcodes": "example/reads_split/cell_ACATACGGTTAG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_ACATACGGTTAG.umi.txt",
+         "reads": "example/reads_split/cell_ACATACGGTTAG_reads.fastq.gz"
+      },
+      "cell_AGGGAAGGGACC": {
+         "barcodes": "example/reads_split/cell_AGGGAAGGGACC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_AGGGAAGGGACC.umi.txt",
+         "reads": "example/reads_split/cell_AGGGAAGGGACC_reads.fastq.gz"
+      },
+      "cell_ACTTCATGACCC": {
+         "barcodes": "example/reads_split/cell_ACTTCATGACCC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_ACTTCATGACCC.umi.txt",
+         "reads": "example/reads_split/cell_ACTTCATGACCC_reads.fastq.gz"
+      },
+      "cell_GTGCTTCGCCAA": {
+         "barcodes": "example/reads_split/cell_GTGCTTCGCCAA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GTGCTTCGCCAA.umi.txt",
+         "reads": "example/reads_split/cell_GTGCTTCGCCAA_reads.fastq.gz"
+      },
+      "cell_GCAGATCGTAGG": {
+         "barcodes": "example/reads_split/cell_GCAGATCGTAGG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GCAGATCGTAGG.umi.txt",
+         "reads": "example/reads_split/cell_GCAGATCGTAGG_reads.fastq.gz"
+      },
+      "cell_TCCTTTTGTATA": {
+         "barcodes": "example/reads_split/cell_TCCTTTTGTATA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TCCTTTTGTATA.umi.txt",
+         "reads": "example/reads_split/cell_TCCTTTTGTATA_reads.fastq.gz"
+      },
+      "cell_CCTATCAAGTAC": {
+         "barcodes": "example/reads_split/cell_CCTATCAAGTAC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CCTATCAAGTAC.umi.txt",
+         "reads": "example/reads_split/cell_CCTATCAAGTAC_reads.fastq.gz"
+      },
+      "cell_AATTGATGGACA": {
+         "barcodes": "example/reads_split/cell_AATTGATGGACA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_AATTGATGGACA.umi.txt",
+         "reads": "example/reads_split/cell_AATTGATGGACA_reads.fastq.gz"
+      },
+      "cell_CCCTTGACGTAA": {
+         "barcodes": "example/reads_split/cell_CCCTTGACGTAA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CCCTTGACGTAA.umi.txt",
+         "reads": "example/reads_split/cell_CCCTTGACGTAA_reads.fastq.gz"
+      },
+      "cell_CCCATACCATTT": {
+         "barcodes": "example/reads_split/cell_CCCATACCATTT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CCCATACCATTT.umi.txt",
+         "reads": "example/reads_split/cell_CCCATACCATTT_reads.fastq.gz"
+      },
+      "cell_ACAACCTTCATA": {
+         "barcodes": "example/reads_split/cell_ACAACCTTCATA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_ACAACCTTCATA.umi.txt",
+         "reads": "example/reads_split/cell_ACAACCTTCATA_reads.fastq.gz"
+      },
+      "cell_TGTCTTGATAAT": {
+         "barcodes": "example/reads_split/cell_TGTCTTGATAAT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TGTCTTGATAAT.umi.txt",
+         "reads": "example/reads_split/cell_TGTCTTGATAAT_reads.fastq.gz"
+      },
+      "cell_TCTTAATTAATA": {
+         "barcodes": "example/reads_split/cell_TCTTAATTAATA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TCTTAATTAATA.umi.txt",
+         "reads": "example/reads_split/cell_TCTTAATTAATA_reads.fastq.gz"
+      },
+      "cell_TGCCCCGTTAGC": {
+         "barcodes": "example/reads_split/cell_TGCCCCGTTAGC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TGCCCCGTTAGC.umi.txt",
+         "reads": "example/reads_split/cell_TGCCCCGTTAGC_reads.fastq.gz"
+      },
+      "cell_GGACAGGACGTA": {
+         "barcodes": "example/reads_split/cell_GGACAGGACGTA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GGACAGGACGTA.umi.txt",
+         "reads": "example/reads_split/cell_GGACAGGACGTA_reads.fastq.gz"
+      },
+      "cell_CAGGGTTTGCAC": {
+         "barcodes": "example/reads_split/cell_CAGGGTTTGCAC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CAGGGTTTGCAC.umi.txt",
+         "reads": "example/reads_split/cell_CAGGGTTTGCAC_reads.fastq.gz"
+      },
+      "cell_TGACTCATGATC": {
+         "barcodes": "example/reads_split/cell_TGACTCATGATC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TGACTCATGATC.umi.txt",
+         "reads": "example/reads_split/cell_TGACTCATGATC_reads.fastq.gz"
+      },
+      "cell_GATCGCTCACTT": {
+         "barcodes": "example/reads_split/cell_GATCGCTCACTT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GATCGCTCACTT.umi.txt",
+         "reads": "example/reads_split/cell_GATCGCTCACTT_reads.fastq.gz"
+      },
+      "cell_GAAGCCCGGTGT": {
+         "barcodes": "example/reads_split/cell_GAAGCCCGGTGT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GAAGCCCGGTGT.umi.txt",
+         "reads": "example/reads_split/cell_GAAGCCCGGTGT_reads.fastq.gz"
+      },
+      "cell_ACGACGCCAACA": {
+         "barcodes": "example/reads_split/cell_ACGACGCCAACA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_ACGACGCCAACA.umi.txt",
+         "reads": "example/reads_split/cell_ACGACGCCAACA_reads.fastq.gz"
+      },
+      "cell_AGCCACGGCTCT": {
+         "barcodes": "example/reads_split/cell_AGCCACGGCTCT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_AGCCACGGCTCT.umi.txt",
+         "reads": "example/reads_split/cell_AGCCACGGCTCT_reads.fastq.gz"
+      },
+      "cell_CAGGATGCGCAG": {
+         "barcodes": "example/reads_split/cell_CAGGATGCGCAG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CAGGATGCGCAG.umi.txt",
+         "reads": "example/reads_split/cell_CAGGATGCGCAG_reads.fastq.gz"
+      },
+      "cell_TTACGTGGAGGC": {
+         "barcodes": "example/reads_split/cell_TTACGTGGAGGC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TTACGTGGAGGC.umi.txt",
+         "reads": "example/reads_split/cell_TTACGTGGAGGC_reads.fastq.gz"
+      },
+      "cell_TCCTTTCAGTCG": {
+         "barcodes": "example/reads_split/cell_TCCTTTCAGTCG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TCCTTTCAGTCG.umi.txt",
+         "reads": "example/reads_split/cell_TCCTTTCAGTCG_reads.fastq.gz"
+      },
+      "cell_GTGTACTCGGGA": {
+         "barcodes": "example/reads_split/cell_GTGTACTCGGGA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GTGTACTCGGGA.umi.txt",
+         "reads": "example/reads_split/cell_GTGTACTCGGGA_reads.fastq.gz"
+      },
+      "cell_TTAGGTCTCCTT": {
+         "barcodes": "example/reads_split/cell_TTAGGTCTCCTT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TTAGGTCTCCTT.umi.txt",
+         "reads": "example/reads_split/cell_TTAGGTCTCCTT_reads.fastq.gz"
+      },
+      "cell_CACCTGTCAACA": {
+         "barcodes": "example/reads_split/cell_CACCTGTCAACA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CACCTGTCAACA.umi.txt",
+         "reads": "example/reads_split/cell_CACCTGTCAACA_reads.fastq.gz"
+      },
+      "cell_AACCTGTCTCTT": {
+         "barcodes": "example/reads_split/cell_AACCTGTCTCTT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_AACCTGTCTCTT.umi.txt",
+         "reads": "example/reads_split/cell_AACCTGTCTCTT_reads.fastq.gz"
+      },
+      "cell_GTTCGTCCCGCC": {
+         "barcodes": "example/reads_split/cell_GTTCGTCCCGCC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GTTCGTCCCGCC.umi.txt",
+         "reads": "example/reads_split/cell_GTTCGTCCCGCC_reads.fastq.gz"
+      },
+      "cell_AGTCCGGATAAC": {
+         "barcodes": "example/reads_split/cell_AGTCCGGATAAC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_AGTCCGGATAAC.umi.txt",
+         "reads": "example/reads_split/cell_AGTCCGGATAAC_reads.fastq.gz"
+      },
+      "cell_TAAAGACCACGC": {
+         "barcodes": "example/reads_split/cell_TAAAGACCACGC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TAAAGACCACGC.umi.txt",
+         "reads": "example/reads_split/cell_TAAAGACCACGC_reads.fastq.gz"
+      },
+      "cell_GGATGAGAGGTA": {
+         "barcodes": "example/reads_split/cell_GGATGAGAGGTA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GGATGAGAGGTA.umi.txt",
+         "reads": "example/reads_split/cell_GGATGAGAGGTA_reads.fastq.gz"
+      },
+      "cell_CCCGCCTTGACC": {
+         "barcodes": "example/reads_split/cell_CCCGCCTTGACC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CCCGCCTTGACC.umi.txt",
+         "reads": "example/reads_split/cell_CCCGCCTTGACC_reads.fastq.gz"
+      },
+      "cell_CAGTCAATGGCG": {
+         "barcodes": "example/reads_split/cell_CAGTCAATGGCG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CAGTCAATGGCG.umi.txt",
+         "reads": "example/reads_split/cell_CAGTCAATGGCG_reads.fastq.gz"
+      },
+      "cell_GAAAGTATGCTT": {
+         "barcodes": "example/reads_split/cell_GAAAGTATGCTT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GAAAGTATGCTT.umi.txt",
+         "reads": "example/reads_split/cell_GAAAGTATGCTT_reads.fastq.gz"
+      },
+      "cell_TATATGGTCGGA": {
+         "barcodes": "example/reads_split/cell_TATATGGTCGGA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TATATGGTCGGA.umi.txt",
+         "reads": "example/reads_split/cell_TATATGGTCGGA_reads.fastq.gz"
+      },
+      "cell_TTGGTCGACGTT": {
+         "barcodes": "example/reads_split/cell_TTGGTCGACGTT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TTGGTCGACGTT.umi.txt",
+         "reads": "example/reads_split/cell_TTGGTCGACGTT_reads.fastq.gz"
+      },
+      "cell_GACGTCGGATTT": {
+         "barcodes": "example/reads_split/cell_GACGTCGGATTT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GACGTCGGATTT.umi.txt",
+         "reads": "example/reads_split/cell_GACGTCGGATTT_reads.fastq.gz"
+      },
+      "cell_TAAGGTACTGAG": {
+         "barcodes": "example/reads_split/cell_TAAGGTACTGAG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TAAGGTACTGAG.umi.txt",
+         "reads": "example/reads_split/cell_TAAGGTACTGAG_reads.fastq.gz"
+      },
+      "cell_CCTTGATTCACT": {
+         "barcodes": "example/reads_split/cell_CCTTGATTCACT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CCTTGATTCACT.umi.txt",
+         "reads": "example/reads_split/cell_CCTTGATTCACT_reads.fastq.gz"
+      },
+      "cell_CAAACCTCGAAT": {
+         "barcodes": "example/reads_split/cell_CAAACCTCGAAT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CAAACCTCGAAT.umi.txt",
+         "reads": "example/reads_split/cell_CAAACCTCGAAT_reads.fastq.gz"
+      },
+      "cell_AGACGATGAAGG": {
+         "barcodes": "example/reads_split/cell_AGACGATGAAGG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_AGACGATGAAGG.umi.txt",
+         "reads": "example/reads_split/cell_AGACGATGAAGG_reads.fastq.gz"
+      },
+      "cell_TCGCATGCGTCG": {
+         "barcodes": "example/reads_split/cell_TCGCATGCGTCG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TCGCATGCGTCG.umi.txt",
+         "reads": "example/reads_split/cell_TCGCATGCGTCG_reads.fastq.gz"
+      },
+      "cell_ATACAACATTAT": {
+         "barcodes": "example/reads_split/cell_ATACAACATTAT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_ATACAACATTAT.umi.txt",
+         "reads": "example/reads_split/cell_ATACAACATTAT_reads.fastq.gz"
+      },
+      "cell_CGATATTTTCGA": {
+         "barcodes": "example/reads_split/cell_CGATATTTTCGA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CGATATTTTCGA.umi.txt",
+         "reads": "example/reads_split/cell_CGATATTTTCGA_reads.fastq.gz"
+      },
+      "cell_TTACCAGCGCCA": {
+         "barcodes": "example/reads_split/cell_TTACCAGCGCCA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TTACCAGCGCCA.umi.txt",
+         "reads": "example/reads_split/cell_TTACCAGCGCCA_reads.fastq.gz"
+      },
+      "cell_CACGTGTATGTC": {
+         "barcodes": "example/reads_split/cell_CACGTGTATGTC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CACGTGTATGTC.umi.txt",
+         "reads": "example/reads_split/cell_CACGTGTATGTC_reads.fastq.gz"
+      },
+      "cell_AGATTCTAAGCT": {
+         "barcodes": "example/reads_split/cell_AGATTCTAAGCT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_AGATTCTAAGCT.umi.txt",
+         "reads": "example/reads_split/cell_AGATTCTAAGCT_reads.fastq.gz"
+      },
+      "cell_GTAGATTGCCAC": {
+         "barcodes": "example/reads_split/cell_GTAGATTGCCAC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GTAGATTGCCAC.umi.txt",
+         "reads": "example/reads_split/cell_GTAGATTGCCAC_reads.fastq.gz"
+      },
+      "cell_CCCTTCGTCTGC": {
+         "barcodes": "example/reads_split/cell_CCCTTCGTCTGC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CCCTTCGTCTGC.umi.txt",
+         "reads": "example/reads_split/cell_CCCTTCGTCTGC_reads.fastq.gz"
+      },
+      "cell_TCCACGCGAGTC": {
+         "barcodes": "example/reads_split/cell_TCCACGCGAGTC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TCCACGCGAGTC.umi.txt",
+         "reads": "example/reads_split/cell_TCCACGCGAGTC_reads.fastq.gz"
+      },
+      "cell_CTCGGCTGTGTT": {
+         "barcodes": "example/reads_split/cell_CTCGGCTGTGTT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CTCGGCTGTGTT.umi.txt",
+         "reads": "example/reads_split/cell_CTCGGCTGTGTT_reads.fastq.gz"
+      },
+      "cell_TATCAGGCGGTC": {
+         "barcodes": "example/reads_split/cell_TATCAGGCGGTC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TATCAGGCGGTC.umi.txt",
+         "reads": "example/reads_split/cell_TATCAGGCGGTC_reads.fastq.gz"
+      },
+      "cell_TTTTACGGTATT": {
+         "barcodes": "example/reads_split/cell_TTTTACGGTATT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TTTTACGGTATT.umi.txt",
+         "reads": "example/reads_split/cell_TTTTACGGTATT_reads.fastq.gz"
+      },
+      "cell_GGAGTCCCAGTA": {
+         "barcodes": "example/reads_split/cell_GGAGTCCCAGTA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GGAGTCCCAGTA.umi.txt",
+         "reads": "example/reads_split/cell_GGAGTCCCAGTA_reads.fastq.gz"
+      },
+      "cell_AACTCCTTGGTA": {
+         "barcodes": "example/reads_split/cell_AACTCCTTGGTA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_AACTCCTTGGTA.umi.txt",
+         "reads": "example/reads_split/cell_AACTCCTTGGTA_reads.fastq.gz"
+      },
+      "cell_AAAAAAAAAAAA": {
+         "barcodes": "example/reads_split/cell_AAAAAAAAAAAA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_AAAAAAAAAAAA.umi.txt",
+         "reads": "example/reads_split/cell_AAAAAAAAAAAA_reads.fastq.gz"
+      },
+      "cell_GAAAATGCTAGT": {
+         "barcodes": "example/reads_split/cell_GAAAATGCTAGT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GAAAATGCTAGT.umi.txt",
+         "reads": "example/reads_split/cell_GAAAATGCTAGT_reads.fastq.gz"
+      },
+      "cell_GTCTGAGCACAT": {
+         "barcodes": "example/reads_split/cell_GTCTGAGCACAT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GTCTGAGCACAT.umi.txt",
+         "reads": "example/reads_split/cell_GTCTGAGCACAT_reads.fastq.gz"
+      },
+      "cell_ATCCTAGCCTGT": {
+         "barcodes": "example/reads_split/cell_ATCCTAGCCTGT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_ATCCTAGCCTGT.umi.txt",
+         "reads": "example/reads_split/cell_ATCCTAGCCTGT_reads.fastq.gz"
+      },
+      "cell_TGATGCTGGGCC": {
+         "barcodes": "example/reads_split/cell_TGATGCTGGGCC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TGATGCTGGGCC.umi.txt",
+         "reads": "example/reads_split/cell_TGATGCTGGGCC_reads.fastq.gz"
+      },
+      "cell_TAATCGGTGGCA": {
+         "barcodes": "example/reads_split/cell_TAATCGGTGGCA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TAATCGGTGGCA.umi.txt",
+         "reads": "example/reads_split/cell_TAATCGGTGGCA_reads.fastq.gz"
+      },
+      "cell_TTGAAGAGGAGC": {
+         "barcodes": "example/reads_split/cell_TTGAAGAGGAGC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TTGAAGAGGAGC.umi.txt",
+         "reads": "example/reads_split/cell_TTGAAGAGGAGC_reads.fastq.gz"
+      },
+      "cell_GTAGAGTCCATT": {
+         "barcodes": "example/reads_split/cell_GTAGAGTCCATT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GTAGAGTCCATT.umi.txt",
+         "reads": "example/reads_split/cell_GTAGAGTCCATT_reads.fastq.gz"
+      },
+      "cell_GCGCGCTCACAC": {
+         "barcodes": "example/reads_split/cell_GCGCGCTCACAC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GCGCGCTCACAC.umi.txt",
+         "reads": "example/reads_split/cell_GCGCGCTCACAC_reads.fastq.gz"
+      },
+      "cell_GTTACTGTCGCT": {
+         "barcodes": "example/reads_split/cell_GTTACTGTCGCT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GTTACTGTCGCT.umi.txt",
+         "reads": "example/reads_split/cell_GTTACTGTCGCT_reads.fastq.gz"
+      },
+      "cell_TCAGTTACTGGA": {
+         "barcodes": "example/reads_split/cell_TCAGTTACTGGA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TCAGTTACTGGA.umi.txt",
+         "reads": "example/reads_split/cell_TCAGTTACTGGA_reads.fastq.gz"
+      },
+      "cell_CCAATGCAAGCG": {
+         "barcodes": "example/reads_split/cell_CCAATGCAAGCG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CCAATGCAAGCG.umi.txt",
+         "reads": "example/reads_split/cell_CCAATGCAAGCG_reads.fastq.gz"
+      },
+      "cell_TACCAACCTATG": {
+         "barcodes": "example/reads_split/cell_TACCAACCTATG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TACCAACCTATG.umi.txt",
+         "reads": "example/reads_split/cell_TACCAACCTATG_reads.fastq.gz"
+      },
+      "cell_CTGTAATTGTAC": {
+         "barcodes": "example/reads_split/cell_CTGTAATTGTAC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CTGTAATTGTAC.umi.txt",
+         "reads": "example/reads_split/cell_CTGTAATTGTAC_reads.fastq.gz"
+      },
+      "cell_TTCGGCGAGATC": {
+         "barcodes": "example/reads_split/cell_TTCGGCGAGATC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TTCGGCGAGATC.umi.txt",
+         "reads": "example/reads_split/cell_TTCGGCGAGATC_reads.fastq.gz"
+      },
+      "cell_ATGGGTCATCGC": {
+         "barcodes": "example/reads_split/cell_ATGGGTCATCGC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_ATGGGTCATCGC.umi.txt",
+         "reads": "example/reads_split/cell_ATGGGTCATCGC_reads.fastq.gz"
+      },
+      "cell_TCAAGGCGTGTG": {
+         "barcodes": "example/reads_split/cell_TCAAGGCGTGTG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TCAAGGCGTGTG.umi.txt",
+         "reads": "example/reads_split/cell_TCAAGGCGTGTG_reads.fastq.gz"
+      },
+      "cell_TACGGCGTCACT": {
+         "barcodes": "example/reads_split/cell_TACGGCGTCACT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TACGGCGTCACT.umi.txt",
+         "reads": "example/reads_split/cell_TACGGCGTCACT_reads.fastq.gz"
+      },
+      "cell_CGGCTGGTCCGC": {
+         "barcodes": "example/reads_split/cell_CGGCTGGTCCGC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CGGCTGGTCCGC.umi.txt",
+         "reads": "example/reads_split/cell_CGGCTGGTCCGC_reads.fastq.gz"
+      },
+      "cell_GCTATGAGGTCG": {
+         "barcodes": "example/reads_split/cell_GCTATGAGGTCG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GCTATGAGGTCG.umi.txt",
+         "reads": "example/reads_split/cell_GCTATGAGGTCG_reads.fastq.gz"
+      },
+      "cell_AATCCCTTAGAG": {
+         "barcodes": "example/reads_split/cell_AATCCCTTAGAG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_AATCCCTTAGAG.umi.txt",
+         "reads": "example/reads_split/cell_AATCCCTTAGAG_reads.fastq.gz"
+      },
+      "cell_ACTGAAGCTAAT": {
+         "barcodes": "example/reads_split/cell_ACTGAAGCTAAT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_ACTGAAGCTAAT.umi.txt",
+         "reads": "example/reads_split/cell_ACTGAAGCTAAT_reads.fastq.gz"
+      },
+      "cell_CCCGATTTCCCT": {
+         "barcodes": "example/reads_split/cell_CCCGATTTCCCT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CCCGATTTCCCT.umi.txt",
+         "reads": "example/reads_split/cell_CCCGATTTCCCT_reads.fastq.gz"
+      },
+      "cell_CTGAAAGCTACG": {
+         "barcodes": "example/reads_split/cell_CTGAAAGCTACG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CTGAAAGCTACG.umi.txt",
+         "reads": "example/reads_split/cell_CTGAAAGCTACG_reads.fastq.gz"
+      },
+      "cell_CGTCCCGGCATC": {
+         "barcodes": "example/reads_split/cell_CGTCCCGGCATC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CGTCCCGGCATC.umi.txt",
+         "reads": "example/reads_split/cell_CGTCCCGGCATC_reads.fastq.gz"
+      },
+      "cell_CAGCATAGGCTG": {
+         "barcodes": "example/reads_split/cell_CAGCATAGGCTG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CAGCATAGGCTG.umi.txt",
+         "reads": "example/reads_split/cell_CAGCATAGGCTG_reads.fastq.gz"
+      },
+      "cell_GCTGCCTACGCT": {
+         "barcodes": "example/reads_split/cell_GCTGCCTACGCT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GCTGCCTACGCT.umi.txt",
+         "reads": "example/reads_split/cell_GCTGCCTACGCT_reads.fastq.gz"
+      },
+      "cell_TCTCAACTCCGT": {
+         "barcodes": "example/reads_split/cell_TCTCAACTCCGT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TCTCAACTCCGT.umi.txt",
+         "reads": "example/reads_split/cell_TCTCAACTCCGT_reads.fastq.gz"
+      },
+      "cell_TAACAGCGTGTA": {
+         "barcodes": "example/reads_split/cell_TAACAGCGTGTA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TAACAGCGTGTA.umi.txt",
+         "reads": "example/reads_split/cell_TAACAGCGTGTA_reads.fastq.gz"
+      },
+      "cell_TTGGCCCGTCTC": {
+         "barcodes": "example/reads_split/cell_TTGGCCCGTCTC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TTGGCCCGTCTC.umi.txt",
+         "reads": "example/reads_split/cell_TTGGCCCGTCTC_reads.fastq.gz"
+      },
+      "cell_CTTCGTTAGGTT": {
+         "barcodes": "example/reads_split/cell_CTTCGTTAGGTT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CTTCGTTAGGTT.umi.txt",
+         "reads": "example/reads_split/cell_CTTCGTTAGGTT_reads.fastq.gz"
+      },
+      "cell_ACGATGCTGTCT": {
+         "barcodes": "example/reads_split/cell_ACGATGCTGTCT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_ACGATGCTGTCT.umi.txt",
+         "reads": "example/reads_split/cell_ACGATGCTGTCT_reads.fastq.gz"
+      },
+      "cell_AGGCTTCCCTTA": {
+         "barcodes": "example/reads_split/cell_AGGCTTCCCTTA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_AGGCTTCCCTTA.umi.txt",
+         "reads": "example/reads_split/cell_AGGCTTCCCTTA_reads.fastq.gz"
+      },
+      "cell_ACGACAGTATTC": {
+         "barcodes": "example/reads_split/cell_ACGACAGTATTC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_ACGACAGTATTC.umi.txt",
+         "reads": "example/reads_split/cell_ACGACAGTATTC_reads.fastq.gz"
+      },
+      "cell_GACTTATTGCTG": {
+         "barcodes": "example/reads_split/cell_GACTTATTGCTG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GACTTATTGCTG.umi.txt",
+         "reads": "example/reads_split/cell_GACTTATTGCTG_reads.fastq.gz"
+      },
+      "cell_GCTAGTTGTGCT": {
+         "barcodes": "example/reads_split/cell_GCTAGTTGTGCT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GCTAGTTGTGCT.umi.txt",
+         "reads": "example/reads_split/cell_GCTAGTTGTGCT_reads.fastq.gz"
+      },
+      "cell_AGACCAACTCAA": {
+         "barcodes": "example/reads_split/cell_AGACCAACTCAA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_AGACCAACTCAA.umi.txt",
+         "reads": "example/reads_split/cell_AGACCAACTCAA_reads.fastq.gz"
+      },
+      "cell_ATGAGGCACAGA": {
+         "barcodes": "example/reads_split/cell_ATGAGGCACAGA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_ATGAGGCACAGA.umi.txt",
+         "reads": "example/reads_split/cell_ATGAGGCACAGA_reads.fastq.gz"
+      },
+      "cell_ATCCCTTTGAGC": {
+         "barcodes": "example/reads_split/cell_ATCCCTTTGAGC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_ATCCCTTTGAGC.umi.txt",
+         "reads": "example/reads_split/cell_ATCCCTTTGAGC_reads.fastq.gz"
+      },
+      "cell_GGTTTGAACCCA": {
+         "barcodes": "example/reads_split/cell_GGTTTGAACCCA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GGTTTGAACCCA.umi.txt",
+         "reads": "example/reads_split/cell_GGTTTGAACCCA_reads.fastq.gz"
+      },
+      "cell_GGCAGACTCCGA": {
+         "barcodes": "example/reads_split/cell_GGCAGACTCCGA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GGCAGACTCCGA.umi.txt",
+         "reads": "example/reads_split/cell_GGCAGACTCCGA_reads.fastq.gz"
+      },
+      "cell_GTGGTACCTAGA": {
+         "barcodes": "example/reads_split/cell_GTGGTACCTAGA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GTGGTACCTAGA.umi.txt",
+         "reads": "example/reads_split/cell_GTGGTACCTAGA_reads.fastq.gz"
+      },
+      "cell_TCGGAGGCTATT": {
+         "barcodes": "example/reads_split/cell_TCGGAGGCTATT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TCGGAGGCTATT.umi.txt",
+         "reads": "example/reads_split/cell_TCGGAGGCTATT_reads.fastq.gz"
+      },
+      "cell_GACAACTCATTA": {
+         "barcodes": "example/reads_split/cell_GACAACTCATTA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GACAACTCATTA.umi.txt",
+         "reads": "example/reads_split/cell_GACAACTCATTA_reads.fastq.gz"
+      },
+      "cell_GTCTTACATGCC": {
+         "barcodes": "example/reads_split/cell_GTCTTACATGCC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GTCTTACATGCC.umi.txt",
+         "reads": "example/reads_split/cell_GTCTTACATGCC_reads.fastq.gz"
+      },
+      "cell_GATATTTTTCGA": {
+         "barcodes": "example/reads_split/cell_GATATTTTTCGA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GATATTTTTCGA.umi.txt",
+         "reads": "example/reads_split/cell_GATATTTTTCGA_reads.fastq.gz"
+      },
+      "cell_ACCTCAGTACGC": {
+         "barcodes": "example/reads_split/cell_ACCTCAGTACGC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_ACCTCAGTACGC.umi.txt",
+         "reads": "example/reads_split/cell_ACCTCAGTACGC_reads.fastq.gz"
+      },
+      "cell_TTCTGTACGTCT": {
+         "barcodes": "example/reads_split/cell_TTCTGTACGTCT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TTCTGTACGTCT.umi.txt",
+         "reads": "example/reads_split/cell_TTCTGTACGTCT_reads.fastq.gz"
+      },
+      "cell_ATATAGAAGTTC": {
+         "barcodes": "example/reads_split/cell_ATATAGAAGTTC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_ATATAGAAGTTC.umi.txt",
+         "reads": "example/reads_split/cell_ATATAGAAGTTC_reads.fastq.gz"
+      },
+      "cell_GTCCACGCCGGC": {
+         "barcodes": "example/reads_split/cell_GTCCACGCCGGC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GTCCACGCCGGC.umi.txt",
+         "reads": "example/reads_split/cell_GTCCACGCCGGC_reads.fastq.gz"
+      },
+      "cell_GAGTACACGCCG": {
+         "barcodes": "example/reads_split/cell_GAGTACACGCCG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GAGTACACGCCG.umi.txt",
+         "reads": "example/reads_split/cell_GAGTACACGCCG_reads.fastq.gz"
+      },
+      "cell_CGAGTGTACCCA": {
+         "barcodes": "example/reads_split/cell_CGAGTGTACCCA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CGAGTGTACCCA.umi.txt",
+         "reads": "example/reads_split/cell_CGAGTGTACCCA_reads.fastq.gz"
+      },
+      "cell_CCCGATGCAGCC": {
+         "barcodes": "example/reads_split/cell_CCCGATGCAGCC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CCCGATGCAGCC.umi.txt",
+         "reads": "example/reads_split/cell_CCCGATGCAGCC_reads.fastq.gz"
+      },
+      "cell_GACGTGTGGACA": {
+         "barcodes": "example/reads_split/cell_GACGTGTGGACA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GACGTGTGGACA.umi.txt",
+         "reads": "example/reads_split/cell_GACGTGTGGACA_reads.fastq.gz"
+      },
+      "cell_GCGATGCGATCC": {
+         "barcodes": "example/reads_split/cell_GCGATGCGATCC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GCGATGCGATCC.umi.txt",
+         "reads": "example/reads_split/cell_GCGATGCGATCC_reads.fastq.gz"
+      },
+      "cell_ACTTGCCGGAAT": {
+         "barcodes": "example/reads_split/cell_ACTTGCCGGAAT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_ACTTGCCGGAAT.umi.txt",
+         "reads": "example/reads_split/cell_ACTTGCCGGAAT_reads.fastq.gz"
+      },
+      "cell_TTCCCCCCTAGG": {
+         "barcodes": "example/reads_split/cell_TTCCCCCCTAGG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TTCCCCCCTAGG.umi.txt",
+         "reads": "example/reads_split/cell_TTCCCCCCTAGG_reads.fastq.gz"
+      },
+      "cell_TCTTATCCACAG": {
+         "barcodes": "example/reads_split/cell_TCTTATCCACAG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TCTTATCCACAG.umi.txt",
+         "reads": "example/reads_split/cell_TCTTATCCACAG_reads.fastq.gz"
+      },
+      "cell_CTTAAACACCAG": {
+         "barcodes": "example/reads_split/cell_CTTAAACACCAG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CTTAAACACCAG.umi.txt",
+         "reads": "example/reads_split/cell_CTTAAACACCAG_reads.fastq.gz"
+      },
+      "cell_GCCGAATGGCTG": {
+         "barcodes": "example/reads_split/cell_GCCGAATGGCTG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GCCGAATGGCTG.umi.txt",
+         "reads": "example/reads_split/cell_GCCGAATGGCTG_reads.fastq.gz"
+      },
+      "cell_TCAATTGGCTTC": {
+         "barcodes": "example/reads_split/cell_TCAATTGGCTTC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TCAATTGGCTTC.umi.txt",
+         "reads": "example/reads_split/cell_TCAATTGGCTTC_reads.fastq.gz"
+      },
+      "cell_ATCATAGGTAAG": {
+         "barcodes": "example/reads_split/cell_ATCATAGGTAAG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_ATCATAGGTAAG.umi.txt",
+         "reads": "example/reads_split/cell_ATCATAGGTAAG_reads.fastq.gz"
+      },
+      "cell_GGCCCACTTTAA": {
+         "barcodes": "example/reads_split/cell_GGCCCACTTTAA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GGCCCACTTTAA.umi.txt",
+         "reads": "example/reads_split/cell_GGCCCACTTTAA_reads.fastq.gz"
+      },
+      "cell_CTGTAAATACAT": {
+         "barcodes": "example/reads_split/cell_CTGTAAATACAT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CTGTAAATACAT.umi.txt",
+         "reads": "example/reads_split/cell_CTGTAAATACAT_reads.fastq.gz"
+      },
+      "cell_TGGTTCGAGTGC": {
+         "barcodes": "example/reads_split/cell_TGGTTCGAGTGC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TGGTTCGAGTGC.umi.txt",
+         "reads": "example/reads_split/cell_TGGTTCGAGTGC_reads.fastq.gz"
+      },
+      "cell_CTATTAGGCGTT": {
+         "barcodes": "example/reads_split/cell_CTATTAGGCGTT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CTATTAGGCGTT.umi.txt",
+         "reads": "example/reads_split/cell_CTATTAGGCGTT_reads.fastq.gz"
+      },
+      "cell_ACTAAGTAAGAT": {
+         "barcodes": "example/reads_split/cell_ACTAAGTAAGAT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_ACTAAGTAAGAT.umi.txt",
+         "reads": "example/reads_split/cell_ACTAAGTAAGAT_reads.fastq.gz"
+      },
+      "batch": "example/reads_split/batch.txt",
+      "cell_TGCGTAAGTTGC": {
+         "barcodes": "example/reads_split/cell_TGCGTAAGTTGC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TGCGTAAGTTGC.umi.txt",
+         "reads": "example/reads_split/cell_TGCGTAAGTTGC_reads.fastq.gz"
+      },
+      "cell_CGCCGTGGCGCC": {
+         "barcodes": "example/reads_split/cell_CGCCGTGGCGCC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CGCCGTGGCGCC.umi.txt",
+         "reads": "example/reads_split/cell_CGCCGTGGCGCC_reads.fastq.gz"
+      },
+      "cell_CTTCCTCAGTCT": {
+         "barcodes": "example/reads_split/cell_CTTCCTCAGTCT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CTTCCTCAGTCT.umi.txt",
+         "reads": "example/reads_split/cell_CTTCCTCAGTCT_reads.fastq.gz"
+      },
+      "cell_GATGCTAGGAGA": {
+         "barcodes": "example/reads_split/cell_GATGCTAGGAGA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GATGCTAGGAGA.umi.txt",
+         "reads": "example/reads_split/cell_GATGCTAGGAGA_reads.fastq.gz"
+      },
+      "cell_AATATTTTGAAA": {
+         "barcodes": "example/reads_split/cell_AATATTTTGAAA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_AATATTTTGAAA.umi.txt",
+         "reads": "example/reads_split/cell_AATATTTTGAAA_reads.fastq.gz"
+      },
+      "cell_ATCTATCATATT": {
+         "barcodes": "example/reads_split/cell_ATCTATCATATT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_ATCTATCATATT.umi.txt",
+         "reads": "example/reads_split/cell_ATCTATCATATT_reads.fastq.gz"
+      },
+      "cell_TGTGTGCAAGAT": {
+         "barcodes": "example/reads_split/cell_TGTGTGCAAGAT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TGTGTGCAAGAT.umi.txt",
+         "reads": "example/reads_split/cell_TGTGTGCAAGAT_reads.fastq.gz"
+      },
+      "cell_GGAGGTGCCCTT": {
+         "barcodes": "example/reads_split/cell_GGAGGTGCCCTT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GGAGGTGCCCTT.umi.txt",
+         "reads": "example/reads_split/cell_GGAGGTGCCCTT_reads.fastq.gz"
+      },
+      "cell_CCGCGCTGGCTT": {
+         "barcodes": "example/reads_split/cell_CCGCGCTGGCTT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CCGCGCTGGCTT.umi.txt",
+         "reads": "example/reads_split/cell_CCGCGCTGGCTT_reads.fastq.gz"
+      },
+      "cell_GCCAGTATGGAG": {
+         "barcodes": "example/reads_split/cell_GCCAGTATGGAG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GCCAGTATGGAG.umi.txt",
+         "reads": "example/reads_split/cell_GCCAGTATGGAG_reads.fastq.gz"
+      },
+      "cell_AACTCCCTCTGT": {
+         "barcodes": "example/reads_split/cell_AACTCCCTCTGT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_AACTCCCTCTGT.umi.txt",
+         "reads": "example/reads_split/cell_AACTCCCTCTGT_reads.fastq.gz"
+      },
+      "cell_TCCCACGCTGAA": {
+         "barcodes": "example/reads_split/cell_TCCCACGCTGAA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TCCCACGCTGAA.umi.txt",
+         "reads": "example/reads_split/cell_TCCCACGCTGAA_reads.fastq.gz"
+      },
+      "cell_CCTGATGACGAA": {
+         "barcodes": "example/reads_split/cell_CCTGATGACGAA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CCTGATGACGAA.umi.txt",
+         "reads": "example/reads_split/cell_CCTGATGACGAA_reads.fastq.gz"
+      },
+      "cell_CTAGGCTCACTG": {
+         "barcodes": "example/reads_split/cell_CTAGGCTCACTG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CTAGGCTCACTG.umi.txt",
+         "reads": "example/reads_split/cell_CTAGGCTCACTG_reads.fastq.gz"
+      },
+      "cell_TGAAAGTACTAT": {
+         "barcodes": "example/reads_split/cell_TGAAAGTACTAT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TGAAAGTACTAT.umi.txt",
+         "reads": "example/reads_split/cell_TGAAAGTACTAT_reads.fastq.gz"
+      },
+      "cell_CACACCTGATGT": {
+         "barcodes": "example/reads_split/cell_CACACCTGATGT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CACACCTGATGT.umi.txt",
+         "reads": "example/reads_split/cell_CACACCTGATGT_reads.fastq.gz"
+      },
+      "cell_ATTTAGGTGGCC": {
+         "barcodes": "example/reads_split/cell_ATTTAGGTGGCC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_ATTTAGGTGGCC.umi.txt",
+         "reads": "example/reads_split/cell_ATTTAGGTGGCC_reads.fastq.gz"
+      },
+      "cell_TTCCCCCTAGGA": {
+         "barcodes": "example/reads_split/cell_TTCCCCCTAGGA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TTCCCCCTAGGA.umi.txt",
+         "reads": "example/reads_split/cell_TTCCCCCTAGGA_reads.fastq.gz"
+      },
+      "cell_CCCGTCGATAAC": {
+         "barcodes": "example/reads_split/cell_CCCGTCGATAAC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CCCGTCGATAAC.umi.txt",
+         "reads": "example/reads_split/cell_CCCGTCGATAAC_reads.fastq.gz"
+      },
+      "cell_TTACTTGACTGT": {
+         "barcodes": "example/reads_split/cell_TTACTTGACTGT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TTACTTGACTGT.umi.txt",
+         "reads": "example/reads_split/cell_TTACTTGACTGT_reads.fastq.gz"
+      },
+      "cell_AGCGGAGCTTTA": {
+         "barcodes": "example/reads_split/cell_AGCGGAGCTTTA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_AGCGGAGCTTTA.umi.txt",
+         "reads": "example/reads_split/cell_AGCGGAGCTTTA_reads.fastq.gz"
+      },
+      "cell_AGCTCGGCCCCC": {
+         "barcodes": "example/reads_split/cell_AGCTCGGCCCCC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_AGCTCGGCCCCC.umi.txt",
+         "reads": "example/reads_split/cell_AGCTCGGCCCCC_reads.fastq.gz"
+      },
+      "cell_GTACTTGTACCC": {
+         "barcodes": "example/reads_split/cell_GTACTTGTACCC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GTACTTGTACCC.umi.txt",
+         "reads": "example/reads_split/cell_GTACTTGTACCC_reads.fastq.gz"
+      },
+      "cell_AGTCTATTCTGC": {
+         "barcodes": "example/reads_split/cell_AGTCTATTCTGC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_AGTCTATTCTGC.umi.txt",
+         "reads": "example/reads_split/cell_AGTCTATTCTGC_reads.fastq.gz"
+      },
+      "cell_ATATACCTGTCT": {
+         "barcodes": "example/reads_split/cell_ATATACCTGTCT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_ATATACCTGTCT.umi.txt",
+         "reads": "example/reads_split/cell_ATATACCTGTCT_reads.fastq.gz"
+      },
+      "cell_ACTTCTGATTAT": {
+         "barcodes": "example/reads_split/cell_ACTTCTGATTAT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_ACTTCTGATTAT.umi.txt",
+         "reads": "example/reads_split/cell_ACTTCTGATTAT_reads.fastq.gz"
+      },
+      "cell_TAAAGCTGTCTC": {
+         "barcodes": "example/reads_split/cell_TAAAGCTGTCTC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TAAAGCTGTCTC.umi.txt",
+         "reads": "example/reads_split/cell_TAAAGCTGTCTC_reads.fastq.gz"
+      },
+      "cell_CCGAATGGTCAC": {
+         "barcodes": "example/reads_split/cell_CCGAATGGTCAC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CCGAATGGTCAC.umi.txt",
+         "reads": "example/reads_split/cell_CCGAATGGTCAC_reads.fastq.gz"
+      },
+      "cell_TCATCGATTATG": {
+         "barcodes": "example/reads_split/cell_TCATCGATTATG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TCATCGATTATG.umi.txt",
+         "reads": "example/reads_split/cell_TCATCGATTATG_reads.fastq.gz"
+      },
+      "cell_ACCTAAGTTGCT": {
+         "barcodes": "example/reads_split/cell_ACCTAAGTTGCT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_ACCTAAGTTGCT.umi.txt",
+         "reads": "example/reads_split/cell_ACCTAAGTTGCT_reads.fastq.gz"
+      },
+      "cell_AACCACGGGTAC": {
+         "barcodes": "example/reads_split/cell_AACCACGGGTAC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_AACCACGGGTAC.umi.txt",
+         "reads": "example/reads_split/cell_AACCACGGGTAC_reads.fastq.gz"
+      },
+      "cell_GTGGATCGAAGA": {
+         "barcodes": "example/reads_split/cell_GTGGATCGAAGA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GTGGATCGAAGA.umi.txt",
+         "reads": "example/reads_split/cell_GTGGATCGAAGA_reads.fastq.gz"
+      },
+      "cell_ACCACGAACGAC": {
+         "barcodes": "example/reads_split/cell_ACCACGAACGAC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_ACCACGAACGAC.umi.txt",
+         "reads": "example/reads_split/cell_ACCACGAACGAC_reads.fastq.gz"
+      },
+      "cell_GTCATATCCAAT": {
+         "barcodes": "example/reads_split/cell_GTCATATCCAAT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GTCATATCCAAT.umi.txt",
+         "reads": "example/reads_split/cell_GTCATATCCAAT_reads.fastq.gz"
+      },
+      "cell_AGCCGTCGATGA": {
+         "barcodes": "example/reads_split/cell_AGCCGTCGATGA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_AGCCGTCGATGA.umi.txt",
+         "reads": "example/reads_split/cell_AGCCGTCGATGA_reads.fastq.gz"
+      },
+      "cell_TGACTAGGTGGG": {
+         "barcodes": "example/reads_split/cell_TGACTAGGTGGG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TGACTAGGTGGG.umi.txt",
+         "reads": "example/reads_split/cell_TGACTAGGTGGG_reads.fastq.gz"
+      },
+      "cell_ACCACGTTTGCG": {
+         "barcodes": "example/reads_split/cell_ACCACGTTTGCG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_ACCACGTTTGCG.umi.txt",
+         "reads": "example/reads_split/cell_ACCACGTTTGCG_reads.fastq.gz"
+      },
+      "cell_GCTGTCGGAAGG": {
+         "barcodes": "example/reads_split/cell_GCTGTCGGAAGG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GCTGTCGGAAGG.umi.txt",
+         "reads": "example/reads_split/cell_GCTGTCGGAAGG_reads.fastq.gz"
+      },
+      "cell_CGACAAATTGTT": {
+         "barcodes": "example/reads_split/cell_CGACAAATTGTT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CGACAAATTGTT.umi.txt",
+         "reads": "example/reads_split/cell_CGACAAATTGTT_reads.fastq.gz"
+      },
+      "cell_GAATATAAGATA": {
+         "barcodes": "example/reads_split/cell_GAATATAAGATA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GAATATAAGATA.umi.txt",
+         "reads": "example/reads_split/cell_GAATATAAGATA_reads.fastq.gz"
+      },
+      "cell_TAGCCACGACAT": {
+         "barcodes": "example/reads_split/cell_TAGCCACGACAT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TAGCCACGACAT.umi.txt",
+         "reads": "example/reads_split/cell_TAGCCACGACAT_reads.fastq.gz"
+      },
+      "cell_TCCTAGTGTGAT": {
+         "barcodes": "example/reads_split/cell_TCCTAGTGTGAT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TCCTAGTGTGAT.umi.txt",
+         "reads": "example/reads_split/cell_TCCTAGTGTGAT_reads.fastq.gz"
+      },
+      "cell_AAGGTATATGGC": {
+         "barcodes": "example/reads_split/cell_AAGGTATATGGC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_AAGGTATATGGC.umi.txt",
+         "reads": "example/reads_split/cell_AAGGTATATGGC_reads.fastq.gz"
+      },
+      "cell_GAGTCACTGCAA": {
+         "barcodes": "example/reads_split/cell_GAGTCACTGCAA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GAGTCACTGCAA.umi.txt",
+         "reads": "example/reads_split/cell_GAGTCACTGCAA_reads.fastq.gz"
+      },
+      "cell_TCCCAAATATTT": {
+         "barcodes": "example/reads_split/cell_TCCCAAATATTT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TCCCAAATATTT.umi.txt",
+         "reads": "example/reads_split/cell_TCCCAAATATTT_reads.fastq.gz"
+      },
+      "cell_TGATAAGGACAC": {
+         "barcodes": "example/reads_split/cell_TGATAAGGACAC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TGATAAGGACAC.umi.txt",
+         "reads": "example/reads_split/cell_TGATAAGGACAC_reads.fastq.gz"
+      },
+      "cell_TTAAGCGGCTTT": {
+         "barcodes": "example/reads_split/cell_TTAAGCGGCTTT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TTAAGCGGCTTT.umi.txt",
+         "reads": "example/reads_split/cell_TTAAGCGGCTTT_reads.fastq.gz"
+      },
+      "cell_AGGTGTTGTCGA": {
+         "barcodes": "example/reads_split/cell_AGGTGTTGTCGA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_AGGTGTTGTCGA.umi.txt",
+         "reads": "example/reads_split/cell_AGGTGTTGTCGA_reads.fastq.gz"
+      },
+      "cell_GCGTGGCAGTTG": {
+         "barcodes": "example/reads_split/cell_GCGTGGCAGTTG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GCGTGGCAGTTG.umi.txt",
+         "reads": "example/reads_split/cell_GCGTGGCAGTTG_reads.fastq.gz"
+      },
+      "cell_CGACAGTTGGCT": {
+         "barcodes": "example/reads_split/cell_CGACAGTTGGCT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CGACAGTTGGCT.umi.txt",
+         "reads": "example/reads_split/cell_CGACAGTTGGCT_reads.fastq.gz"
+      },
+      "cell_TTTGGTAGCAAT": {
+         "barcodes": "example/reads_split/cell_TTTGGTAGCAAT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TTTGGTAGCAAT.umi.txt",
+         "reads": "example/reads_split/cell_TTTGGTAGCAAT_reads.fastq.gz"
+      },
+      "cell_TTGGCCAATAGT": {
+         "barcodes": "example/reads_split/cell_TTGGCCAATAGT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TTGGCCAATAGT.umi.txt",
+         "reads": "example/reads_split/cell_TTGGCCAATAGT_reads.fastq.gz"
+      },
+      "cell_GTTAACGCAACG": {
+         "barcodes": "example/reads_split/cell_GTTAACGCAACG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GTTAACGCAACG.umi.txt",
+         "reads": "example/reads_split/cell_GTTAACGCAACG_reads.fastq.gz"
+      },
+      "cell_GCGGGTTGCTGT": {
+         "barcodes": "example/reads_split/cell_GCGGGTTGCTGT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GCGGGTTGCTGT.umi.txt",
+         "reads": "example/reads_split/cell_GCGGGTTGCTGT_reads.fastq.gz"
+      },
+      "cell_CTGCGCGGCGGC": {
+         "barcodes": "example/reads_split/cell_CTGCGCGGCGGC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CTGCGCGGCGGC.umi.txt",
+         "reads": "example/reads_split/cell_CTGCGCGGCGGC_reads.fastq.gz"
+      },
+      "cell_CAGGCGAACAGC": {
+         "barcodes": "example/reads_split/cell_CAGGCGAACAGC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CAGGCGAACAGC.umi.txt",
+         "reads": "example/reads_split/cell_CAGGCGAACAGC_reads.fastq.gz"
+      },
+      "cell_TAGGAAATGACG": {
+         "barcodes": "example/reads_split/cell_TAGGAAATGACG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TAGGAAATGACG.umi.txt",
+         "reads": "example/reads_split/cell_TAGGAAATGACG_reads.fastq.gz"
+      },
+      "cell_AGTTTATAGCAG": {
+         "barcodes": "example/reads_split/cell_AGTTTATAGCAG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_AGTTTATAGCAG.umi.txt",
+         "reads": "example/reads_split/cell_AGTTTATAGCAG_reads.fastq.gz"
+      },
+      "cell_TTATGTGCTTTC": {
+         "barcodes": "example/reads_split/cell_TTATGTGCTTTC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TTATGTGCTTTC.umi.txt",
+         "reads": "example/reads_split/cell_TTATGTGCTTTC_reads.fastq.gz"
+      },
+      "cell_AGTTGGTTCCAA": {
+         "barcodes": "example/reads_split/cell_AGTTGGTTCCAA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_AGTTGGTTCCAA.umi.txt",
+         "reads": "example/reads_split/cell_AGTTGGTTCCAA_reads.fastq.gz"
+      },
+      "cell_TGAGCCAGGGTA": {
+         "barcodes": "example/reads_split/cell_TGAGCCAGGGTA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TGAGCCAGGGTA.umi.txt",
+         "reads": "example/reads_split/cell_TGAGCCAGGGTA_reads.fastq.gz"
+      },
+      "cell_CATACTATCGCC": {
+         "barcodes": "example/reads_split/cell_CATACTATCGCC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CATACTATCGCC.umi.txt",
+         "reads": "example/reads_split/cell_CATACTATCGCC_reads.fastq.gz"
+      },
+      "cell_AACCCGGGACCG": {
+         "barcodes": "example/reads_split/cell_AACCCGGGACCG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_AACCCGGGACCG.umi.txt",
+         "reads": "example/reads_split/cell_AACCCGGGACCG_reads.fastq.gz"
+      },
+      "cell_TCGACCCCTTCA": {
+         "barcodes": "example/reads_split/cell_TCGACCCCTTCA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TCGACCCCTTCA.umi.txt",
+         "reads": "example/reads_split/cell_TCGACCCCTTCA_reads.fastq.gz"
+      },
+      "cell_GAATTGCCAGAC": {
+         "barcodes": "example/reads_split/cell_GAATTGCCAGAC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GAATTGCCAGAC.umi.txt",
+         "reads": "example/reads_split/cell_GAATTGCCAGAC_reads.fastq.gz"
+      },
+      "cell_GTTTCACCGGTC": {
+         "barcodes": "example/reads_split/cell_GTTTCACCGGTC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GTTTCACCGGTC.umi.txt",
+         "reads": "example/reads_split/cell_GTTTCACCGGTC_reads.fastq.gz"
+      },
+      "cell_CCGTCGGACACC": {
+         "barcodes": "example/reads_split/cell_CCGTCGGACACC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CCGTCGGACACC.umi.txt",
+         "reads": "example/reads_split/cell_CCGTCGGACACC_reads.fastq.gz"
+      },
+      "cell_AGAGACTACCCC": {
+         "barcodes": "example/reads_split/cell_AGAGACTACCCC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_AGAGACTACCCC.umi.txt",
+         "reads": "example/reads_split/cell_AGAGACTACCCC_reads.fastq.gz"
+      },
+      "cell_TTCCTCGTCTGA": {
+         "barcodes": "example/reads_split/cell_TTCCTCGTCTGA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TTCCTCGTCTGA.umi.txt",
+         "reads": "example/reads_split/cell_TTCCTCGTCTGA_reads.fastq.gz"
+      },
+      "cell_GGGACACTTCTC": {
+         "barcodes": "example/reads_split/cell_GGGACACTTCTC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GGGACACTTCTC.umi.txt",
+         "reads": "example/reads_split/cell_GGGACACTTCTC_reads.fastq.gz"
+      },
+      "cell_GGTTGGCATGGT": {
+         "barcodes": "example/reads_split/cell_GGTTGGCATGGT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GGTTGGCATGGT.umi.txt",
+         "reads": "example/reads_split/cell_GGTTGGCATGGT_reads.fastq.gz"
+      },
+      "cell_GAGCTCCTCCCA": {
+         "barcodes": "example/reads_split/cell_GAGCTCCTCCCA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GAGCTCCTCCCA.umi.txt",
+         "reads": "example/reads_split/cell_GAGCTCCTCCCA_reads.fastq.gz"
+      },
+      "cell_ATAAGGTATCTT": {
+         "barcodes": "example/reads_split/cell_ATAAGGTATCTT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_ATAAGGTATCTT.umi.txt",
+         "reads": "example/reads_split/cell_ATAAGGTATCTT_reads.fastq.gz"
+      },
+      "cell_ACGAGCGCTTAA": {
+         "barcodes": "example/reads_split/cell_ACGAGCGCTTAA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_ACGAGCGCTTAA.umi.txt",
+         "reads": "example/reads_split/cell_ACGAGCGCTTAA_reads.fastq.gz"
+      },
+      "cell_AATTGCTTCTCA": {
+         "barcodes": "example/reads_split/cell_AATTGCTTCTCA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_AATTGCTTCTCA.umi.txt",
+         "reads": "example/reads_split/cell_AATTGCTTCTCA_reads.fastq.gz"
+      },
+      "cell_CGTCTATGTTTG": {
+         "barcodes": "example/reads_split/cell_CGTCTATGTTTG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CGTCTATGTTTG.umi.txt",
+         "reads": "example/reads_split/cell_CGTCTATGTTTG_reads.fastq.gz"
+      },
+      "cell_GATTCTTCGAAG": {
+         "barcodes": "example/reads_split/cell_GATTCTTCGAAG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GATTCTTCGAAG.umi.txt",
+         "reads": "example/reads_split/cell_GATTCTTCGAAG_reads.fastq.gz"
+      },
+      "cell_GATGCGACGGTC": {
+         "barcodes": "example/reads_split/cell_GATGCGACGGTC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GATGCGACGGTC.umi.txt",
+         "reads": "example/reads_split/cell_GATGCGACGGTC_reads.fastq.gz"
+      },
+      "cell_GCGATGTCGACG": {
+         "barcodes": "example/reads_split/cell_GCGATGTCGACG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GCGATGTCGACG.umi.txt",
+         "reads": "example/reads_split/cell_GCGATGTCGACG_reads.fastq.gz"
+      },
+      "cell_CGGTAACTAAGC": {
+         "barcodes": "example/reads_split/cell_CGGTAACTAAGC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CGGTAACTAAGC.umi.txt",
+         "reads": "example/reads_split/cell_CGGTAACTAAGC_reads.fastq.gz"
+      },
+      "cell_TACTACCGGAGA": {
+         "barcodes": "example/reads_split/cell_TACTACCGGAGA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TACTACCGGAGA.umi.txt",
+         "reads": "example/reads_split/cell_TACTACCGGAGA_reads.fastq.gz"
+      },
+      "cell_AGACGCGTCGGG": {
+         "barcodes": "example/reads_split/cell_AGACGCGTCGGG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_AGACGCGTCGGG.umi.txt",
+         "reads": "example/reads_split/cell_AGACGCGTCGGG_reads.fastq.gz"
+      },
+      "cell_AGCTATGTGCAG": {
+         "barcodes": "example/reads_split/cell_AGCTATGTGCAG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_AGCTATGTGCAG.umi.txt",
+         "reads": "example/reads_split/cell_AGCTATGTGCAG_reads.fastq.gz"
+      },
+      "cell_GGCTCGATGCAT": {
+         "barcodes": "example/reads_split/cell_GGCTCGATGCAT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GGCTCGATGCAT.umi.txt",
+         "reads": "example/reads_split/cell_GGCTCGATGCAT_reads.fastq.gz"
+      },
+      "cell_TGTCCTGAGCCA": {
+         "barcodes": "example/reads_split/cell_TGTCCTGAGCCA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TGTCCTGAGCCA.umi.txt",
+         "reads": "example/reads_split/cell_TGTCCTGAGCCA_reads.fastq.gz"
+      },
+      "cell_CAGCCCGTTTTT": {
+         "barcodes": "example/reads_split/cell_CAGCCCGTTTTT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CAGCCCGTTTTT.umi.txt",
+         "reads": "example/reads_split/cell_CAGCCCGTTTTT_reads.fastq.gz"
+      },
+      "cell_GACGGCTATTCC": {
+         "barcodes": "example/reads_split/cell_GACGGCTATTCC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GACGGCTATTCC.umi.txt",
+         "reads": "example/reads_split/cell_GACGGCTATTCC_reads.fastq.gz"
+      },
+      "cell_GGGAATTGTAAA": {
+         "barcodes": "example/reads_split/cell_GGGAATTGTAAA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GGGAATTGTAAA.umi.txt",
+         "reads": "example/reads_split/cell_GGGAATTGTAAA_reads.fastq.gz"
+      },
+      "cell_ACCTTCTCGAAC": {
+         "barcodes": "example/reads_split/cell_ACCTTCTCGAAC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_ACCTTCTCGAAC.umi.txt",
+         "reads": "example/reads_split/cell_ACCTTCTCGAAC_reads.fastq.gz"
+      },
+      "cell_TGTTGTGTGGCA": {
+         "barcodes": "example/reads_split/cell_TGTTGTGTGGCA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TGTTGTGTGGCA.umi.txt",
+         "reads": "example/reads_split/cell_TGTTGTGTGGCA_reads.fastq.gz"
+      },
+      "cell_ACACCGCGACAA": {
+         "barcodes": "example/reads_split/cell_ACACCGCGACAA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_ACACCGCGACAA.umi.txt",
+         "reads": "example/reads_split/cell_ACACCGCGACAA_reads.fastq.gz"
+      },
+      "cell_CGATATATGTGG": {
+         "barcodes": "example/reads_split/cell_CGATATATGTGG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CGATATATGTGG.umi.txt",
+         "reads": "example/reads_split/cell_CGATATATGTGG_reads.fastq.gz"
+      },
+      "cell_GTTCAACCCCGG": {
+         "barcodes": "example/reads_split/cell_GTTCAACCCCGG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GTTCAACCCCGG.umi.txt",
+         "reads": "example/reads_split/cell_GTTCAACCCCGG_reads.fastq.gz"
+      },
+      "cell_GCCAACTGGGCC": {
+         "barcodes": "example/reads_split/cell_GCCAACTGGGCC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GCCAACTGGGCC.umi.txt",
+         "reads": "example/reads_split/cell_GCCAACTGGGCC_reads.fastq.gz"
+      },
+      "cell_TATATTATAGAA": {
+         "barcodes": "example/reads_split/cell_TATATTATAGAA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TATATTATAGAA.umi.txt",
+         "reads": "example/reads_split/cell_TATATTATAGAA_reads.fastq.gz"
+      },
+      "cell_AACTGGCTAAAC": {
+         "barcodes": "example/reads_split/cell_AACTGGCTAAAC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_AACTGGCTAAAC.umi.txt",
+         "reads": "example/reads_split/cell_AACTGGCTAAAC_reads.fastq.gz"
+      },
+      "cell_CTGGCTAGTCGC": {
+         "barcodes": "example/reads_split/cell_CTGGCTAGTCGC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CTGGCTAGTCGC.umi.txt",
+         "reads": "example/reads_split/cell_CTGGCTAGTCGC_reads.fastq.gz"
+      },
+      "cell_AGTACTCCTAGG": {
+         "barcodes": "example/reads_split/cell_AGTACTCCTAGG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_AGTACTCCTAGG.umi.txt",
+         "reads": "example/reads_split/cell_AGTACTCCTAGG_reads.fastq.gz"
+      },
+      "cell_TAGCATCCCACA": {
+         "barcodes": "example/reads_split/cell_TAGCATCCCACA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TAGCATCCCACA.umi.txt",
+         "reads": "example/reads_split/cell_TAGCATCCCACA_reads.fastq.gz"
+      },
+      "cell_CCGTCAGCTCTA": {
+         "barcodes": "example/reads_split/cell_CCGTCAGCTCTA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CCGTCAGCTCTA.umi.txt",
+         "reads": "example/reads_split/cell_CCGTCAGCTCTA_reads.fastq.gz"
+      },
+      "cell_GCATGAAACTTC": {
+         "barcodes": "example/reads_split/cell_GCATGAAACTTC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GCATGAAACTTC.umi.txt",
+         "reads": "example/reads_split/cell_GCATGAAACTTC_reads.fastq.gz"
+      },
+      "cell_TCCGAAATCACA": {
+         "barcodes": "example/reads_split/cell_TCCGAAATCACA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TCCGAAATCACA.umi.txt",
+         "reads": "example/reads_split/cell_TCCGAAATCACA_reads.fastq.gz"
+      },
+      "cell_TCCTGTCTCTTA": {
+         "barcodes": "example/reads_split/cell_TCCTGTCTCTTA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TCCTGTCTCTTA.umi.txt",
+         "reads": "example/reads_split/cell_TCCTGTCTCTTA_reads.fastq.gz"
+      },
+      "cell_AGCCCTCCCCAG": {
+         "barcodes": "example/reads_split/cell_AGCCCTCCCCAG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_AGCCCTCCCCAG.umi.txt",
+         "reads": "example/reads_split/cell_AGCCCTCCCCAG_reads.fastq.gz"
+      },
+      "cell_AATAACAGTAAG": {
+         "barcodes": "example/reads_split/cell_AATAACAGTAAG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_AATAACAGTAAG.umi.txt",
+         "reads": "example/reads_split/cell_AATAACAGTAAG_reads.fastq.gz"
+      },
+      "cell_AACCAAGGCCAT": {
+         "barcodes": "example/reads_split/cell_AACCAAGGCCAT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_AACCAAGGCCAT.umi.txt",
+         "reads": "example/reads_split/cell_AACCAAGGCCAT_reads.fastq.gz"
+      },
+      "cell_AAGACTGCTTCC": {
+         "barcodes": "example/reads_split/cell_AAGACTGCTTCC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_AAGACTGCTTCC.umi.txt",
+         "reads": "example/reads_split/cell_AAGACTGCTTCC_reads.fastq.gz"
+      },
+      "cell_ACGCAATTTAGA": {
+         "barcodes": "example/reads_split/cell_ACGCAATTTAGA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_ACGCAATTTAGA.umi.txt",
+         "reads": "example/reads_split/cell_ACGCAATTTAGA_reads.fastq.gz"
+      },
+      "cell_AGTACCTGTCTC": {
+         "barcodes": "example/reads_split/cell_AGTACCTGTCTC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_AGTACCTGTCTC.umi.txt",
+         "reads": "example/reads_split/cell_AGTACCTGTCTC_reads.fastq.gz"
+      },
+      "cell_TATTTGTTACTG": {
+         "barcodes": "example/reads_split/cell_TATTTGTTACTG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TATTTGTTACTG.umi.txt",
+         "reads": "example/reads_split/cell_TATTTGTTACTG_reads.fastq.gz"
+      },
+      "cell_ATCAGTTTACCG": {
+         "barcodes": "example/reads_split/cell_ATCAGTTTACCG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_ATCAGTTTACCG.umi.txt",
+         "reads": "example/reads_split/cell_ATCAGTTTACCG_reads.fastq.gz"
+      },
+      "cell_GTCGCATTCTTT": {
+         "barcodes": "example/reads_split/cell_GTCGCATTCTTT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GTCGCATTCTTT.umi.txt",
+         "reads": "example/reads_split/cell_GTCGCATTCTTT_reads.fastq.gz"
+      },
+      "cell_TTCTCGTCTAAG": {
+         "barcodes": "example/reads_split/cell_TTCTCGTCTAAG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TTCTCGTCTAAG.umi.txt",
+         "reads": "example/reads_split/cell_TTCTCGTCTAAG_reads.fastq.gz"
+      },
+      "cell_ACAGGCTTGGTT": {
+         "barcodes": "example/reads_split/cell_ACAGGCTTGGTT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_ACAGGCTTGGTT.umi.txt",
+         "reads": "example/reads_split/cell_ACAGGCTTGGTT_reads.fastq.gz"
+      },
+      "cell_ATTCGTAGCGAC": {
+         "barcodes": "example/reads_split/cell_ATTCGTAGCGAC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_ATTCGTAGCGAC.umi.txt",
+         "reads": "example/reads_split/cell_ATTCGTAGCGAC_reads.fastq.gz"
+      },
+      "cell_ACTCAGTAGATA": {
+         "barcodes": "example/reads_split/cell_ACTCAGTAGATA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_ACTCAGTAGATA.umi.txt",
+         "reads": "example/reads_split/cell_ACTCAGTAGATA_reads.fastq.gz"
+      },
+      "cell_AATCTGCTTTTC": {
+         "barcodes": "example/reads_split/cell_AATCTGCTTTTC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_AATCTGCTTTTC.umi.txt",
+         "reads": "example/reads_split/cell_AATCTGCTTTTC_reads.fastq.gz"
+      },
+      "cell_TCACGCAGCTAC": {
+         "barcodes": "example/reads_split/cell_TCACGCAGCTAC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TCACGCAGCTAC.umi.txt",
+         "reads": "example/reads_split/cell_TCACGCAGCTAC_reads.fastq.gz"
+      },
+      "cell_TACTGTGTGCAC": {
+         "barcodes": "example/reads_split/cell_TACTGTGTGCAC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TACTGTGTGCAC.umi.txt",
+         "reads": "example/reads_split/cell_TACTGTGTGCAC_reads.fastq.gz"
+      },
+      "cell_TTTTAGCTGATA": {
+         "barcodes": "example/reads_split/cell_TTTTAGCTGATA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TTTTAGCTGATA.umi.txt",
+         "reads": "example/reads_split/cell_TTTTAGCTGATA_reads.fastq.gz"
+      },
+      "cell_TTAGCTTGCCGA": {
+         "barcodes": "example/reads_split/cell_TTAGCTTGCCGA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TTAGCTTGCCGA.umi.txt",
+         "reads": "example/reads_split/cell_TTAGCTTGCCGA_reads.fastq.gz"
+      },
+      "cell_TGTGGTTGAACG": {
+         "barcodes": "example/reads_split/cell_TGTGGTTGAACG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TGTGGTTGAACG.umi.txt",
+         "reads": "example/reads_split/cell_TGTGGTTGAACG_reads.fastq.gz"
+      },
+      "cell_ACTGAATTCTTG": {
+         "barcodes": "example/reads_split/cell_ACTGAATTCTTG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_ACTGAATTCTTG.umi.txt",
+         "reads": "example/reads_split/cell_ACTGAATTCTTG_reads.fastq.gz"
+      },
+      "cell_TTGGAGACGGTA": {
+         "barcodes": "example/reads_split/cell_TTGGAGACGGTA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TTGGAGACGGTA.umi.txt",
+         "reads": "example/reads_split/cell_TTGGAGACGGTA_reads.fastq.gz"
+      },
+      "cell_TGCGTTCCACAT": {
+         "barcodes": "example/reads_split/cell_TGCGTTCCACAT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TGCGTTCCACAT.umi.txt",
+         "reads": "example/reads_split/cell_TGCGTTCCACAT_reads.fastq.gz"
+      },
+      "cell_AGTTCCATCCGC": {
+         "barcodes": "example/reads_split/cell_AGTTCCATCCGC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_AGTTCCATCCGC.umi.txt",
+         "reads": "example/reads_split/cell_AGTTCCATCCGC_reads.fastq.gz"
+      },
+      "cell_TTCGCGTGAACA": {
+         "barcodes": "example/reads_split/cell_TTCGCGTGAACA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TTCGCGTGAACA.umi.txt",
+         "reads": "example/reads_split/cell_TTCGCGTGAACA_reads.fastq.gz"
+      },
+      "cell_ACCAGCTCGCAA": {
+         "barcodes": "example/reads_split/cell_ACCAGCTCGCAA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_ACCAGCTCGCAA.umi.txt",
+         "reads": "example/reads_split/cell_ACCAGCTCGCAA_reads.fastq.gz"
+      },
+      "cell_TCCAGCAGACGT": {
+         "barcodes": "example/reads_split/cell_TCCAGCAGACGT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TCCAGCAGACGT.umi.txt",
+         "reads": "example/reads_split/cell_TCCAGCAGACGT_reads.fastq.gz"
+      },
+      "cell_TATCAGTGGAGA": {
+         "barcodes": "example/reads_split/cell_TATCAGTGGAGA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TATCAGTGGAGA.umi.txt",
+         "reads": "example/reads_split/cell_TATCAGTGGAGA_reads.fastq.gz"
+      },
+      "cell_GAACTCATCGCT": {
+         "barcodes": "example/reads_split/cell_GAACTCATCGCT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GAACTCATCGCT.umi.txt",
+         "reads": "example/reads_split/cell_GAACTCATCGCT_reads.fastq.gz"
+      },
+      "cell_TGAGAAAGTCTT": {
+         "barcodes": "example/reads_split/cell_TGAGAAAGTCTT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TGAGAAAGTCTT.umi.txt",
+         "reads": "example/reads_split/cell_TGAGAAAGTCTT_reads.fastq.gz"
+      },
+      "cell_CGCGATACCACA": {
+         "barcodes": "example/reads_split/cell_CGCGATACCACA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CGCGATACCACA.umi.txt",
+         "reads": "example/reads_split/cell_CGCGATACCACA_reads.fastq.gz"
+      },
+      "cell_AAGGTTTCGGAA": {
+         "barcodes": "example/reads_split/cell_AAGGTTTCGGAA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_AAGGTTTCGGAA.umi.txt",
+         "reads": "example/reads_split/cell_AAGGTTTCGGAA_reads.fastq.gz"
+      },
+      "cell_TGCTGTTCTCGT": {
+         "barcodes": "example/reads_split/cell_TGCTGTTCTCGT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TGCTGTTCTCGT.umi.txt",
+         "reads": "example/reads_split/cell_TGCTGTTCTCGT_reads.fastq.gz"
+      },
+      "cell_GTGAGCGTTATA": {
+         "barcodes": "example/reads_split/cell_GTGAGCGTTATA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GTGAGCGTTATA.umi.txt",
+         "reads": "example/reads_split/cell_GTGAGCGTTATA_reads.fastq.gz"
+      },
+      "cell_TCAGCTCTTATT": {
+         "barcodes": "example/reads_split/cell_TCAGCTCTTATT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TCAGCTCTTATT.umi.txt",
+         "reads": "example/reads_split/cell_TCAGCTCTTATT_reads.fastq.gz"
+      },
+      "cell_TTCTTATCGTCA": {
+         "barcodes": "example/reads_split/cell_TTCTTATCGTCA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TTCTTATCGTCA.umi.txt",
+         "reads": "example/reads_split/cell_TTCTTATCGTCA_reads.fastq.gz"
+      },
+      "cell_CATCTACCTGCG": {
+         "barcodes": "example/reads_split/cell_CATCTACCTGCG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CATCTACCTGCG.umi.txt",
+         "reads": "example/reads_split/cell_CATCTACCTGCG_reads.fastq.gz"
+      },
+      "cell_GTCGCTCGGCCG": {
+         "barcodes": "example/reads_split/cell_GTCGCTCGGCCG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GTCGCTCGGCCG.umi.txt",
+         "reads": "example/reads_split/cell_GTCGCTCGGCCG_reads.fastq.gz"
+      },
+      "cell_AGGTGCAGCGTT": {
+         "barcodes": "example/reads_split/cell_AGGTGCAGCGTT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_AGGTGCAGCGTT.umi.txt",
+         "reads": "example/reads_split/cell_AGGTGCAGCGTT_reads.fastq.gz"
+      },
+      "cell_CTTGCCTGAATA": {
+         "barcodes": "example/reads_split/cell_CTTGCCTGAATA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CTTGCCTGAATA.umi.txt",
+         "reads": "example/reads_split/cell_CTTGCCTGAATA_reads.fastq.gz"
+      },
+      "cell_ATCCGGCTCGAC": {
+         "barcodes": "example/reads_split/cell_ATCCGGCTCGAC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_ATCCGGCTCGAC.umi.txt",
+         "reads": "example/reads_split/cell_ATCCGGCTCGAC_reads.fastq.gz"
+      },
+      "cell_AAGCGATCGATA": {
+         "barcodes": "example/reads_split/cell_AAGCGATCGATA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_AAGCGATCGATA.umi.txt",
+         "reads": "example/reads_split/cell_AAGCGATCGATA_reads.fastq.gz"
+      },
+      "cell_GGAGTTGCGGGG": {
+         "barcodes": "example/reads_split/cell_GGAGTTGCGGGG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GGAGTTGCGGGG.umi.txt",
+         "reads": "example/reads_split/cell_GGAGTTGCGGGG_reads.fastq.gz"
+      },
+      "cell_AGTTCGTTTAGC": {
+         "barcodes": "example/reads_split/cell_AGTTCGTTTAGC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_AGTTCGTTTAGC.umi.txt",
+         "reads": "example/reads_split/cell_AGTTCGTTTAGC_reads.fastq.gz"
+      },
+      "cell_CGCAAGGATTTG": {
+         "barcodes": "example/reads_split/cell_CGCAAGGATTTG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CGCAAGGATTTG.umi.txt",
+         "reads": "example/reads_split/cell_CGCAAGGATTTG_reads.fastq.gz"
+      },
+      "cell_CTTCGACCTCAT": {
+         "barcodes": "example/reads_split/cell_CTTCGACCTCAT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CTTCGACCTCAT.umi.txt",
+         "reads": "example/reads_split/cell_CTTCGACCTCAT_reads.fastq.gz"
+      },
+      "cell_GAATATATCCTC": {
+         "barcodes": "example/reads_split/cell_GAATATATCCTC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GAATATATCCTC.umi.txt",
+         "reads": "example/reads_split/cell_GAATATATCCTC_reads.fastq.gz"
+      },
+      "cell_GGCAACTATCAA": {
+         "barcodes": "example/reads_split/cell_GGCAACTATCAA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GGCAACTATCAA.umi.txt",
+         "reads": "example/reads_split/cell_GGCAACTATCAA_reads.fastq.gz"
+      },
+      "cell_CGCACCTCGGAA": {
+         "barcodes": "example/reads_split/cell_CGCACCTCGGAA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CGCACCTCGGAA.umi.txt",
+         "reads": "example/reads_split/cell_CGCACCTCGGAA_reads.fastq.gz"
+      },
+      "cell_CATAACCTAGTC": {
+         "barcodes": "example/reads_split/cell_CATAACCTAGTC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CATAACCTAGTC.umi.txt",
+         "reads": "example/reads_split/cell_CATAACCTAGTC_reads.fastq.gz"
+      },
+      "cell_CCCGAAGCGCGG": {
+         "barcodes": "example/reads_split/cell_CCCGAAGCGCGG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CCCGAAGCGCGG.umi.txt",
+         "reads": "example/reads_split/cell_CCCGAAGCGCGG_reads.fastq.gz"
+      },
+      "cell_ATATGACAGCAT": {
+         "barcodes": "example/reads_split/cell_ATATGACAGCAT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_ATATGACAGCAT.umi.txt",
+         "reads": "example/reads_split/cell_ATATGACAGCAT_reads.fastq.gz"
+      },
+      "cell_GGCCCGATTGCA": {
+         "barcodes": "example/reads_split/cell_GGCCCGATTGCA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GGCCCGATTGCA.umi.txt",
+         "reads": "example/reads_split/cell_GGCCCGATTGCA_reads.fastq.gz"
+      },
+      "cell_CCAGTTTCCATC": {
+         "barcodes": "example/reads_split/cell_CCAGTTTCCATC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CCAGTTTCCATC.umi.txt",
+         "reads": "example/reads_split/cell_CCAGTTTCCATC_reads.fastq.gz"
+      },
+      "cell_CCTATTGTGGGA": {
+         "barcodes": "example/reads_split/cell_CCTATTGTGGGA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CCTATTGTGGGA.umi.txt",
+         "reads": "example/reads_split/cell_CCTATTGTGGGA_reads.fastq.gz"
+      },
+      "cell_AGTCCGAGAGTG": {
+         "barcodes": "example/reads_split/cell_AGTCCGAGAGTG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_AGTCCGAGAGTG.umi.txt",
+         "reads": "example/reads_split/cell_AGTCCGAGAGTG_reads.fastq.gz"
+      },
+      "cell_TTCCAAAGTGGC": {
+         "barcodes": "example/reads_split/cell_TTCCAAAGTGGC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TTCCAAAGTGGC.umi.txt",
+         "reads": "example/reads_split/cell_TTCCAAAGTGGC_reads.fastq.gz"
+      },
+      "cell_TGTTATTCCGTC": {
+         "barcodes": "example/reads_split/cell_TGTTATTCCGTC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TGTTATTCCGTC.umi.txt",
+         "reads": "example/reads_split/cell_TGTTATTCCGTC_reads.fastq.gz"
+      },
+      "cell_ATTAAAATTAGT": {
+         "barcodes": "example/reads_split/cell_ATTAAAATTAGT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_ATTAAAATTAGT.umi.txt",
+         "reads": "example/reads_split/cell_ATTAAAATTAGT_reads.fastq.gz"
+      },
+      "cell_ATTATAACAAGG": {
+         "barcodes": "example/reads_split/cell_ATTATAACAAGG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_ATTATAACAAGG.umi.txt",
+         "reads": "example/reads_split/cell_ATTATAACAAGG_reads.fastq.gz"
+      },
+      "cell_GGTTTCATATTT": {
+         "barcodes": "example/reads_split/cell_GGTTTCATATTT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GGTTTCATATTT.umi.txt",
+         "reads": "example/reads_split/cell_GGTTTCATATTT_reads.fastq.gz"
+      },
+      "cell_TGATTGATAGAT": {
+         "barcodes": "example/reads_split/cell_TGATTGATAGAT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TGATTGATAGAT.umi.txt",
+         "reads": "example/reads_split/cell_TGATTGATAGAT_reads.fastq.gz"
+      },
+      "cell_CAGAGTTATAGG": {
+         "barcodes": "example/reads_split/cell_CAGAGTTATAGG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CAGAGTTATAGG.umi.txt",
+         "reads": "example/reads_split/cell_CAGAGTTATAGG_reads.fastq.gz"
+      },
+      "cell_CCACCGGGCCCG": {
+         "barcodes": "example/reads_split/cell_CCACCGGGCCCG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CCACCGGGCCCG.umi.txt",
+         "reads": "example/reads_split/cell_CCACCGGGCCCG_reads.fastq.gz"
+      },
+      "cell_TTGGAGCACCTT": {
+         "barcodes": "example/reads_split/cell_TTGGAGCACCTT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TTGGAGCACCTT.umi.txt",
+         "reads": "example/reads_split/cell_TTGGAGCACCTT_reads.fastq.gz"
+      },
+      "cell_AACCCTCTGTCA": {
+         "barcodes": "example/reads_split/cell_AACCCTCTGTCA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_AACCCTCTGTCA.umi.txt",
+         "reads": "example/reads_split/cell_AACCCTCTGTCA_reads.fastq.gz"
+      },
+      "cell_CTCCGGAATAAC": {
+         "barcodes": "example/reads_split/cell_CTCCGGAATAAC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CTCCGGAATAAC.umi.txt",
+         "reads": "example/reads_split/cell_CTCCGGAATAAC_reads.fastq.gz"
+      },
+      "cell_ATAAGTGTCGGA": {
+         "barcodes": "example/reads_split/cell_ATAAGTGTCGGA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_ATAAGTGTCGGA.umi.txt",
+         "reads": "example/reads_split/cell_ATAAGTGTCGGA_reads.fastq.gz"
+      },
+      "cell_GTACAACGATAC": {
+         "barcodes": "example/reads_split/cell_GTACAACGATAC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GTACAACGATAC.umi.txt",
+         "reads": "example/reads_split/cell_GTACAACGATAC_reads.fastq.gz"
+      },
+      "cell_TGATGGAATAGA": {
+         "barcodes": "example/reads_split/cell_TGATGGAATAGA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TGATGGAATAGA.umi.txt",
+         "reads": "example/reads_split/cell_TGATGGAATAGA_reads.fastq.gz"
+      },
+      "cell_GACGCACCTGAG": {
+         "barcodes": "example/reads_split/cell_GACGCACCTGAG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GACGCACCTGAG.umi.txt",
+         "reads": "example/reads_split/cell_GACGCACCTGAG_reads.fastq.gz"
+      },
+      "cell_GATACAACGCCA": {
+         "barcodes": "example/reads_split/cell_GATACAACGCCA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GATACAACGCCA.umi.txt",
+         "reads": "example/reads_split/cell_GATACAACGCCA_reads.fastq.gz"
+      },
+      "cell_AAACCTCTGCTG": {
+         "barcodes": "example/reads_split/cell_AAACCTCTGCTG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_AAACCTCTGCTG.umi.txt",
+         "reads": "example/reads_split/cell_AAACCTCTGCTG_reads.fastq.gz"
+      },
+      "cell_CATATACTCTTA": {
+         "barcodes": "example/reads_split/cell_CATATACTCTTA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CATATACTCTTA.umi.txt",
+         "reads": "example/reads_split/cell_CATATACTCTTA_reads.fastq.gz"
+      },
+      "cell_CCTTTCAACGTT": {
+         "barcodes": "example/reads_split/cell_CCTTTCAACGTT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CCTTTCAACGTT.umi.txt",
+         "reads": "example/reads_split/cell_CCTTTCAACGTT_reads.fastq.gz"
+      },
+      "cell_AAAATGCTCACT": {
+         "barcodes": "example/reads_split/cell_AAAATGCTCACT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_AAAATGCTCACT.umi.txt",
+         "reads": "example/reads_split/cell_AAAATGCTCACT_reads.fastq.gz"
+      },
+      "cell_ATAGTATCTGTC": {
+         "barcodes": "example/reads_split/cell_ATAGTATCTGTC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_ATAGTATCTGTC.umi.txt",
+         "reads": "example/reads_split/cell_ATAGTATCTGTC_reads.fastq.gz"
+      },
+      "cell_CTGCAGCTAGAA": {
+         "barcodes": "example/reads_split/cell_CTGCAGCTAGAA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CTGCAGCTAGAA.umi.txt",
+         "reads": "example/reads_split/cell_CTGCAGCTAGAA_reads.fastq.gz"
+      },
+      "cell_GTTTGTGCAAAC": {
+         "barcodes": "example/reads_split/cell_GTTTGTGCAAAC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GTTTGTGCAAAC.umi.txt",
+         "reads": "example/reads_split/cell_GTTTGTGCAAAC_reads.fastq.gz"
+      },
+      "cell_TTCCAAGGGACA": {
+         "barcodes": "example/reads_split/cell_TTCCAAGGGACA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TTCCAAGGGACA.umi.txt",
+         "reads": "example/reads_split/cell_TTCCAAGGGACA_reads.fastq.gz"
+      },
+      "cell_ACGGCCTCTATG": {
+         "barcodes": "example/reads_split/cell_ACGGCCTCTATG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_ACGGCCTCTATG.umi.txt",
+         "reads": "example/reads_split/cell_ACGGCCTCTATG_reads.fastq.gz"
+      },
+      "cell_GATCACATGGGT": {
+         "barcodes": "example/reads_split/cell_GATCACATGGGT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GATCACATGGGT.umi.txt",
+         "reads": "example/reads_split/cell_GATCACATGGGT_reads.fastq.gz"
+      },
+      "cell_ATAGTATAGACC": {
+         "barcodes": "example/reads_split/cell_ATAGTATAGACC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_ATAGTATAGACC.umi.txt",
+         "reads": "example/reads_split/cell_ATAGTATAGACC_reads.fastq.gz"
+      },
+      "cell_ATGAAGACCATT": {
+         "barcodes": "example/reads_split/cell_ATGAAGACCATT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_ATGAAGACCATT.umi.txt",
+         "reads": "example/reads_split/cell_ATGAAGACCATT_reads.fastq.gz"
+      },
+      "cell_GGGAATAACGGC": {
+         "barcodes": "example/reads_split/cell_GGGAATAACGGC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GGGAATAACGGC.umi.txt",
+         "reads": "example/reads_split/cell_GGGAATAACGGC_reads.fastq.gz"
+      },
+      "cell_AGAGTTGTTCGG": {
+         "barcodes": "example/reads_split/cell_AGAGTTGTTCGG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_AGAGTTGTTCGG.umi.txt",
+         "reads": "example/reads_split/cell_AGAGTTGTTCGG_reads.fastq.gz"
+      },
+      "cell_CGAGGCAAGTGA": {
+         "barcodes": "example/reads_split/cell_CGAGGCAAGTGA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CGAGGCAAGTGA.umi.txt",
+         "reads": "example/reads_split/cell_CGAGGCAAGTGA_reads.fastq.gz"
+      },
+      "cell_CAATTTCGGAAA": {
+         "barcodes": "example/reads_split/cell_CAATTTCGGAAA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CAATTTCGGAAA.umi.txt",
+         "reads": "example/reads_split/cell_CAATTTCGGAAA_reads.fastq.gz"
+      },
+      "cell_CACCGGCGACGT": {
+         "barcodes": "example/reads_split/cell_CACCGGCGACGT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CACCGGCGACGT.umi.txt",
+         "reads": "example/reads_split/cell_CACCGGCGACGT_reads.fastq.gz"
+      },
+      "cell_GAGTACCGAACA": {
+         "barcodes": "example/reads_split/cell_GAGTACCGAACA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_GAGTACCGAACA.umi.txt",
+         "reads": "example/reads_split/cell_GAGTACCGAACA_reads.fastq.gz"
+      },
+      "cell_TTCCGCACTCAA": {
+         "barcodes": "example/reads_split/cell_TTCCGCACTCAA_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TTCCGCACTCAA.umi.txt",
+         "reads": "example/reads_split/cell_TTCCGCACTCAA_reads.fastq.gz"
+      },
+      "cell_CCGGATACATAT": {
+         "barcodes": "example/reads_split/cell_CCGGATACATAT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CCGGATACATAT.umi.txt",
+         "reads": "example/reads_split/cell_CCGGATACATAT_reads.fastq.gz"
+      },
+      "cell_AGTACCCCGTAG": {
+         "barcodes": "example/reads_split/cell_AGTACCCCGTAG_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_AGTACCCCGTAG.umi.txt",
+         "reads": "example/reads_split/cell_AGTACCCCGTAG_reads.fastq.gz"
+      },
+      "cell_ACCACACGTTTT": {
+         "barcodes": "example/reads_split/cell_ACCACACGTTTT_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_ACCACACGTTTT.umi.txt",
+         "reads": "example/reads_split/cell_ACCACACGTTTT_reads.fastq.gz"
+      },
+      "cell_CAACACTGGCTC": {
+         "barcodes": "example/reads_split/cell_CAACACTGGCTC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_CAACACTGGCTC.umi.txt",
+         "reads": "example/reads_split/cell_CAACACTGGCTC_reads.fastq.gz"
+      },
+      "cell_ATACAACTCTCC": {
+         "barcodes": "example/reads_split/cell_ATACAACTCTCC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_ATACAACTCTCC.umi.txt",
+         "reads": "example/reads_split/cell_ATACAACTCTCC_reads.fastq.gz"
+      },
+      "cell_TCTCGCTGATCC": {
+         "barcodes": "example/reads_split/cell_TCTCGCTGATCC_barcodes.fastq.gz",
+         "umi": "example/reads_split/cell_TCTCGCTGATCC.umi.txt",
+         "reads": "example/reads_split/cell_TCTCGCTGATCC_reads.fastq.gz"
+      }
+   },
+   "paths_plot": "example/paths_plotted.pdf",
+   "kallisto": {
+      "tsv": "example/kallisto/matrix.tsv",
+      "run_info": "example/kallisto/run_info.json",
+      "equiv_classes": "example/kallisto/matrix.ec",
+      "cells": "example/kallisto/matrix.cells"
+   },
+   "tcc": {
+      "tcc_coo": "example/kallisto/tcc_matrix.dat",
+      "l1_dist": "example/kallisto/pairwise_l1_distance.npy",
+      "tcc_norm_t": "example/kallisto/tcc_normalized_transposed.npy",
+      "tcc_csr": "example/kallisto/tcc_matrix_csr.dat",
+      "nonzero_eq": "example/kallisto/nonzero_equiv_classes.npy"
+   },
+   "all_paths": "example/all_paths.txt",
+   "gaussian_fits": "example/fits.txt",
+   "merged_paths": "example/merged_paths.txt",
+   "log": "example/run_log.txt",
+   "run_outputs": "example/run_outputs.json"
+}
