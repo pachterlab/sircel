@@ -1,11 +1,8 @@
-Readme.txt
+Readme.md
 
-
-Author
-
-Akshay Tambe
-Pachter and Doudna groups
-UC Berkeley
+	Akshay Tambe
+	Pachter and Doudna groups
+	UC Berkeley
 
 
 Summary
@@ -30,8 +27,9 @@ Requirements
 	redis
 		In-memory database structure: https://redis.io/
 	redis-py
-		Python binding for redis servr
+		Python binding for redis server
 	scikit-learn (for TCCs)
+		Optional. Not needed if only splitting reads by barcode (not quantifying single-cell expression levels)
 	kallisto (0.43.0 or higher)
 		Optional. Not needed if only splitting reads by barcode (not quantifying single-cell expression levels)
 
@@ -66,11 +64,12 @@ Barcode and UMI positions within a read follow the same indexing convension as p
 	umi_end				10
 	
 This follows from the following python snippet:
->>> seq = 'BARCODEUMI'
->>> seq[0:7]
-'BARCODE'
->>> seq[7:10]
-'UMI'
+
+	>>> seq = 'BARCODEUMI'
+	>>> seq[0:7]
+	'BARCODE'
+	>>> seq[7:10]
+	'UMI'
 
 
 Use example: Dropseq data from Macosko 2015
