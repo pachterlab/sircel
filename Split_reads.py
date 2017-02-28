@@ -80,7 +80,7 @@ def run_all(cmdline_args):
 	print('Thresholding merged paths')
 	(threshold, top_paths, fit_out) = threshold_paths(output_dir, merged_paths)
 	output_files.update(fit_out)
-	print('\tUsing threshold at depth. Threshold is %i' % threshold)
+	print('\tThreshold is %i' % threshold)
 	print('\t%i paths have weight higher than the threshold' % len(top_paths))
 	
 	kmer_idx_db.flushall()
@@ -243,7 +243,7 @@ def build_subgraph(reads_in_subgraph, barcodes_unzipped):
 	for(kmer, count) in subgraph_kmer_counts.items():
 		edge = Edge(kmer[0:-1], kmer[1:], count)
 		edges.append(edge)
-	subgraph = Graph(edges)	
+	subgraph = Graph(edges)
 	return subgraph
 
 def merge_paths(paths):
@@ -275,6 +275,7 @@ def threshold_paths(output_dir, paths):
 	mpl.use('Agg')
 	from matplotlib import pyplot as plt
 	from scipy.optimize import curve_fit
+	import bisect
 	
 	
 	fit_out = {
@@ -282,27 +283,40 @@ def threshold_paths(output_dir, paths):
 		'paths_plot' : '%s/paths_plotted.pdf' % output_dir}
 	
 	weights_by_depth = {}
+	all_weights = []
 	for path in paths:
 		(name, weight, depth, kmers) = path
 		if(depth not in weights_by_depth.keys()):
 			weights_by_depth[depth] = []
 		weights_by_depth[depth].append(int(weight))
+		all_weights.append(weight)
 	
 	fig, ax = plt.subplots(
 		nrows = len(weights_by_depth.items()), ncols = 1, figsize = (4,8))
 	colors = ['b', 'g', 'r', 'y', 'k']
 	
 	gaussian_fits = []
+	NUM_BINS = 50
+	max_bin = int(np.log10(max(all_weights))) + 2
+	bins = np.logspace(0, max_bin, NUM_BINS)
+	param_bounds = ([0, 0, 0], [len(all_weights), NUM_BINS, NUM_BINS])
 	
 	for (i, key) in enumerate(sorted(weights_by_depth.keys())):
 		weights = weights_by_depth[key]
-		bins = np.logspace(0, 8, 50)
-		hist, bins = np.histogram(weights, bins=bins)
+		hist, _ = np.histogram(weights, bins=bins)
 		bin_centers = (bins[:-1] + bins[1:])/2
-
-		p0 = [100, 10, 10]
+		
+		#params: amplitude, mean, stdev
+		initial_params = [np.max(hist),
+			np.argmax(hist),
+			5]
 		fit_x = range(0, len(hist))#xrange corresponding to bins only
-		coeff, var_matrix = curve_fit(gaussian, fit_x, hist, p0=p0)
+		coeff, var_matrix = curve_fit(
+			gaussian,
+			fit_x,
+			hist,
+			p0 = initial_params,
+			bounds = param_bounds)
 		hist_fit = gaussian(fit_x, *coeff)
 		(amplitude, mean, stdev)= coeff
 		threshold_bin = int(mean + 3*np.fabs(stdev))
@@ -332,54 +346,8 @@ def threshold_paths(output_dir, paths):
 	return threshold, top_paths, fit_out
 
 def gaussian(x, *p):
-	a, mu, sigma = p
+	(a, mu, sigma) = p
 	return a*np.exp(-(x-mu)**2/(2.*sigma**2))
-
-
-
-"""
-def plot_paths(output_dir, hist, bins, threshold, prefix=''):
-	import matplotlib as mpl
-	mpl.use('Agg')
-	from matplotlib import pyplot as plt
-	
-	plot_file = '%s/%s_paths_plot.pdf' % (output_dir, prefix)
-	fig, ax = plt.subplots(nrows = 1, ncols = 1, figsize = (4,4))
-	ax.step(bins[0:-1], hist)
-	ax.set_xscale('log')
-	#ax.set_yscale('log')
-	ax.set_xlabel('Path capacity')
-	ax.set_ylabel('Count')
-	ax.set_xlim([10**1, 10**7])
-	ax.axvline(threshold, ls='--', color = 'k')
-	plt.tight_layout()
-	fig.savefig(plot_file)
-	
-	return(plot_file)
-	
-def get_histogram_thresholded(paths):
-	import numpy as np
-	import scipy as sp
-	from scipy import signal
-	
-	bins = np.logspace(0, 8, 50)
-	path_weight = [tup[1] for tup in paths]
-	hist, bins = np.histogram(path_weight, bins=bins)
-	#find all local minimum in histogram
-	minima = sp.signal.argrelmin(hist, order=1)
-	#take the right most local minimum
-	try:
-		bin_to_threshold = (minima[0][0])#???
-		weight_threshold = bins[bin_to_threshold]
-	except IndexError:
-		weight_threshold = 0
-	
-	top_paths = []
-	for tup in paths:
-		if(tup[1] >= weight_threshold):
-			top_paths.append(tup)
-	return(top_paths, hist, bins, weight_threshold)
-"""
 
 def assign_all_reads(top_paths, reads_unzipped, barcodes_unzipped):
 	MIN_KMER_SIZE = 4
@@ -435,13 +403,14 @@ def assign_read(params):
 	(kmers_to_paths,
 		min_kmer_size,
 		max_kmer_size,
-		(reads_data,
+		read) = params
+	(reads_data,
 		reads_offset,
 		barcodes_data, 
-		barcodes_offset)) = params
+		barcodes_offset) = read
 	
+	read_assignment = collections.Counter()
 	for kmer_size in range(max_kmer_size, min_kmer_size, -1):
-		read_assignment = collections.Counter()
 		read_kmers = IO_utils.get_cyclic_kmers(
 			barcodes_data, 
 			kmer_size,
@@ -573,7 +542,7 @@ def get_args():
 	parser.add_argument('--breadth', 
 		type=int, 
 		help='How many nodes search.', 
-		default=1000)
+		default=2000)
 	parser.add_argument('--threads', 
 		type=int, 
 		help='Number of threads to use.', 

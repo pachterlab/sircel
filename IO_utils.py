@@ -130,9 +130,12 @@ def read_fastq_sequential(fq_file, gzip=False):
 	"""
 	Args:
 		fq_file (path to a fastq format file)
-	gzip:
-		binary, whether 
-	
+		gzip:
+			binary, whether fq_files is gzipped or not
+	Yields
+		tuple (lines, offset)
+			lines: list of 4 lines from fastq file, in order in file
+			offset: character offset from beginning of the file for this fq read
 	"""
 	
 	offset = 0
@@ -151,6 +154,15 @@ def read_fastq_sequential(fq_file, gzip=False):
 		offset += read_len
 
 def read_fastq_random(fq_file, offsets):
+	"""
+	Args:
+		fq_file (path to a fastq format file), unzipped
+		offsets (list)
+	Yields
+		tuple (lines, offset)
+			lines: list of 4 lines from fastq file, ordered by offets
+			offset: character offset from beginning of the file for this fq read
+	"""
 	fq_reader = open(fq_file, 'rb')
 	for (i, offset) in enumerate(offsets):
 		fq_reader.seek(offset, 0)
