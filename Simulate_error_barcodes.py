@@ -10,29 +10,26 @@ import os
 import gzip
 
 
-def run_all():
-	BARCODE_LENGTH = 12
-	UMI_LENGTH = 8
+def run_all(args):
 	ALPHABET = ['A', 'C', 'G', 'T']
-	NUM_BARCODES = 1000
-	NUM_READS = 1000000
 	
-	output_dir = sys.argv[1]
+	output_dir = args['output_dir']
 	if not os.path.exists(output_dir):
 		os.makedirs(output_dir)
 	
 	print('Simulating true barcodes')
 	true_barcodes = get_barcodes(
-		NUM_BARCODES,
-		BARCODE_LENGTH,
+		args['num_barcodes'],
+		args['barcode_length'],
 		ALPHABET)
+	#print('Simulating barcode abundance')
 	print('Writing reads fastq.gz')
 	write_reads(
 		true_barcodes,
-		NUM_READS,
-		BARCODE_LENGTH,
+		args['num_reads'],
+		args['barcode_length'],
 		ALPHABET,
-		UMI_LENGTH,
+		args['umi_length'],
 		output_dir)
 	print('Saving true barcodes txt')
 	write_barcodes(
@@ -104,5 +101,44 @@ def write_barcodes(barcodes, output_dir):
 		writer.write('\n'.join(barcodes))
 
 
+
+
+def get_args():
+	parser = argparse.ArgumentParser(
+		description = 'This script simulates error-prone barcodes like Dropseq')
+		
+	parser.add_argument('--barcode_length',
+		help = 'Length of the cell barcode',
+		type=int,
+		default=12)
+	parser.add_argument('--umi_length',
+		help = 'Length of the molecular barcode',
+		type=int,
+		default=8)
+	parser.add_argument('--num_barcodes',
+		help = 'Number of cell barcodes to simulate',
+		type=int,
+		default=500)
+	parser.add_argument('--num_reads',
+		help = 'Number of reads to simulate',
+		type=int,
+		default=1000000)
+	parser.add_argument('--poisson_errors',
+		help = 'Median number of errors per read',
+		type=int,
+		default=2)
+	parser.add_argument('--output_dir',
+		help = 'Directory to write output files to',
+		type=str,
+		required=True)
+	return vars(parser.parse_args())
+	
+
 if __name__ == '__main__':
-	run_all()
+	args = get_args()
+	run_all(args)
+
+
+
+
+

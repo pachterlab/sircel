@@ -115,7 +115,7 @@ def run_kallisto(params, output_dir, output_files):
 	kallisto_start_time = time.time()
 	
 	KALLISTO_PATH = params['kallisto']
-	kallisto_dir = '%s/kallisto' % args['output_dir']
+	kallisto_dir = '%s/kallisto_outputs' % args['output_dir']
 	if not os.path.exists(kallisto_dir):
 		os.makedirs(kallisto_dir)
 	
