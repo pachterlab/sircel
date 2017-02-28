@@ -8,6 +8,7 @@ np.random.seed(0)
 import sys
 import os
 import gzip
+import argparse
 
 
 def run_all(args):
