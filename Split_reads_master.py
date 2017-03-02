@@ -85,7 +85,8 @@ def run_all(args):
 	output_files, elapsed_time = Split_reads.run_all(split_args)
 	print('Split reads. Time elapsed %s seconds' % elapsed_time)
 	
-	if('kallisto_idx' in args.keys()):
+	#print(args['kallisto_idx'])
+	if(args['kallisto_idx'] != None):
 		print('Running kallisto')
 		output_files['kallisto'] = run_kallisto(
 			params,
@@ -102,6 +103,7 @@ def run_all(args):
 	os.unlink(reads_unzipped)
 	os.unlink(barcodes_unzipped)
 	
+	output_files['run_outputs'] = '%s/run_outputs.json'
 	with open(output_files['run_outputs'], 'w') as writer:
 		writer.write(json.dumps(output_files, indent=3))
 	
