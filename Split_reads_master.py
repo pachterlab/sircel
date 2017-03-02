@@ -75,7 +75,8 @@ def run_all(args):
 	split_args['breadth'] = args['breadth']
 	split_args['depth'] = args['depth']
 	split_args['kmer_size'] = args['kmer_size']	
-	split_args['output_dir'] = args['output_dir']	
+	split_args['output_dir'] = args['output_dir']
+	split_args['min_dist'] = 2
 
 
 	check_split_input(split_args)
@@ -294,7 +295,10 @@ def get_args():
 		help='Path to kallisto index. Optional.' + \
 			'If not provided, script terminates after splitting barcodes',
 		default=None)
-		
+	parser.add_argument('--min_dist',
+		type=int,
+		help='Minimum Hamming distance between error-corrected barcodes.',
+		default=2)
 	return vars(parser.parse_args())
 
 

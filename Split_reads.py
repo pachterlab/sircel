@@ -40,8 +40,10 @@ from multiprocessing import Pool
 args = {}
 
 def run_all(cmdline_args):
+	
 	global args
 	args = cmdline_args
+		
 	print('Running Dropseq_subgraphs\nArgs:%s' % \
 		json.dumps(args, indent = 5))
 	
@@ -221,7 +223,9 @@ def find_path_from_kmer(params):
 		if(counter > args['depth']):
 			break
 		counter += 1
-	return paths
+	#merge similar paths by hamming distance
+	merged_paths = merge_paths(paths)
+	return merged_paths
 
 def build_subgraph(reads_in_subgraph, barcodes_unzipped):
 	barcodes_iter = IO_utils.read_fastq_random(
@@ -247,7 +251,6 @@ def build_subgraph(reads_in_subgraph, barcodes_unzipped):
 	return subgraph
 
 def merge_paths(paths):
-	MIN_DIST = 3
 	paths_sorted = sorted(paths, key = lambda tup: tup[1])
 	num_paths = len(paths)
 	
@@ -257,7 +260,7 @@ def merge_paths(paths):
 	for (i, path) in enumerate(paths_sorted):
 		for j in range(i+1, num_paths):
 			hamming = hamming_distance(get_seq(paths, i), get_seq(paths, j))
-			if(hamming <= MIN_DIST):
+			if(hamming <= args['min_dist']):
 				bad_path = min([paths[i], paths[j]], key = lambda tup: tup[1])
 				if(bad_path[0] in paths_merged.keys()):
 					del(paths_merged[bad_path[0]])
@@ -274,8 +277,6 @@ def threshold_paths(output_dir, paths):
 	import matplotlib as mpl
 	mpl.use('Agg')
 	from matplotlib import pyplot as plt
-	from scipy.optimize import curve_fit
-	import bisect
 	
 	
 	fit_out = {
@@ -299,7 +300,6 @@ def threshold_paths(output_dir, paths):
 	NUM_BINS = 50
 	max_bin = int(np.log10(max(all_weights))) + 2
 	bins = np.logspace(0, max_bin, NUM_BINS)
-	param_bounds = ([0, 0, 0], [len(all_weights), NUM_BINS, NUM_BINS])
 	
 	for (i, key) in enumerate(sorted(weights_by_depth.keys())):
 		weights = weights_by_depth[key]
@@ -307,18 +307,12 @@ def threshold_paths(output_dir, paths):
 		bin_centers = (bins[:-1] + bins[1:])/2
 		
 		#params: amplitude, mean, stdev
-		initial_params = [np.max(hist),
-			np.argmax(hist),
-			5]
 		fit_x = range(0, len(hist))#xrange corresponding to bins only
-		coeff, var_matrix = curve_fit(
-			gaussian,
-			fit_x,
-			hist,
-			p0 = initial_params,
-			bounds = param_bounds)
+		
+		(coeff, var_matrix) = curve_fit_multi(
+			all_weights, hist, NUM_BINS)
 		hist_fit = gaussian(fit_x, *coeff)
-		(amplitude, mean, stdev)= coeff
+		(amplitude, mean, stdev) = coeff
 		threshold_bin = int(mean + 3*np.fabs(stdev))
 		threshold = bins[min(threshold_bin, len(bins) - 1)]
 		gaussian_fits.append((i+1, amplitude, mean, stdev, threshold))
@@ -344,6 +338,45 @@ def threshold_paths(output_dir, paths):
 	threshold = gaussian_fits[1][4]
 	top_paths = [path for path in paths if path[1] > threshold]
 	return threshold, top_paths, fit_out
+
+def curve_fit_multi(all_weights, hist, NUM_BINS):
+	"""
+	Attempt to fit a Gaussian to the data in hist
+		Repeat attempts if the fit fails, using random new initial conditions
+	
+	"""
+	from scipy.optimize import curve_fit
+	initial_params = [np.max(hist),
+		np.argmax(hist),
+		5]
+	params = initial_params
+	param_bounds = (
+		[0, 0, 0], 
+		[len(all_weights), NUM_BINS, NUM_BINS])
+	x = range(0, len(hist))#xrange corresponding to bins only
+	
+	count = 0
+	while(True):
+		try:	
+			coeff, var_matrix = curve_fit(
+				gaussian,
+				x,
+				hist,
+				p0 = params,
+				bounds = param_bounds)
+			return(coeff, var_matrix)
+		except RuntimeError:
+			pass
+		#find / randomize new initial conditions and try again
+		params = [np.random.uniform(0, len(all_weights)),
+			np.random.uniform(0, NUM_BINS),
+			np.random.uniform(0, NUM_BINS)]
+		
+		count += 1
+		if(count > 50):
+			break
+	return([-1,-1,-1], []) #some default value here
+
 
 def gaussian(x, *p):
 	(a, mu, sigma) = p
@@ -400,6 +433,16 @@ def assign_all_reads(top_paths, reads_unzipped, barcodes_unzipped):
 	return(reads_assigned_db, reads_assigned_pipe)
 	
 def assign_read(params):
+	"""
+	Assigns a single read to a cell barcode by kmer compatibility
+	args (tuple)
+		kemers_to_paths: dict of kmer -> list of paths that contain it
+		min_kmer_size
+		max_kmer_size
+		read: list of fastq entry lines
+	returns
+	
+	"""
 	(kmers_to_paths,
 		min_kmer_size,
 		max_kmer_size,
@@ -547,6 +590,10 @@ def get_args():
 		type=int, 
 		help='Number of threads to use.', 
 		default=32)
+	parser.add_argument('--min_dist', 
+		type=int, 
+		help='Minimum Hamming distance between barcodes.', 
+		default=3)
 	
 	return vars(parser.parse_args())
 
