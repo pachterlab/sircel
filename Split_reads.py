@@ -84,7 +84,8 @@ def run_all(cmdline_args):
 	output_files.update(fit_out)
 	print('\tThreshold is %i' % threshold)
 	print('\t%i paths have weight higher than the threshold' % len(top_paths))
-	
+	output_files['thresholded_paths'] = IO_utils.save_paths_text(
+		output_dir, top_paths, prefix='threshold')
 	kmer_idx_db.flushall()
 	print('Assigning reads')
 	reads_assigned_db, reads_assigned_pipe = assign_all_reads(
