@@ -97,13 +97,12 @@ def run_all(args):
 			output_files,
 			args['output_dir'])
 		#write output data
-		output_files['run_outputs'] = '%s/run_outputs.json' % args['output_dir']
 	
 	print('Removing temp files')
 	os.unlink(reads_unzipped)
 	os.unlink(barcodes_unzipped)
 	
-	output_files['run_outputs'] = '%s/run_outputs.json'
+	output_files['run_outputs'] = '%s/run_outputs.json' % args['output_dir']
 	with open(output_files['run_outputs'], 'w') as writer:
 		writer.write(json.dumps(output_files, indent=3))
 	
