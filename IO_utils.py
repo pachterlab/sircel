@@ -70,7 +70,7 @@ def get_cyclic_kmers(read, k, start, end, indel=True):
 	ret = [tup for tup in zip(kmers, quals)]
 	return ret
 
-def unzip(gzipped):
+def unzip(gzipped_lst):
 	"""
 	Args
 		gzipped (string)
@@ -79,12 +79,12 @@ def unzip(gzipped):
 	"""
 	with open(sys.path[0] + '/params.json', 'r') as r:
 		params = json.load(r)
-	
+		
 	out_file = tempfile.NamedTemporaryFile(delete=False)
 	out_file_name = out_file.name
 	out_file.seek(0)
 	zcat = subprocess.Popen(
-		[params['zcat'], gzipped],
+		[params['zcat'],  gzipped_lst[0]],
 		stdout = out_file)
 	zcat.communicate()
 	out_file.close()
@@ -113,14 +113,15 @@ def get_read_chunks(barcodes, reads, lines=None):
 		reads_iter = read_fastq_random(reads)
 		barcodes_iter = read_fastq_random(barcodes)
 	
-	while(True):
+	break_outer = False
+	while(not break_outer):
 		data_buffer = []#list of tuples(barcodes_data, barcodes_offset, reads_offset)
 		for i in range(0, BUFFER_SIZE):
 			try:
 				reads_data, reads_offset = next(reads_iter)
 				barcodes_data, barcodes_offset = next(barcodes_iter)
 			except StopIteration:
-				raise StopIteration
+				break_outer = True
 				break
 			data_buffer.append(
 				(reads_data, reads_offset, barcodes_data, barcodes_offset))
@@ -137,7 +138,7 @@ def read_fastq_sequential(fq_file, gzip=False):
 			lines: list of 4 lines from fastq file, in order in file
 			offset: character offset from beginning of the file for this fq read
 	"""
-	
+	line_num = 0
 	offset = 0
 	if(gzip):
 		cat = subprocess.Popen(
@@ -147,11 +148,18 @@ def read_fastq_sequential(fq_file, gzip=False):
 		cat = subprocess.Popen(
 			['cat', fq_file],
 			stdout = subprocess.PIPE)
-	for lines in itertools.zip_longest(*[cat.stdout] *4):
+	for lines in grouper(cat.stdout, 4):
 		read_len = sum([len(line) for line in lines])#length of read in characters
 		lines = [(l.rstrip()).decode('utf-8') for l in list(lines)]
-		yield (lines, offset)
+		yield(lines, offset)
+		line_num += 1
 		offset += read_len
+
+def read_multiple_fastq_sequential(fq_file_lst, gzip=False):
+	for fq_file in fq_file_lst:
+		fq_file_iter = read_fastq_sequential(fq_file, gzip=gzip)
+		for (lines, offset) in fq_file_iter:
+			yield (lines, offset)
 
 def read_fastq_random(fq_file, offsets):
 	"""
@@ -203,9 +211,9 @@ def merge_barcodefiles_10x(reads1, index1):
 	out_file.seek(0)
 	
 	writer = open(out_file, 'wb')
-	reads_iter = Fastq_utils.read_fastq_sequential(
+	reads_iter = read_multiple_fastq_sequential(
 		reads1, gzip=True)
-	index_iter = Fastq_utils.read_fastq_sequential(
+	index_iter = read_multiple_fastq_sequential(
 		indexq, gzip=True)
 	
 	while(True):

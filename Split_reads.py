@@ -3,19 +3,18 @@ Akshay Tambe
 Pachter and Doudna groups
 
 
-Split reads for dropseq data, optionally run kallisto and produce TCCs
+Split reads for dropseq data
 1. Index kmers
 		Produce a dict kmer_index 
-		where kmer_index[kmer] -> list of read line numbers that contain this kmer
+		kmer_index[kmer] -> list of read line numbers that contain this kmer
+	Use redis database to store
 2. Find cyclic paths
 		pick a popular kmer
 		get all reads that contain the kmer
 		make subgraph from that subset of reads
 		get best path(s) starting at the starting kmer
-
 3. Threshold paths 
 		Histogram of path weights has a minimum
-
 4. Assign reads
 		For each read, find the path that it shares the most kmers with
 """
@@ -25,7 +24,6 @@ import argparse
 import os
 import sys
 import time
-import subprocess
 import json
 import collections
 import itertools
@@ -36,19 +34,18 @@ import numpy as np
 from Graph_utils import Edge, Graph, Path
 from multiprocessing import Pool 
 
- 
+
 args = {}
 
 def run_all(cmdline_args):
-	
 	global args
 	args = cmdline_args
-		
+	
 	print('Running Dropseq_subgraphs\nArgs:%s' % \
 		json.dumps(args, indent = 5))
 	
 	start_time = time.time()
-
+	
 	output_files = {}
 	output_dir = args['output_dir']
 	output_files['log'] = '%s/run_log.txt' % output_dir
@@ -120,7 +117,7 @@ def get_kmer_index_db(params):
 		barcodes_unzipped,
 		reads_unzipped,
 		lines=None):
-		
+				
 		read_count += len(reads_chunk)
 		chunk_kmer_indices = pool.map(
 			index_read,
@@ -294,8 +291,9 @@ def threshold_paths(output_dir, paths):
 		all_weights.append(weight)
 	
 	fig, ax = plt.subplots(
-		nrows = len(weights_by_depth.items()), ncols = 1, figsize = (4,8))
-	colors = ['b', 'g', 'r', 'y', 'k']
+		nrows = len(weights_by_depth.items()), 
+		ncols = 1,
+		figsize = (4,2.5*len(weights_by_depth.items())))
 	
 	gaussian_fits = []
 	NUM_BINS = 50
@@ -314,12 +312,12 @@ def threshold_paths(output_dir, paths):
 			all_weights, hist, NUM_BINS)
 		hist_fit = gaussian(fit_x, *coeff)
 		(amplitude, mean, stdev) = coeff
-		threshold_bin = int(mean + 3*np.fabs(stdev))
+		threshold_bin = int(mean - 3*np.fabs(stdev))
 		threshold = bins[min(threshold_bin, len(bins) - 1)]
 		gaussian_fits.append((i+1, amplitude, mean, stdev, threshold))
 		
-		ax[i].step(bin_centers, hist, label = 'Depth = %i' % key, color = colors[i])		
-		ax[i].axvline(threshold, color = 'grey', ls = '-.', label='Mean + 3 stdev')
+		ax[i].step(bin_centers, hist, label = 'Depth = %i' % key, color = 'b')		
+		ax[i].axvline(threshold, color = 'k', ls = '-.', label='Mean + 3 stdev')
 		ax[i].plot(bin_centers, hist_fit, label='Gaussian fit', color = 'grey')
 
 		ax[i].set_xscale('log')
@@ -336,7 +334,7 @@ def threshold_paths(output_dir, paths):
 			line = '\t'.join([str(i) for i in tup]) + '\n'
 			writer.write(line)
 	
-	threshold = gaussian_fits[1][4]
+	threshold = gaussian_fits[0][4]
 	top_paths = [path for path in paths if path[1] > threshold]
 	return threshold, top_paths, fit_out
 
@@ -378,7 +376,6 @@ def curve_fit_multi(all_weights, hist, NUM_BINS):
 			break
 	return([-1,-1,-1], []) #some default value here
 
-
 def gaussian(x, *p):
 	(a, mu, sigma) = p
 	return a*np.exp(-(x-mu)**2/(2.*sigma**2))
@@ -394,7 +391,6 @@ def assign_all_reads(top_paths, reads_unzipped, barcodes_unzipped):
 	print('\tGetting kmers in paths')
 	for path in top_paths:
 		cell_barcode = path[0]
-		#kmers = path[3]
 		for kmer_size in range(MIN_KMER_SIZE, MAX_KMER_SIZE):
 			kmers = IO_utils.get_cyclic_kmers(
 				['na', cell_barcode, 'na', cell_barcode],
@@ -410,7 +406,7 @@ def assign_all_reads(top_paths, reads_unzipped, barcodes_unzipped):
 	print('\tAssigning reads to paths')
 	pool = Pool(processes = args['threads'])	
 	read_count = 0
-	unassigned_count = 0
+	num_unassigned = 0
 	for reads_chunk in IO_utils.get_read_chunks(
 		barcodes_unzipped,
 		reads_unzipped,
@@ -430,7 +426,7 @@ def assign_all_reads(top_paths, reads_unzipped, barcodes_unzipped):
 				('%i,%i,' % (offset1, offset2)).encode('utf-8'))
 		reads_assigned_pipe.execute()
 		print('\t%i reads assigned' % read_count)
-	print('%i reads could not be assigned' % unassigned_count)
+	print('%i reads could not be assigned' % num_unassigned)
 	return(reads_assigned_db, reads_assigned_pipe)
 	
 def assign_read(params):
@@ -536,11 +532,6 @@ def write_split_fastqs(params):
 		barcodes_writer.close()
 	batch_file.close()
 	return output_files
-
-
-
-
-
 
 
 

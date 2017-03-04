@@ -40,8 +40,8 @@ def run_all(args):
 		split_args['umi_end'] = 20
 	
 		print('Unzipping files (temporary)')
-		reads_unzipped = IO_utils.unzip(args['reads'])
-		barcodes_unzipped = IO_utils.unzip(args['barcodes'])
+		reads_unzipped = IO_utils.unzip(args['reads'].split(','))
+		barcodes_unzipped = IO_utils.unzip(args['barcodes'].split(','))
 		split_args['reads'] = reads_unzipped
 		split_args['barcodes'] = barcodes_unzipped
 
@@ -52,10 +52,10 @@ def run_all(args):
 		split_args['umi_end'] = 34
 	
 		print('Unzipping files (temporary)')
-		reads_unzipped = IO_utils.unzip(args['reads'])
+		reads_unzipped = IO_utils.unzip(args['reads'].split(','))
 		barcodes_unzipped = IO_utils.merge_barcodefiles_10x(
-			args['barcodes'],
-			args['umis'])
+			args['barcodes'].split(','),
+			args['umis'].split(','))
 		split_args['reads'] = reads_unzipped
 		split_args['barcodes'] = barcodes_unzipped		
 
@@ -66,8 +66,8 @@ def run_all(args):
 		split_args['umi_end'] = args['umi_end']
 	
 		print('Unzipping files (temporary)')
-		reads_unzipped = IO_utils.unzip(args['reads'])
-		barcodes_unzipped = IO_utils.unzip(args['barcodes'])
+		reads_unzipped = IO_utils.unzip(args['reads'].split(','))
+		barcodes_unzipped = IO_utils.unzip(args['barcodes'].split(','))
 		split_args['reads'] = reads_unzipped
 		split_args['barcodes'] = barcodes_unzipped	
 	
@@ -134,9 +134,7 @@ def run_kallisto(params, output_dir, output_files):
 		'tsv' :				'%s/matrix.tsv' % kallisto_dir,
 		'run_info'	:		'%s/run_info.json' % kallisto_dir,
 		'equiv_classes' :	'%s/matrix.ec' % kallisto_dir,
-		'cells' : 			'%s/matrix.cells' % kallisto_dir
-		
-	}
+		'cells' : 			'%s/matrix.cells' % kallisto_dir}
 	current_time = time.time()
 	elapsed_time = current_time - kallisto_start_time
 	print('Time elapsed %0.2f' % elapsed_time)
@@ -261,15 +259,15 @@ def get_args():
 	
 	parser.add_argument('--barcodes', 
 		type=str, 
-		help='Cell barcodes file name', 
+		help='Cell barcodes file name or comma separarted list', 
 		required=True)
 	parser.add_argument('--umis', 
 		type=str,
-		help='Umis file name (only required for 10x genomics)', 
+		help='Umis file name or comma separarted list. Only required for 10x genomics', 
 		required=False)
 	parser.add_argument('--reads', 
 		type=str, 
-		help='RNAseq reads file name', 
+		help='RNAseq reads file name or comma separarted list.', 
 		required=True)
 	parser.add_argument('--output_dir', 
 		type=str, 
@@ -282,7 +280,7 @@ def get_args():
 	parser.add_argument('--depth', 
 		type=int, 
 		help='Fraction of edge weight at starting node to assign to path.', 
-		default=3)
+		default=6)
 	parser.add_argument('--breadth', 
 		type=int, 
 		help='How many nodes search.', 
@@ -299,7 +297,7 @@ def get_args():
 	parser.add_argument('--min_dist',
 		type=int,
 		help='Minimum Hamming distance between error-corrected barcodes.',
-		default=2)
+		default=3)
 	return vars(parser.parse_args())
 
 
