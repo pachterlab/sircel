@@ -265,7 +265,11 @@ class Graph:
 		return (True, Path(new_edges))
 	
 	def find_all_cyclic_paths(self, start_node, start_neighbor, expected_path_length):
-		start_edge = self.edges[(start_node, start_neighbor)]
+		key = (start_node, start_neighbor)
+		if(key not in self.edges):
+			raise StopIteration
+		
+		start_edge = self.edges[key]
 		initial_path = Path([start_edge])
 		while(True):
 			cycle, path = self.find_cyclic_path(initial_path, expected_path_length)			
