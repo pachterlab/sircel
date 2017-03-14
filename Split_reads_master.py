@@ -88,14 +88,18 @@ def run_all(args):
 	#print(args['kallisto_idx'])
 	if(args['kallisto_idx'] != None):
 		print('Running kallisto')
+		kallisto_dir = '%s/kallisto_outputs' % args['output_dir']
+		if not os.path.exists(kallisto_dir):
+			os.makedirs(kallisto_dir)
+		
 		output_files['kallisto'] = run_kallisto(
 			params,
-			args['output_dir'],
+			kallisto_dir,
 			output_files)
 		print('Getting transcript compatibility counts')
 		output_files['tcc'] = write_transcript_compatability_counts(
 			output_files,
-			args['output_dir'])
+			kallisto_dir)
 		#write output data
 	
 	print('Removing temp files')
@@ -113,13 +117,10 @@ def run_all(args):
 
 
 
-def run_kallisto(params, output_dir, output_files):
+def run_kallisto(params, kallisto_dir, output_files):
 	kallisto_start_time = time.time()
 	
 	KALLISTO_PATH = params['kallisto']
-	kallisto_dir = '%s/kallisto_outputs' % args['output_dir']
-	if not os.path.exists(kallisto_dir):
-		os.makedirs(kallisto_dir)
 	
 	kallisto_cmd = [
 		KALLISTO_PATH, 'pseudo',
@@ -141,7 +142,7 @@ def run_kallisto(params, output_dir, output_files):
 	
 	return kallisto_output
 
-def write_transcript_compatability_counts(input_files, output_dir):
+def write_transcript_compatability_counts(input_files, kallisto_dir):
 	"""
 	Modifed from Vasilis Ntranos scRNA-seq-TCC-prep
 	https://github.com/pachterlab/scRNA-Seq-TCC-prep
@@ -155,11 +156,11 @@ def write_transcript_compatability_counts(input_files, output_dir):
 			print('kallisto output file not found: %s' % fname)
 		
 	output_files = {
-		'tcc_coo':		'%s/kallisto/tcc_matrix.dat' % output_dir,
-		'tcc_csr':		'%s/kallisto/tcc_matrix_csr.dat' % output_dir,
-		'l1_dist' : 	'%s/kallisto/pairwise_l1_distance.npy' % output_dir,
-		'nonzero_eq' :	'%s/kallisto/nonzero_equiv_classes.npy' % output_dir,
-		'tcc_norm_t' :	'%s/kallisto/tcc_normalized_transposed.npy' % output_dir}
+		'tcc_coo':		'%s/tcc_matrix.dat' % kallisto_dir,
+		'tcc_csr':		'%s/tcc_matrix_csr.dat' % kallisto_dir,
+		'l1_dist' : 	'%s/pairwise_l1_distance.npy' % kallisto_dir,
+		'nonzero_eq' :	'%s/nonzero_equiv_classes.npy' % kallisto_dir,
+		'tcc_norm_t' :	'%s/tcc_normalized_transposed.npy' % kallisto_dir}
 	
 	print('\tLoading kallisto matrices')
 	#matrix.ec file

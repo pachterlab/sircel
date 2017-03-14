@@ -59,7 +59,7 @@ def run_single_file(simulation_dir):
 		'%s/threshold_paths.txt' % simulation_dir)
 	
 	true_positives = true_barcodes & pred_barcodes
-		
+	
 	num_tp = len(true_positives)				#number of false positive bc
 	num_fp = len(pred_barcodes) - num_tp	#number of true positive bc
 	num_fn = len(true_barcodes) - num_tp	#numberof false negative bc
@@ -69,9 +69,9 @@ def run_single_file(simulation_dir):
 	#for each true positive barcode, get fraction of correct reads
 	barcodes_tpr = []
 	barcodes_fpr = []
-	for true_barcode in true_positives:
+	for bc in pred_barcodes:
 		(bc_tpr, bc_fpr) = get_fraction_correct_reads(
-			true_barcode, simulation_dir)
+			bc, simulation_dir)
 		barcodes_tpr.append(bc_tpr)
 		barcodes_fpr.append(bc_fpr)
 	
@@ -83,15 +83,18 @@ def run_single_file(simulation_dir):
 
 def get_barcodes(true_bc_file):
 	barcodes = set()
-	with open(true_bc_file, 'r') as inf:
-		for line in inf:
-			bc = line.strip().split('\t')[0]
-			barcodes.add(bc)
+	try:
+		inf= open(true_bc_file, 'r')
+	except FileNotFoundError:
+		return barcodes
+	for line in inf:
+		bc = line.strip().split('\t')[0]
+		barcodes.add(bc)
 	return barcodes
 
-def get_fraction_correct_reads(true_bc, simulation_output_dir):
+def get_fraction_correct_reads(pred_bc, simulation_output_dir):
 	fq_file = '%s/reads_split/cell_%s_barcodes.fastq.gz' % \
-		(simulation_output_dir, true_bc)
+		(simulation_output_dir, pred_bc)
 		
 	fq_iter = IO_utils.read_fastq_sequential(fq_file, gzip=True)
 	
@@ -99,9 +102,10 @@ def get_fraction_correct_reads(true_bc, simulation_output_dir):
 	fpr = 0.
 	for (lines, _) in fq_iter:
 		read_name = lines[0]
-		read_bc = read_name.split(':')[-1]
-				
-		if(read_bc == true_bc):
+		assigned_bc = read_name.split(':')[-1]
+		true_bc = read_name.split(':')[-2].split('_')[0]	
+		
+		if(assigned_bc == true_bc):
 			tpr += 1.
 		else:
 			fpr += 1.

@@ -138,12 +138,15 @@ def read_fastq_sequential(fq_file, gzip=False):
 			lines: list of 4 lines from fastq file, in order in file
 			offset: character offset from beginning of the file for this fq read
 	"""
+	with open(sys.path[0] + '/params.json', 'r') as r:
+		params = json.load(r)
+	
 	line_num = 0
 	offset = 0
 	if(gzip):
 		cat = subprocess.Popen(
 			[params['zcat'], fq_file],
-			stdout = subproces.PIPE)
+			stdout = subprocess.PIPE)
 	else:
 		cat = subprocess.Popen(
 			['cat', fq_file],

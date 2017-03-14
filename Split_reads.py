@@ -97,8 +97,6 @@ def run_all(cmdline_args):
 	
 	print('Flushing assignments index')
 	reads_assigned_db.flushall()
-	kmer_idx_db.client_kill()
-	reads_assigned_db.client_kill()
 	
 	current_time = time.time()
 	elapsed_time = current_time - start_time
@@ -129,17 +127,21 @@ def get_kmer_index_db(params):
 				#value is a list: [offset1, offset2, offset3 ...]
 				value = ','.join(['%i' % i for i in offsets]) + ','
 				kmer_idx_pipe.append(key.encode('utf-8'), value.encode('utf-8'))
-		pipe_out = kmer_idx_pipe.execute()#slow. chunks are large to minimize this
+		pipe_out = kmer_idx_pipe.execute()#slow. chunks are large...
 		del(chunk_kmer_indices); _ = gc.collect()
 		print('\t%i reads indexed' % read_count)
 		
+		#to save time, only index a subset of the reads
+		#TO DO- randomly sample reads instead of sequentially (?)
 		if(read_count >= MAX_READS_TO_INDEX):
-			break		
-		
-		if(read_count % 1000000 == 0):
-			#only store database of up to 1m reads in memory
-			pipe_out = kmer_idx_pipe.bgsave()
-		
+			break
+		"""
+		#snapshot the database if it is not already being written to
+		try:
+			pipe_out = kmer_idx_pipe.save()
+		except redis.exceptions.ResponseError:
+			pass
+		"""
 	return kmer_idx_pipe
 
 def index_read(params):
@@ -298,9 +300,10 @@ def threshold_paths(output_dir, paths):
 	y = sorted( [tup[1] for tup in paths], reverse=True)
 	ax[0].step(x,y, label='Cum dist')
 
-	slopes, x = local_lin_fit(np.log10(y), window_len=LOCAL_WINDOW_LEN)
-	ax[1].scatter(x, slopes, color='r', alpha=0.2, s=2, label='Local gradient')
-
+	slopes, x = local_lin_fit(
+		np.log10(y), window_len=LOCAL_WINDOW_LEN)
+	ax[1].scatter(
+		x, slopes, color='r', alpha=0.2, s=2, label='Local gradient')
 	savgol = signal.savgol_filter(slopes, 251, 4)
 	ax[1].step(x, savgol, label='Savgol filter')
 
@@ -308,12 +311,12 @@ def threshold_paths(output_dir, paths):
 		savgol[WINDOW[0]:WINDOW[1]]) + WINDOW[0] + x[0])
 	ax[1].axvline(threshold, color='k', ls='--', label='Threshold')
 	ax[1].legend(loc=1)
-
 	ax[0].axvline(threshold, color='k', ls='--', label='Threshold')
 	ax[0].legend(loc=1)
 	ax[0].set_yscale('log')
 	
-	paths_sorted = sorted(paths, key = lambda tup: tup[1], reverse = True)
+	paths_sorted = sorted(
+		paths, key = lambda tup: tup[1], reverse = True)
 	top_paths = paths_sorted[0:threshold]
 	fig.savefig(threshold_out['paths_plot'])
 	
@@ -598,7 +601,6 @@ def write_split_fastqs(params):
 		barcodes_writer.close()
 	batch_file.close()
 	return output_files
-
 
 
 def get_args():
