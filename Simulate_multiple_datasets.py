@@ -17,8 +17,8 @@ def run_simulations():
 	BARCODE_LENGTH = 12
 	UMI_LENGTH = 8
 	NUM_READS = 100000
-	NUM_BARCODES = 1000
-	NUM_REPS = 5
+	NUM_BARCODES = 500
+	NUM_REPS = 3
 	
 	abundances = ['normal', 'uniform', 'exponential']
 	error_types = ['any', 'mismatch', 'insertion', 'deletion']
@@ -105,6 +105,8 @@ def get_barcodes_abundance(NUM_BARCODES, abundance_distr = None):
 		abundances += offset
 	elif(abundance_distr == 'exponential'):
 		abundances = np.random.exponential(0.2, NUM_BARCODES)
+		
+	abundances = np.fabs(abundances)
 	abundances /= np.sum(abundances)#normalize
 	
 	return abundances
