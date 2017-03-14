@@ -40,19 +40,17 @@ args = {}
 def run_all(cmdline_args):
 	global args
 	args = cmdline_args
+	output_files = {}
+	output_dir = args['output_dir']
+	output_files['log'] = '%s/run_log.txt' % output_dir
+	sys.stdout = IO_utils.Logger(output_files['log'])
 	
 	print('Running Dropseq_subgraphs\nArgs:%s' % \
 		json.dumps(args, indent = 5))
 	
 	start_time = time.time()
-	
-	output_files = {}
-	output_dir = args['output_dir']
-	output_files['log'] = '%s/run_log.txt' % output_dir
-	sys.stdout = IO_utils.Logger(output_files['log'])
 	reads_unzipped = args['reads']
 	barcodes_unzipped = args['barcodes']
-	
 	print('Initializing redis-db server')
 	kmer_idx_db, kmer_idx_pipe = IO_utils.initialize_redis_pipeline(db=0)
 	print('Indexing reads by circularized kmers')
@@ -84,6 +82,7 @@ def run_all(cmdline_args):
 	output_files['thresholded_paths'] = IO_utils.save_paths_text(
 		output_dir, top_paths, prefix='threshold')
 	kmer_idx_db.flushall()
+	
 	print('Assigning reads')
 	reads_assigned_db, reads_assigned_pipe = assign_all_reads(
 		top_paths, reads_unzipped, barcodes_unzipped)
@@ -98,6 +97,8 @@ def run_all(cmdline_args):
 	
 	print('Flushing assignments index')
 	reads_assigned_db.flushall()
+	kmer_idx_db.client_kill()
+	reads_assigned_db.client_kill()
 	
 	current_time = time.time()
 	elapsed_time = current_time - start_time
@@ -134,6 +135,10 @@ def get_kmer_index_db(params):
 		
 		if(read_count >= MAX_READS_TO_INDEX):
 			break		
+		
+		if(read_count % 1000000 == 0):
+			#only store database of up to 1m reads in memory
+			pipe_out = kmer_idx_pipe.bgsave()
 		
 	return kmer_idx_pipe
 
@@ -272,6 +277,72 @@ def hamming_distance(seq1, seq2):
 	return hamming
 
 def threshold_paths(output_dir, paths):
+	WINDOW = [100, 1000]
+	LOCAL_WINDOW_LEN = 25
+
+	import matplotlib as mpl
+	mpl.use('Agg')
+	from matplotlib import pyplot as plt
+	from scipy import signal
+
+	threshold_out = {
+		'slopes' : '%s/slopes.txt' % output_dir,
+		'paths_plot' : '%s/paths_plotted.pdf' % output_dir}
+
+	fig, ax = plt.subplots(
+		nrows = 1, 
+		ncols = 2,
+		figsize = (8,4))
+		
+	x = range(0, len(paths))
+	y = sorted( [tup[1] for tup in paths], reverse=True)
+	ax[0].step(x,y, label='Cum dist')
+
+	slopes, x = local_lin_fit(np.log10(y), window_len=LOCAL_WINDOW_LEN)
+	ax[1].scatter(x, slopes, color='r', alpha=0.2, s=2, label='Local gradient')
+
+	savgol = signal.savgol_filter(slopes, 251, 4)
+	ax[1].step(x, savgol, label='Savgol filter')
+
+	threshold = int(np.argmax(
+		savgol[WINDOW[0]:WINDOW[1]]) + WINDOW[0] + x[0])
+	ax[1].axvline(threshold, color='k', ls='--', label='Threshold')
+	ax[1].legend(loc=1)
+
+	ax[0].axvline(threshold, color='k', ls='--', label='Threshold')
+	ax[0].legend(loc=1)
+	ax[0].set_yscale('log')
+	
+	paths_sorted = sorted(paths, key = lambda tup: tup[1], reverse = True)
+	top_paths = paths_sorted[0:threshold]
+	fig.savefig(threshold_out['paths_plot'])
+	
+	return threshold, top_paths, threshold_out
+	
+def local_lin_fit(y, window_len=10):
+	from scipy.optimize import curve_fit
+	num_windows = len(y) - window_len
+	slopes = []
+	x = []
+	for window_start in range(0, num_windows):
+		window_x = range(window_start, window_start + window_len)
+		window_y = y[window_start : window_start + window_len]
+		coeff, var_matrix = curve_fit(
+			linear,
+			window_x,
+			window_y,
+			p0=[window_y[-1] - window_y[0], window_y[0]])
+		(slope, intercept) = coeff
+		slopes.append(-slope)
+		x.append(window_start + window_len / 2)
+	return slopes, x
+
+def linear(x, *p):
+	(slope, intercept) = p
+	return slope*x + intercept
+
+"""
+def threshold_paths(output_dir, paths):
 	import matplotlib as mpl
 	mpl.use('Agg')
 	from matplotlib import pyplot as plt
@@ -296,7 +367,7 @@ def threshold_paths(output_dir, paths):
 		figsize = (4,2.5*len(weights_by_depth.items())))
 	
 	gaussian_fits = []
-	NUM_BINS = 50
+	NUM_BINS = 25
 	max_bin = int(np.log10(max(all_weights))) + 2
 	bins = np.logspace(0, max_bin, NUM_BINS)
 	
@@ -312,7 +383,7 @@ def threshold_paths(output_dir, paths):
 			all_weights, hist, NUM_BINS)
 		hist_fit = gaussian(fit_x, *coeff)
 		(amplitude, mean, stdev) = coeff
-		threshold_bin = int(mean - 3*np.fabs(stdev))
+		threshold_bin = int(mean + 3*np.fabs(stdev))
 		threshold = bins[min(threshold_bin, len(bins) - 1)]
 		gaussian_fits.append((i+1, amplitude, mean, stdev, threshold))
 		
@@ -334,28 +405,26 @@ def threshold_paths(output_dir, paths):
 			line = '\t'.join([str(i) for i in tup]) + '\n'
 			writer.write(line)
 	
-	threshold = gaussian_fits[0][4]
+	threshold = gaussian_fits[1][4]
 	top_paths = [path for path in paths if path[1] > threshold]
 	return threshold, top_paths, fit_out
 
 def curve_fit_multi(all_weights, hist, NUM_BINS):
-	"""
-	Attempt to fit a Gaussian to the data in hist
-		Repeat attempts if the fit fails, using random new initial conditions
-	
-	"""
+	#Attempt to fit a Gaussian to the data in hist
+	#	Repeat attempts if the fit fails, using random new initial conditions
 	from scipy.optimize import curve_fit
-	initial_params = [np.max(hist),
-		np.argmax(hist),
-		5]
-	params = initial_params
+	from scipy.signal import argrelmax
+	
+	max_vals = argrelmax(hist, order=2)[0]
 	param_bounds = (
 		[0, 0, 0], 
 		[len(all_weights), NUM_BINS, NUM_BINS])
 	x = range(0, len(hist))#xrange corresponding to bins only
 	
-	count = 0
-	while(True):
+	for i in range(len(max_vals) -1, -1, -1):
+		params = [np.max(hist),
+			np.argmax(hist),
+			max_vals[i]]
 		try:	
 			coeff, var_matrix = curve_fit(
 				gaussian,
@@ -370,16 +439,13 @@ def curve_fit_multi(all_weights, hist, NUM_BINS):
 		params = [np.random.uniform(0, len(all_weights)),
 			np.random.uniform(0, NUM_BINS),
 			np.random.uniform(0, NUM_BINS)]
-		
-		count += 1
-		if(count > 50):
-			break
 	return([-1,-1,-1], []) #some default value here
 
 def gaussian(x, *p):
 	(a, mu, sigma) = p
 	return a*np.exp(-(x-mu)**2/(2.*sigma**2))
-
+"""
+		
 def assign_all_reads(top_paths, reads_unzipped, barcodes_unzipped):
 	MIN_KMER_SIZE = 4
 	MAX_KMER_SIZE = args['barcode_end'] - args['barcode_start']
