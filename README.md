@@ -104,6 +104,10 @@ The following output files will be produced in the example/ directory:
 			Also contains umi.txt and batch.txt files for kalisto single-cell
 		run_log.txt
 		run_outputs.json
+
+The outputs from this command can be visualized with an included ipython notebook. Simply point the notebook to the appropriate run output file [codeblock 3] to re-compute the plots. 
+
+
 	
 
 Use example: 10xGenomics data 
