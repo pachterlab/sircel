@@ -15,7 +15,7 @@ To address insertion and deletion errors, barcodes are also circularized after e
 
 In this graph, a barcode will appear as a circular path of fixed length through this graph. We define the weight of such a path to be that of the lowest-weight edge within this path. We can identify such circular paths in this graph, and such paths represent possible consensus barcode sequences. It should be noted here that reads with either 0 or 1 error can contribute to these weighted paths; reads with 2 or more errors typically do not. 
 
-This path weight can be interpreted as the number of reads that support a given barcode at its lowest-confidence kmer. As such we identify the true consensus barcodes, by selecting the paths with highest weight. This process is typically straightforward, as we have observed (in multiple datasets) that a histogram of circular path weights contains two distinct peaks. We attribute the peak with higher capacity to true barcode sequences.
+This path weight can be interpreted as the number of reads that support a given barcode at its lowest-confidence kmer. As such we identify the true consensus barcodes, by selecting the paths with highest weight. This process is typically straightforward, as we have observed that the cumulative distribution of path weights contains an inflection point corresponding to true paths. This result is seen in a number of simulated and real datasets.
 
 We assign each read in our dataset to a consensus barcode by how many kmers the read shares with the consensus barcode. When computing kmers for this assignment, the value of k can differ from the value used to produce the barcode De Bruijn graph. This allows us to assign reads which might include 2 or more errors.
 
