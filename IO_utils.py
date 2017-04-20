@@ -125,7 +125,7 @@ def get_read_chunks(barcodes, reads, lines=None, random_subset = 1):
 				break_outer = True
 				break
 			
-			if(buffer_count % BUFFER_SIZE == 0):
+			if(buffer_count % BUFFER_SIZE == 0 and buffer_count > 0):
 				#break_inner = True
 				break
 			
