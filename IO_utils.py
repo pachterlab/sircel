@@ -129,7 +129,7 @@ def get_read_chunks(barcodes, reads, lines=None, random_subset = 1):
 				#break_inner = True
 				break
 			
-			if(np.random.uniform(0, 1) <= fraction):
+			if(np.random.uniform(0, 1) <= random_subset):
 				data_buffer.append(
 					(reads_data, 
 					reads_offset, 
