@@ -90,7 +90,7 @@ def unzip(gzipped_lst):
 	out_file.close()
 	return out_file.name
 
-def get_read_chunks(barcodes, reads, lines=None):
+def get_read_chunks(barcodes, reads, lines=None, random_subset = 1):
 	"""
 	Args: 
 		barcodes (unzipped fq file)
@@ -102,7 +102,6 @@ def get_read_chunks(barcodes, reads, lines=None):
 	simultaneously reads two fastq files (line-by-line) and stores data in a list
 	yields this list (chunks of the datasets)
 	"""
-	
 	
 	BUFFER_SIZE = 100000#number of reads in each chunk
 	#size is set to be quite large because updating kmer_idx database is slow
@@ -116,15 +115,28 @@ def get_read_chunks(barcodes, reads, lines=None):
 	break_outer = False
 	while(not break_outer):
 		data_buffer = []#list of tuples(barcodes_data, barcodes_offset, reads_offset)
-		for i in range(0, BUFFER_SIZE):
+		
+		buffer_count = 1
+		while(True):
 			try:
 				reads_data, reads_offset = next(reads_iter)
 				barcodes_data, barcodes_offset = next(barcodes_iter)
 			except StopIteration:
 				break_outer = True
 				break
-			data_buffer.append(
-				(reads_data, reads_offset, barcodes_data, barcodes_offset))
+			
+			if(buffer_count % BUFFER_SIZE == 0):
+				#break_inner = True
+				break
+			
+			if(np.random.uniform(0, 1) <= fraction):
+				data_buffer.append(
+					(reads_data, 
+					reads_offset, 
+					barcodes_data, 
+					barcodes_offset))
+				buffer_count += 1
+			
 		yield data_buffer
 
 def read_fastq_sequential(fq_file, gzip=False):
@@ -255,7 +267,8 @@ def save_paths_text(output_dir, paths, prefix=''):
 	return paths_file
 
 def initialize_redis_pipeline(db=0):
-	redis_db = redis.StrictRedis(host="localhost", port=6379, db=db)
+	redis_db = redis.StrictRedis(host="localhost", port=6379, db=db)#redis
+	
 	redis_db.flushall()
 	redis_pipe = redis_db.pipeline()
 	return redis_db, redis_pipe

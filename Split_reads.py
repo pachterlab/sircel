@@ -29,6 +29,7 @@ import collections
 import itertools
 import gc
 import numpy as np
+np.random.seed(0)
 
 
 from Graph_utils import Edge, Graph, Path
@@ -103,7 +104,6 @@ def run_all(cmdline_args):
 	return(output_files, elapsed_time)
 	
 def get_kmer_index_db(params):
-	MAX_READS_TO_INDEX = 5000000
 	
 	(	kmer_idx_pipe,
 		barcodes_unzipped, 
@@ -115,7 +115,8 @@ def get_kmer_index_db(params):
 	for reads_chunk in IO_utils.get_read_chunks(
 		barcodes_unzipped,
 		reads_unzipped,
-		lines=None):
+		lines = None,
+		random_subset = args['index_depth']):
 				
 		read_count += len(reads_chunk)
 		chunk_kmer_indices = pool.map(
@@ -131,12 +132,8 @@ def get_kmer_index_db(params):
 		del(chunk_kmer_indices); _ = gc.collect()
 		print('\t%i reads indexed' % read_count)
 		
-		#to save time, only index a subset of the reads
-		#TO DO- randomly sample reads instead of sequentially (?)
-		if(read_count >= MAX_READS_TO_INDEX):
-			break
 		"""
-		#snapshot the database if it is not already being written to
+		#snapshot the database 
 		try:
 			pipe_out = kmer_idx_pipe.save()
 		except redis.exceptions.ResponseError:
@@ -654,6 +651,10 @@ def get_args():
 		type=int, 
 		help='Minimum Hamming distance between barcodes.', 
 		default=3)
+	parser.add_argument('--index_depth',
+		type=float,
+		help='Fraction of reads to build kmer index from',
+		default=0.1)
 	
 	return vars(parser.parse_args())
 

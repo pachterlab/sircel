@@ -77,7 +77,7 @@ def run_all(args):
 	split_args['kmer_size'] = args['kmer_size']	
 	split_args['output_dir'] = args['output_dir']
 	split_args['min_dist'] = 2
-
+	split_args['index_depth'] = args['index_depth']
 
 	check_split_input(split_args)
 	print('\n')
@@ -244,6 +244,8 @@ def check_split_input(args):
 		'Cannot find reads file %s' % args['reads']	
 	assert(os.path.exists(args['barcodes'])), \
 		'Cannot find barcodes file %s' % args['barcodes']
+	assert(0 < args['index_depth'] <= 1), \
+		'index_depth must be between 0 and 1'
 
 def get_args():
 	parser = argparse.ArgumentParser(
@@ -299,6 +301,11 @@ def get_args():
 		type=int,
 		help='Minimum Hamming distance between error-corrected barcodes.',
 		default=3)
+	parser.add_argument('--index_depth',
+		type=float,
+		help='Fraction of reads to build kmer index from',
+		default=0.1)
+		
 	return vars(parser.parse_args())
 
 
