@@ -116,7 +116,7 @@ def get_read_chunks(barcodes, reads, lines=None, random_subset = 1):
 	while(not break_outer):
 		data_buffer = []#list of tuples(barcodes_data, barcodes_offset, reads_offset)
 		
-		buffer_count = 1
+		buffer_count = 0
 		while(True):
 			try:
 				reads_data, reads_offset = next(reads_iter)
