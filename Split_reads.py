@@ -276,7 +276,7 @@ def hamming_distance(seq1, seq2):
 	return hamming
 
 def threshold_paths(output_dir, paths):
-	WINDOW = [500, 5000]
+	WINDOW = [100, 1000]
 	LOCAL_WINDOW_LEN = 25
 
 	import matplotlib as mpl
