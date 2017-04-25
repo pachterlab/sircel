@@ -179,8 +179,8 @@ def find_paths(params):
 	
 	starting_kmers = []
 	for kmer in kmers_sorted:
-		if(kmer[0] == '$'):
-			starting_kmers.append(kmer)
+		#if(kmer[0] == '$'):
+		starting_kmers.append(kmer)
 		if(len(starting_kmers) >= args['breadth']):
 			break	
 	
