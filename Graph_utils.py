@@ -11,6 +11,7 @@ A few useful tools for working with Dropseq data
 
 """
 import sys
+import numpy as np
 
 class Edge:
 	def __init__(self, _node, _neighbor, _weight):
