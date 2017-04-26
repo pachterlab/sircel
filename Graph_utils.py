@@ -195,14 +195,14 @@ class Graph:
 				4**(expected_path_length - kmer_size)
 		"""
 		#check if path is too long (fail condition)		
-		if(current_path.get_length() > expected_path_length):
+		if(current_path.get_length() > expected_path_length + 1):
 			return(False, current_path)	
 		#check that this path is possibly part of a cycle (fail condition)
 		if(not current_path.is_possible_cycle(expected_path_length)):
 			return(False, current_path)
 		#check if path is a cycle of expected length (success condition)
 		if(current_path.is_cycle() and 
-			current_path.get_length() == expected_path_length):
+			np.fabs(current_path.get_length() - expected_path_length) <= 1):
 			return(True, current_path)
 		#check if path is a smaller cycle, and if so check for self edges
 		if(current_path.is_cycle() and 
