@@ -7,17 +7,17 @@ Readme.md
 
 Summary
 
-This program separates reads in a fastq file based on barcode sequences that occur at known positions of reads. This is an essential first step in analyzing single-cell genomics data from experiments such as Drop-seq. It should be noted that barcode sequences from Drop-seq experiments often contain deletion errors that arise during barcode synthesis [CITE] and we have designed our barcode splitting approach with this in mind. The abundances and sequences of each barcode are detected in an unbiased manner; however the position within the read where a barcode occurs must be known beforehand. 
+sircel (pronounced "circle")  separates reads in a fastq file based on barcode sequences that occur at known positions of reads. This is an essential first step in analyzing single-cell genomics data from experiments such as Drop-Seq. Barcode sequences often contain deletion and/or mismatch errors that arise during barcode synthesis and sequencing, and we have designed our barcode recovery approach with these issues in mind. In addition to identifying barcodes in an unbiased manner, sircel also quantifies their abundances.
 
-In order to identify barcodes in a deletion-robust manner, we begin by counting k-mers within circularized barcode regions from the reads. Circularization of the barcode portion ensures that an mismatch-containing barcode will share at least one k-mer with the true barcode sequence. This is not the case when using 'linear' barcode sequences for some larger values of k.
+sircel is well-suited for Drop-Seq, in which barcode deletion errors are prevalent. In order to identify barcodes in a deletion-robust manner, sircel begins by counting k-mers in circularized barcodes extracted from the reads. Circularization of the barcode portion ensures that a mismatch-containing barcode will share at least one k-mer with the true barcode sequence. This is not the case when using 'linear' barcode sequences for some larger values of k.
 
-To address insertion and deletion errors, barcodes are also circularized after either appending or deleting one sequenced base. In the case of dropseq barcoded beadas, a deletion will result in the last sequenced position of the barcode actually arising from the first base of the UMI. Conversely an insertion will result in the first base (by position) of the UMI actually arising from the last base of the barcode. As each read might potentially contain an unknown mismatch / insertion / deltion error, each read is converted to three circularized variants. Kmers are then counted from these circularized barcodes, and a De Bruijn graph is built, where a node represents by a kmer, and edges represent two kmers that were adjacent in at least one read. Edges are weighted by how many reads connect those kmers.
+To address insertion and deletion errors, barcodes are also circularized after either appending or deleting one sequenced base. In the case of dropseq barcoded beadas, a deletion will result in the last sequenced position of the barcode actually arising from the first base of the UMI. Conversely an insertion will result in the first base (by position) of the UMI actually arising from the last base of the barcode. As each read might potentially contain an unknown mismatch / insertion / deltion error, each read is converted to three circularized variants. Kmers are then counted from these circularized barcodes, and a De Bruijn graph is constructed where a node represents by a kmer, and edges represent two kmers that were adjacent in at least one read. Edges are weighted by how many reads connect those kmers.
 
 In this graph, a barcode will appear as a circular path of fixed length through this graph. We define the weight of such a path to be that of the lowest-weight edge within this path. We can identify such circular paths in this graph, and such paths represent possible consensus barcode sequences. It should be noted here that reads with either 0 or 1 error can contribute to these weighted paths; reads with 2 or more errors typically do not. 
 
-This path weight can be interpreted as the number of reads that support a given barcode at its lowest-confidence kmer. As such we identify the true consensus barcodes, by selecting the paths with highest weight. This process is typically straightforward, as we have observed that the cumulative distribution of path weights contains an inflection point corresponding to true paths. This result is seen in a number of simulated and real datasets.
+This path weight can be interpreted as the number of reads that support a given barcode at its lowest-confidence kmer. As such we identify the true consensus barcodes by selecting the paths with highest weight. This process is typically straightforward, as we have observed that the cumulative distribution of path weights contains an inflection point corresponding to true paths. This result is seen in a number of simulated and real datasets.
 
-We assign each read in our dataset to a consensus barcode by how many kmers the read shares with the consensus barcode. When computing kmers for this assignment, the value of k can differ from the value used to produce the barcode De Bruijn graph. This allows us to assign reads which might include 2 or more errors.
+We assign each read in our dataset to a consensus barcode based on the number of kmers the read shares with the consensus barcode. When computing kmers for this assignment, the value of k can differ from the value used to produce the barcode De Bruijn graph. This allows us to assign reads which might include 2 or more errors.
 
 Requirements
 
@@ -105,13 +105,6 @@ The following output files will be produced in the example/ directory:
 		run_log.txt
 		run_outputs.json
 
-The outputs from this command can be visualized with an included ipython notebook. Simply point the notebook to the appropriate run output file [codeblock 3] to re-compute the plots. 
-
-
-	
-
-Use example: 10xGenomics data 
-
-	[TO DO]
+The outputs from this command can be visualized with an included ipython notebook. Simply point the notebook to the appropriate run output file [codeblock 3] to re-compute the plots.
 
 
