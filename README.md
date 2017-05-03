@@ -21,7 +21,19 @@ We assign each read in our dataset to a consensus barcode based on the number of
 
 ## Installation
 
+Run the setup py script below. In order to use kallisto to quantify single-cell expression levels after sircel identifies cell barcodes, the --kallisto argument must point to the kallisto binary (version >= 0.43.0). Additionally if running on OSX, the --osx argument must be provided. 
 
+To instal on a mac:
+
+	python3 setup.py install --kallisto PATH_TO_KALLISTO --osx
+
+To install on a linux machine:
+
+	python3 setup.py install --kallisto PATH_TO_KALLISTO
+	
+To install without kallisto:
+
+	python3 setup.py install
 
 
 
