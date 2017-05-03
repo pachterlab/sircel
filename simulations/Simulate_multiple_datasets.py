@@ -157,7 +157,7 @@ def write_reads(params):
 		BARCODE_LENGTH,
 		ALPHABET,
 		UMI_LENGTH,
-		simulation_dir) = params
+		output_dir) = params
 	
 	
 	barcodes_file = '%s/barcodes.fastq.gz' % output_dir
