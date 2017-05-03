@@ -20,8 +20,6 @@ from scipy.spatial.distance import *
 
 def run_all(args):
 	print('\nInspecting and pre-processing input data')
-	print('Args:\n%s' % \
-		json.dumps(args, indent = 5))
 	
 	if(args['output_dir'][-1] == '/'):
 		args['output_dir'] = args['output_dir'][0:-1]
@@ -76,7 +74,7 @@ def run_all(args):
 	split_args['depth'] = args['depth']
 	split_args['kmer_size'] = args['kmer_size']	
 	split_args['output_dir'] = args['output_dir']
-	split_args['min_dist'] = 2
+	split_args['min_dist'] = 1
 	split_args['index_depth'] = args['index_depth']
 
 	check_split_input(split_args)
@@ -300,7 +298,7 @@ def get_args():
 	parser.add_argument('--min_dist',
 		type=int,
 		help='Minimum Hamming distance between error-corrected barcodes.',
-		default=3)
+		default=1)
 	parser.add_argument('--index_depth',
 		type=float,
 		help='Fraction of reads to build kmer index from',
