@@ -95,7 +95,11 @@ def get_barcodes(true_bc_file):
 def get_fraction_correct_reads(pred_bc, simulation_output_dir):
 	fq_file = '%s/reads_split/cell_%s_barcodes.fastq.gz' % \
 		(simulation_output_dir, pred_bc)
-		
+	
+	if not os.path.exists(fq_file):
+		return (0,0)
+	
+	
 	fq_iter = IO_utils.read_fastq_sequential(fq_file, gzip=True)
 	
 	tpr = 0.
