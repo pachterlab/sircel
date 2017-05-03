@@ -1,9 +1,0 @@
-{
-	"n_targets": 261457,
-	"n_bootstraps": 0,
-	"n_processed": 1000000,
-	"kallisto_version": "0.43.0",
-	"index_version": 10,
-	"start_time": "Mon Mar 13 19:28:39 2017",
-	"call": "/home/atambe/software/kallisto_linux-v0.43.0/kallisto pseudo -b ./macosko/1m_reads/kmer_7/reads_split/batch.txt -i kallisto_idx/hgmm_kallisto.idx -o ./macosko/1m_reads/kmer_7/kallisto_outputs -t 32 --umi"
-}
