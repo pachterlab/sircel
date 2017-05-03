@@ -66,7 +66,7 @@ def run_simulations():
 				ALPHABET,
 				UMI_LENGTH,
 				simulation_dir))
-			print('\tSplitting reads')
+			print('\tRunning sircel')
 			run_splitter(simulation_dir)
 			count += 1
 	summary.close()	
@@ -83,7 +83,8 @@ def run_splitter(simulation_dir):
 		'--barcodes', bc_file,
 		'--output_dir', simulation_dir,
 		'--threads', '32',
-		'--dropseq']
+		'--dropseq',
+		'--index_depth', '1']
 	
 	split_reads = subprocess.Popen(cmd)
 	_ = split_reads.communicate()[0]	
