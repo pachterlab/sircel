@@ -151,13 +151,13 @@ def add_multiple_errors(true_barcode, BARCODE_LENGTH, ALPHABET, RATE=2, error_ty
 def write_reads(params):
 	(barcodes,
 		barcode_abundances,
-		err_type,
-		num_reads,
+		error_type,
 		poiss_errors,
+		NUM_READS,
 		BARCODE_LENGTH,
 		ALPHABET,
 		UMI_LENGTH,
-		output_dir) = params
+		simulation_dir) = params
 	
 	
 	barcodes_file = '%s/barcodes.fastq.gz' % output_dir
