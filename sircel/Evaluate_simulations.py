@@ -9,6 +9,7 @@
 """
 import sys
 import IO_utils
+import os
 
 def run_all():
 	#read summary file
