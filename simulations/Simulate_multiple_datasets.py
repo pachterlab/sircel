@@ -151,7 +151,7 @@ def add_multiple_errors(true_barcode, BARCODE_LENGTH, ALPHABET, RATE=2, error_ty
 def write_reads(params):
 	(barcodes,
 		barcode_abundances,
-		error_type,
+		err_type,
 		poiss_errors,
 		num_reads,
 		BARCODE_LENGTH,
@@ -163,7 +163,7 @@ def write_reads(params):
 	barcodes_file = '%s/barcodes.fastq.gz' % output_dir
 	with gzip.open(barcodes_file, 'wb') as writer:
 		for i in range(num_reads):
-			true_barcode = np.random.choice(barcodes, p=barcode_abundances)
+			true_barcode = np.random.choice(barcodes, p = barcode_abundances)
 		
 			mutated_barcode, num_errors = add_multiple_errors(
 				true_barcode, BARCODE_LENGTH, ALPHABET, RATE = poiss_errors, error_type=err_type)
