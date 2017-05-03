@@ -1,11 +1,11 @@
-Readme.md
+##Readme.md
 
 	Akshay Tambe
 	Pachter and Doudna groups
 	UC Berkeley
 
 
-Summary
+##Summary
 
 sircel (pronounced "circle")  separates reads in a fastq file based on barcode sequences that occur at known positions of reads. This is an essential first step in analyzing single-cell genomics data from experiments such as Drop-Seq. Barcode sequences often contain deletion and/or mismatch errors that arise during barcode synthesis and sequencing, and we have designed our barcode recovery approach with these issues in mind. In addition to identifying barcodes in an unbiased manner, sircel also quantifies their abundances.
 
@@ -19,7 +19,14 @@ This path weight can be interpreted as the number of reads that support a given 
 
 We assign each read in our dataset to a consensus barcode based on the number of kmers the read shares with the consensus barcode. When computing kmers for this assignment, the value of k can differ from the value used to produce the barcode De Bruijn graph. This allows us to assign reads which might include 2 or more errors.
 
-Requirements
+##Installation
+
+
+
+
+
+
+##Requirements
 
 	python3
 	numpy
@@ -34,7 +41,7 @@ Requirements
 		Optional. Not needed if only splitting reads by barcode (not quantifying single-cell expression levels)
 
 
-Commandline arguments
+##Commandline arguments
 
 	--dropseq			Use barcode / umi positions from Macosko et al.
 	--10xgenomics		Use barcodes / umi coordinates from 10xGenomics version2 chemistry
@@ -47,7 +54,7 @@ Commandline arguments
 	--breadth			Search breadth through the graph [Default: 1000]
 	--threads			Number of threads to use [Default: 1]
 	
-Optional arguments
+##Optional arguments
 
 	--kallisto_idx		Path to pre-computed kallisto index.
 								If this is provided the script will quantify single-cell expression profiles using kallisto
@@ -77,16 +84,17 @@ This follows from the following python snippet:
 	'UMI'
 
 
-Use example: Dropseq data from Macosko 2015
+##Use example
+####1 million reads from  from Macosko 2015
 
-This tutorial will run this software on an example dataset from Macosko et al (SRR1873277). According to the authors' software we expect ~570 single cells from this dataset. To speed things up we only use the first 1 million reads in the file (rather than ~400 million).Note that if you are not using kallisto to quantify expression levels, omit the --kallisto_idx option. This command will run a complete singe-cell RNA-seq analysis, going from raw, un-split reads to single-cell expression profiles.
+This tutorial will run this software on an example dataset from Macosko et al (SRR1873277). According to the authors' software we expect ~570 single cells from this dataset. To speed things up we only use the first 1 million reads in the file (rather than ~400 million).Note that if you are not using kallisto to quantify expression levels, omit the --kallisto_idx option. This command will run a complete singe-cell RNA-seq analysis, going from raw, un-split reads to single-cell expression profiles. Note that the human / mouse transcriptome fasta can be found at http://bio.math.berkeley.edu/kallisto/transcriptomes/. Build a kallisto index following instrutuions https://pachterlab.github.io/kallisto/starting
 
-	python3 scripts/circular_kmers_pipeline/Split_reads_master.py
+	python3 sircel/sircel_master.py
 		--threads 32
 		--dropseq
 		--output_dir example
-		--reads macosko/1m_reads/SRR1873277_1m_r2.fastq.gz
-		--barcodes macosko/1m_reads/SRR1873277_1m_r1.fastq.gz
+		--reads example/SRR1873277_1m_r2.fastq.gz
+		--barcodes macosko/SRR1873277_1m_r1.fastq.gz
 		--threads 32
 		--kallisto_idx kallisto_idx/hgmm_kallisto.idx
 
