@@ -49,11 +49,16 @@ Commandline arguments
 	
 Optional arguments
 
-	--kallisto_idx		Path to pre-computed kallisto index. If this is provided the script will quantify single-cell expression profiles using kallisto
-	--barcode_start	First position of cell barcode within read in --barcode file. Not needed if --dropseq or --10xgenomics arguments are provided
-	--barcode_end		Last position of cell barcode within read in --barcode file. Not needed if --dropseq or --10xgenomics arguments are provided
-	--umi_start			First position of unique molecule ID within read in --barcode file. Not needed if --dropseq or --10xgenomics arguments are provided
-	--umi_end			Last position of unique molecule ID within read in --barcode file. Not needed if --dropseq or --10xgenomics arguments are provided
+	--kallisto_idx		Path to pre-computed kallisto index.
+								If this is provided the script will quantify single-cell expression profiles using kallisto
+	--barcode_start	First position of cell barcode within read in --barcode file.
+								Not needed if --dropseq or --10xgenomics arguments are provided
+	--barcode_end		Last position of cell barcode within read in --barcode file.
+								Not needed if --dropseq or --10xgenomics arguments are provided
+	--umi_start			First position of unique molecule ID within read in --barcode file.
+								Not needed if --dropseq or --10xgenomics arguments are provided
+	--umi_end			Last position of unique molecule ID within read in --barcode file.
+								Not needed if --dropseq or --10xgenomics arguments are provided
 	
 Note about barcode and UMI position indexing
 Barcode and UMI positions within a read follow the same indexing convension as python strings. For example, the string BARCODEUMI would have coordinates:

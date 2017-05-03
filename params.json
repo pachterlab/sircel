@@ -1,5 +1,0 @@
-{
-	"kallisto" : "/home/atambe/software/kallisto_linux-v0.43.0/kallisto",
-	"zcat" : "zcat",
-	"redis-server" : "redis-server"
-}
