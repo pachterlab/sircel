@@ -60,7 +60,7 @@ def run_simulations():
 			write_reads((true_barcodes,
 				barcode_abundances,
 				error_type,
-				poiss_errors,
+				poiss_error,
 				NUM_READS,
 				BARCODE_LENGTH,
 				ALPHABET,
@@ -144,9 +144,6 @@ def add_multiple_errors(true_barcode, BARCODE_LENGTH, ALPHABET, RATE=2, error_ty
 	"""
 	seq = true_barcode
 	num_errors = np.random.poisson(lam=RATE)
-	if(num_errors == 0):
-		return seq, num_errors
-	
 	for i in range(num_errors):
 		seq = add_single_error(seq, BARCODE_LENGTH, ALPHABET, error_type=error_type)
 	return seq, num_errors
@@ -155,7 +152,7 @@ def write_reads(params):
 	(barcodes,
 		barcode_abundances,
 		err_type,
-		poiss_errors,
+		poiss_error,
 		num_reads,
 		BARCODE_LENGTH,
 		ALPHABET,
@@ -169,7 +166,7 @@ def write_reads(params):
 			true_barcode = np.random.choice(barcodes, p = barcode_abundances)
 		
 			mutated_barcode, num_errors = add_multiple_errors(
-				true_barcode, BARCODE_LENGTH, ALPHABET, RATE = poiss_errors, error_type=err_type)
+				true_barcode, BARCODE_LENGTH, ALPHABET, RATE = poiss_error, error_type=err_type)
 			umi = ''.join(np.random.choice(ALPHABET, UMI_LENGTH))
 			seq = mutated_barcode + umi
 			qual = ''.join(['I' for i in seq])
