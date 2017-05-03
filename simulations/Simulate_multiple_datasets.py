@@ -153,7 +153,7 @@ def write_reads(params):
 		barcode_abundances,
 		error_type,
 		poiss_errors,
-		NUM_READS,
+		num_reads,
 		BARCODE_LENGTH,
 		ALPHABET,
 		UMI_LENGTH,
