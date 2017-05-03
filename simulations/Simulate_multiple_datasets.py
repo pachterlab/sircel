@@ -144,6 +144,9 @@ def add_multiple_errors(true_barcode, BARCODE_LENGTH, ALPHABET, RATE=2, error_ty
 	"""
 	seq = true_barcode
 	num_errors = np.random.poisson(lam=RATE)
+	if(num_errors == 0):
+		return seq, num_errors
+	
 	for i in range(num_errors):
 		seq = add_single_error(seq, BARCODE_LENGTH, ALPHABET, error_type=error_type)
 	return seq, num_errors
