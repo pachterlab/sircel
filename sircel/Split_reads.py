@@ -69,14 +69,16 @@ def run_all(cmdline_args):
 	print('\t%i cyclic paths found' % len(cyclic_paths))
 	output_files['all_paths'] = IO_utils.save_paths_text(
 		output_dir, cyclic_paths, prefix='all')		
+	"""
 	print('Merging similar paths by Hamming distance')
 	merged_paths = merge_paths(cyclic_paths)
 	output_files['merged_paths'] = IO_utils.save_paths_text(
 		output_dir, merged_paths, prefix='merged')	
 	print('\t%i paths remaining after merging' % len(merged_paths))
-	
-	print('Thresholding merged paths')
-	(threshold, top_paths, fit_out) = threshold_paths(output_dir, merged_paths)
+	"""
+			
+	print('Thresholding paths')
+	(threshold, top_paths, fit_out) = threshold_paths(output_dir, all_paths)
 	output_files.update(fit_out)
 	print('\tThreshold is %i' % threshold)
 	print('\t%i paths have weight higher than the threshold' % len(top_paths))
@@ -194,7 +196,14 @@ def find_paths(params):
 				itertools.repeat(barcodes_unzipped),
 				itertools.repeat(barcode_length)))
 		paths += [item for sublist in paths_group for item in sublist]
-	return paths
+	
+	#keep only unique paths
+	unique_paths = {}
+	for lst in paths:
+		key = lst[0]
+		if(key not in unique_paths):
+			unique_paths[key] = lst
+	return list(unique_paths.values())
 
 def find_path_from_kmer(params):
 	(	starting_kmer,
