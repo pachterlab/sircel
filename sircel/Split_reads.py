@@ -295,6 +295,11 @@ def threshold_paths(output_dir, paths):
 		key = tup[0]
 		if(key not in unique_paths):
 			unique_paths[key] = tup
+		else:
+			old_capacity = unique_paths[key][1]
+			current_capacity = tup[1]
+			if(current_capacity > old_capacity):
+				unique_paths[key] = tup
 	paths = list(unique_paths.values())
 	
 
