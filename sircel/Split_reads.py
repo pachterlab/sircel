@@ -197,12 +197,10 @@ def find_paths(params):
 				itertools.repeat(barcode_length)))
 		paths += [item for sublist in paths_group for item in sublist]
 	
-	#alternate option:
-	#	
-	#
-	#
-	#
 	
+	
+	plot_cycles_multi(
+		get_cycles_multi(paths))
 	
 	#keep only unique paths
 	unique_paths = {}
@@ -211,6 +209,35 @@ def find_paths(params):
 		if(key not in unique_paths):
 			unique_paths[key] = lst
 	return list(unique_paths.values())
+
+def get_cycles_multi(paths):
+	paths_multi = {}
+	for path in paths:
+		(seq, weight, depth, nodes) = path
+		start_node = nodes[0]
+		if(seq not in paths_multi.keys()):
+			paths_multi[seq] = []
+		paths_multi[seq].append((start_node, weight))
+	return paths_multi
+
+def plot_cycles_multi(paths_multi):
+	#plots a scatter plot of mean vs variance over mean for capacity
+	
+	import matplotlib as mpl
+	mpl.use('Agg')
+	from matplotlib import pyplot as plt
+	from scipy import signal
+	
+	mean_capacity = []
+	std_capacity = []
+	for lst in paths_multi.values():
+		mean_capacity = np.mean([tup[1] for tup in lst])
+		std_capacity = np.std([tup[1] for tup in lst])
+	
+	ax.scatter(mean_capacity, std_capacity**2)
+	
+	fig.savefig('./mean_variance_paths.pdf')
+
 
 def find_path_from_kmer(params):
 	(	starting_kmer,
@@ -356,111 +383,6 @@ def local_lin_fit(y, window_len=10):
 def linear(x, *p):
 	(slope, intercept) = p
 	return slope*x + intercept
-
-"""
-def threshold_paths(output_dir, paths):
-	import matplotlib as mpl
-	mpl.use('Agg')
-	from matplotlib import pyplot as plt
-	
-	
-	fit_out = {
-		'gaussian_fits' : '%s/fits.txt' % output_dir,
-		'paths_plot' : '%s/paths_plotted.pdf' % output_dir}
-	
-	weights_by_depth = {}
-	all_weights = []
-	for path in paths:
-		(name, weight, depth, kmers) = path
-		if(depth not in weights_by_depth.keys()):
-			weights_by_depth[depth] = []
-		weights_by_depth[depth].append(int(weight))
-		all_weights.append(weight)
-	
-	fig, ax = plt.subplots(
-		nrows = len(weights_by_depth.items()), 
-		ncols = 1,
-		figsize = (4,2.5*len(weights_by_depth.items())))
-	
-	gaussian_fits = []
-	NUM_BINS = 25
-	max_bin = int(np.log10(max(all_weights))) + 2
-	bins = np.logspace(0, max_bin, NUM_BINS)
-	
-	for (i, key) in enumerate(sorted(weights_by_depth.keys())):
-		weights = weights_by_depth[key]
-		hist, _ = np.histogram(weights, bins=bins)
-		bin_centers = (bins[:-1] + bins[1:])/2
-		
-		#params: amplitude, mean, stdev
-		fit_x = range(0, len(hist))#xrange corresponding to bins only
-		
-		(coeff, var_matrix) = curve_fit_multi(
-			all_weights, hist, NUM_BINS)
-		hist_fit = gaussian(fit_x, *coeff)
-		(amplitude, mean, stdev) = coeff
-		threshold_bin = int(mean + 3*np.fabs(stdev))
-		threshold = bins[min(threshold_bin, len(bins) - 1)]
-		gaussian_fits.append((i+1, amplitude, mean, stdev, threshold))
-		
-		ax[i].step(bin_centers, hist, label = 'Depth = %i' % key, color = 'b')		
-		ax[i].axvline(threshold, color = 'k', ls = '-.', label='Mean + 3 stdev')
-		ax[i].plot(bin_centers, hist_fit, label='Gaussian fit', color = 'grey')
-
-		ax[i].set_xscale('log')
-		ax[i].legend(loc='best', fontsize=8)
-		ax[i].set_xlabel('Path capacity')
-		ax[i].set_ylabel('Count')
-	plt.tight_layout()
-	
-	fig.savefig(fit_out['paths_plot'])
-	with open(fit_out['gaussian_fits'], 'w') as writer:
-		writer.write(
-			'\t'.join(['depth', 'amplitude', 'mean', 'stdev', 'threshold']) + '\n')
-		for tup in gaussian_fits:
-			line = '\t'.join([str(i) for i in tup]) + '\n'
-			writer.write(line)
-	
-	threshold = gaussian_fits[1][4]
-	top_paths = [path for path in paths if path[1] > threshold]
-	return threshold, top_paths, fit_out
-
-def curve_fit_multi(all_weights, hist, NUM_BINS):
-	#Attempt to fit a Gaussian to the data in hist
-	#	Repeat attempts if the fit fails, using random new initial conditions
-	from scipy.optimize import curve_fit
-	from scipy.signal import argrelmax
-	
-	max_vals = argrelmax(hist, order=2)[0]
-	param_bounds = (
-		[0, 0, 0], 
-		[len(all_weights), NUM_BINS, NUM_BINS])
-	x = range(0, len(hist))#xrange corresponding to bins only
-	
-	for i in range(len(max_vals) -1, -1, -1):
-		params = [np.max(hist),
-			np.argmax(hist),
-			max_vals[i]]
-		try:	
-			coeff, var_matrix = curve_fit(
-				gaussian,
-				x,
-				hist,
-				p0 = params,
-				bounds = param_bounds)
-			return(coeff, var_matrix)
-		except RuntimeError:
-			pass
-		#find / randomize new initial conditions and try again
-		params = [np.random.uniform(0, len(all_weights)),
-			np.random.uniform(0, NUM_BINS),
-			np.random.uniform(0, NUM_BINS)]
-	return([-1,-1,-1], []) #some default value here
-
-def gaussian(x, *p):
-	(a, mu, sigma) = p
-	return a*np.exp(-(x-mu)**2/(2.*sigma**2))
-"""
 		
 def assign_all_reads(top_paths, reads_unzipped, barcodes_unzipped):
 	MIN_KMER_SIZE = 4
