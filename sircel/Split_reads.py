@@ -69,15 +69,8 @@ def run_all(cmdline_args):
 		output_dir))	
 	print('\t%i cyclic paths found' % len(cyclic_paths))
 	output_files['all_paths'] = IO_utils.save_paths_text(
-		output_dir, cyclic_paths, prefix='all')		
-	"""
-	print('Merging similar paths by Hamming distance')
-	merged_paths = merge_paths(cyclic_paths)
-	output_files['merged_paths'] = IO_utils.save_paths_text(
-		output_dir, merged_paths, prefix='merged')	
-	print('\t%i paths remaining after merging' % len(merged_paths))
-	"""
-			
+		output_dir, cyclic_paths, prefix='all')
+	
 	print('Thresholding paths')
 	(threshold, top_paths, fit_out) = threshold_paths(output_dir, cyclic_paths)
 	output_files.update(fit_out)
@@ -202,16 +195,6 @@ def find_paths(params):
 	plot_cycles_multi(
 		get_cycles_multi(paths), output_dir)
 	
-	"""
-	#keep only unique paths
-	unique_paths = {}
-	for tup in paths:
-		key = tup[0]
-		if(key not in unique_paths):
-			unique_paths[key] = tup
-	return list(unique_paths.values())
-	"""
-	
 	return paths
 
 def get_cycles_multi(paths):
@@ -245,7 +228,6 @@ def plot_cycles_multi(paths_multi, output_dir):
 			y.append(tup[1])
 		ax.plot(x, sorted(y, reverse=True), color = 'b', alpha = 0.01)
 	fig.savefig('%s/mean_variance_paths.pdf' % output_dir)
-
 
 def find_path_from_kmer(params):
 	(	starting_kmer,
@@ -303,32 +285,18 @@ def build_subgraph(reads_in_subgraph, barcodes_unzipped):
 	subgraph = Graph(edges)
 	return subgraph
 
-def merge_paths(paths):
-	paths_sorted = sorted(paths, key = lambda tup: tup[1])
-	num_paths = len(paths)
-	
-	get_seq = lambda paths, i: paths[i][0]
-	paths_merged = {tup[0] : tup for tup in paths_sorted}
-	
-	for (i, path) in enumerate(paths_sorted):
-		for j in range(i+1, num_paths):
-			hamming = hamming_distance(get_seq(paths, i), get_seq(paths, j))
-			if(hamming <= args['min_dist']):
-				bad_path = min([paths[i], paths[j]], key = lambda tup: tup[1])
-				if(bad_path[0] in paths_merged.keys()):
-					del(paths_merged[bad_path[0]])
-	return list(paths_merged.values())
-
-def hamming_distance(seq1, seq2):
-	hamming = 0
-	for (i,j) in zip(seq1, seq2):
-		if(i != j):
-			hamming += 1
-	return hamming
-
 def threshold_paths(output_dir, paths):
 	WINDOW = [200, 1000]
 	LOCAL_WINDOW_LEN = 25
+	
+	#keep only unique paths
+	unique_paths = {}
+	for tup in paths:
+		key = tup[0]
+		if(key not in unique_paths):
+			unique_paths[key] = tup
+	paths = list(unique_paths.values())
+	
 
 	import matplotlib as mpl
 	mpl.use('Agg')
