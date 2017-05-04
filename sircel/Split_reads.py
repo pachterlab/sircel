@@ -236,12 +236,12 @@ def plot_cycles_multi(paths_multi, output_dir):
 		figsize = (4,4))
 	
 	mean_capacity = []
-	std_capacity = []
+	var_capacity = []
 	for lst in paths_multi.values():
 		mean_capacity.append(np.mean([tup[1] for tup in lst]))
-		std_capacity.append(np.std([tup[1] for tup in lst]))
+		var_capacity.append(np.std([tup[1] for tup in lst])**2)
 	
-	ax.scatter(mean_capacity, std_capacity**2)
+	ax.scatter(mean_capacity, var_capacity**2)
 	
 	fig.savefig('%s/mean_variance_paths.pdf' % output_dir)
 
