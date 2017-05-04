@@ -236,16 +236,15 @@ def plot_cycles_multi(paths_multi, output_dir):
 		figsize = (4,4))
 	
 	means = []
-	variances = []
+	std = []
 	for lst in paths_multi.values():
 		path_mean = np.mean([tup[1] for tup in lst])
-		path_variance = (np.std([tup[1] for tup in lst]))**2
+		path_std = (np.std([tup[1] for tup in lst]))
 		
 		means.append(path_mean)
-		variances.append(path_variance)
-	
-	ax.scatter(means, variances)
-	
+		std.append(path_std)
+
+	ax.scatter(means, std, alpha = 0.1)
 	fig.savefig('%s/mean_variance_paths.pdf' % output_dir)
 
 
@@ -364,6 +363,8 @@ def threshold_paths(output_dir, paths):
 	ax[0].axvline(threshold, color='k', ls='--', label='Threshold')
 	ax[0].legend(loc=1)
 	ax[0].set_yscale('log')
+	ax[0].set_xscale('log')
+	ax[1].set_xscale('log')
 	
 	paths_sorted = sorted(
 		paths, key = lambda tup: tup[1], reverse = True)
