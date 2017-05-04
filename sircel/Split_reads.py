@@ -78,7 +78,7 @@ def run_all(cmdline_args):
 	"""
 			
 	print('Thresholding paths')
-	(threshold, top_paths, fit_out) = threshold_paths(output_dir, all_paths)
+	(threshold, top_paths, fit_out) = threshold_paths(output_dir, cyclic_paths)
 	output_files.update(fit_out)
 	print('\tThreshold is %i' % threshold)
 	print('\t%i paths have weight higher than the threshold' % len(top_paths))
@@ -196,6 +196,13 @@ def find_paths(params):
 				itertools.repeat(barcodes_unzipped),
 				itertools.repeat(barcode_length)))
 		paths += [item for sublist in paths_group for item in sublist]
+	
+	#alternate option:
+	#	
+	#
+	#
+	#
+	
 	
 	#keep only unique paths
 	unique_paths = {}
