@@ -65,7 +65,8 @@ def run_all(cmdline_args):
 		(kmer_idx_pipe,
 		kmer_counts,
 		barcodes_unzipped, 
-		reads_unzipped))	
+		reads_unzipped,
+		output_dir))	
 	print('\t%i cyclic paths found' % len(cyclic_paths))
 	output_files['all_paths'] = IO_utils.save_paths_text(
 		output_dir, cyclic_paths, prefix='all')		
@@ -172,7 +173,8 @@ def find_paths(params):
 	(	kmer_idx_pipe,
 		kmer_counts,
 		barcodes_unzipped, 
-		reads_unzipped) = params
+		reads_unzipped,
+		output_dir) = params
 	barcode_length = args['barcode_end'] - args['barcode_start']
 	kmers_sorted = [tup[0] for tup in sorted(
 		list(kmer_counts.items()),
@@ -200,7 +202,7 @@ def find_paths(params):
 	
 	
 	plot_cycles_multi(
-		get_cycles_multi(paths))
+		get_cycles_multi(paths), output_dir)
 	
 	#keep only unique paths
 	unique_paths = {}
@@ -220,7 +222,7 @@ def get_cycles_multi(paths):
 		paths_multi[seq].append((start_node, weight))
 	return paths_multi
 
-def plot_cycles_multi(paths_multi):
+def plot_cycles_multi(paths_multi, output_dir):
 	#plots a scatter plot of mean vs variance over mean for capacity
 	
 	import matplotlib as mpl
@@ -241,7 +243,7 @@ def plot_cycles_multi(paths_multi):
 	
 	ax.scatter(mean_capacity, std_capacity**2)
 	
-	fig.savefig('./mean_variance_paths.pdf')
+	fig.savefig('%s/mean_variance_paths.pdf' % output_dir)
 
 
 def find_path_from_kmer(params):
