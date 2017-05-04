@@ -243,10 +243,7 @@ def plot_cycles_multi(paths_multi, output_dir):
 		for i, tup in enumerate(lst):
 			x.append(i + 1)
 			y.append(tup[1])
-		ax.plot(x, y, color = 'b', alpha = 0.01)
-			
-
-	ax.scatter(means, std, alpha = 0.1)
+		ax.plot(x, sorted(y, reverse=True), color = 'b', alpha = 0.01)
 	fig.savefig('%s/mean_variance_paths.pdf' % output_dir)
 
 
