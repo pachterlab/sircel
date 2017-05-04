@@ -52,9 +52,9 @@ prepare params.json
 """
 
 import json 
-params['sircel'] = './sircel/sircel_master.py'
 
-
+current_path = os.path.dirname(os.path.abspath(__file__))
+params['sircel'] = current_path + '/sircel/sircel_master.py'
 with open('./sircel/params.json', 'w') as writer:
 	writer.write(json.dumps(params, indent = 3))
 
