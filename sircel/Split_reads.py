@@ -199,18 +199,20 @@ def find_paths(params):
 				itertools.repeat(barcode_length)))
 		paths += [item for sublist in paths_group for item in sublist]
 	
-	
-	
 	plot_cycles_multi(
 		get_cycles_multi(paths), output_dir)
 	
+	"""
 	#keep only unique paths
 	unique_paths = {}
-	for lst in paths:
-		key = lst[0]
+	for tup in paths:
+		key = tup[0]
 		if(key not in unique_paths):
-			unique_paths[key] = lst
+			unique_paths[key] = tup
 	return list(unique_paths.values())
+	"""
+	
+	return paths
 
 def get_cycles_multi(paths):
 	paths_multi = {}
@@ -235,14 +237,14 @@ def plot_cycles_multi(paths_multi, output_dir):
 		ncols = 1,
 		figsize = (4,4))
 	
-	means = []
-	std = []
 	for lst in paths_multi.values():
-		path_mean = np.mean([tup[1] for tup in lst])
-		path_std = (np.std([tup[1] for tup in lst]))
-		
-		means.append(path_mean)
-		std.append(path_std)
+		x = []
+		y = []
+		for i, tup in enumerate(lst):
+			x.append(i + 1)
+			y.append(tup[1])
+		ax.plot(x, y, color = 'b', alpha = 0.01)
+			
 
 	ax.scatter(means, std, alpha = 0.1)
 	fig.savefig('%s/mean_variance_paths.pdf' % output_dir)
