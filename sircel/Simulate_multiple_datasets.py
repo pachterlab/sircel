@@ -87,7 +87,7 @@ def run_sircel(simulation_dir):
 		'--output_dir', simulation_dir,
 		'--threads', '32',
 		'--depth', '10',
-		'--breadth', '10000'
+		'--breadth', '10000',
 		'--dropseq',
 		'--index_depth', '1']
 	
