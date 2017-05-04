@@ -258,8 +258,6 @@ def find_path_from_kmer(params):
 		if(counter > args['depth']):
 			break
 		counter += 1
-	#merge similar paths by hamming distance
-	merged_paths = merge_paths(paths)
 	return merged_paths
 
 def build_subgraph(reads_in_subgraph, barcodes_unzipped):
