@@ -233,13 +233,13 @@ def plot_cycles_multi(paths_multi, output_dir):
 	fig, ax = plt.subplots(
 		nrows = 1, 
 		ncols = 1,
-		figsize = (1,4))
+		figsize = (4,4))
 	
 	mean_capacity = []
 	std_capacity = []
 	for lst in paths_multi.values():
-		mean_capacity = np.mean([tup[1] for tup in lst])
-		std_capacity = np.std([tup[1] for tup in lst])
+		mean_capacity.append(np.mean([tup[1] for tup in lst]))
+		std_capacity.append(np.std([tup[1] for tup in lst]))
 	
 	ax.scatter(mean_capacity, std_capacity**2)
 	
