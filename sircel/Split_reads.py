@@ -228,6 +228,11 @@ def plot_cycles_multi(paths_multi):
 	from matplotlib import pyplot as plt
 	from scipy import signal
 	
+	fig, ax = plt.subplots(
+		nrows = 1, 
+		ncols = 1,
+		figsize = (1,4))
+	
 	mean_capacity = []
 	std_capacity = []
 	for lst in paths_multi.values():
