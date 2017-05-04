@@ -22,7 +22,7 @@ def run_simulations():
 	
 	abundances = ['normal', 'uniform', 'exponential']
 	error_types = ['any', 'mismatch', 'insertion', 'deletion']
-	poiss_errors = list(range(0, 5))
+	poiss_errors = list(range(0, 4))
 	
 	output_dir = sys.argv[1]
 	if not os.path.exists(output_dir):
@@ -72,17 +72,22 @@ def run_simulations():
 	summary.close()	
 	
 def run_sircel(simulation_dir):
-	
+	with open(sys.path[0] + '/params.json', 'r') as r:
+		params = json.load(r)
+		
+	sircel_master = params['sircel']
 	
 	bc_file = '%s/barcodes.fastq.gz' % simulation_dir
 	output_dir = '%s/barcodes_split' % simulation_dir
 	
-	cmd = ['python3', split_reads_master, 
+	cmd = ['python3', sircel_master, 
 		'--dropseq',
 		'--reads', bc_file,
 		'--barcodes', bc_file,
 		'--output_dir', simulation_dir,
 		'--threads', '32',
+		'--depth', '10',
+		'--breadth', '10000'
 		'--dropseq',
 		'--index_depth', '1']
 	
