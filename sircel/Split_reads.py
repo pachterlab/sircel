@@ -258,7 +258,7 @@ def find_path_from_kmer(params):
 		if(counter > args['depth']):
 			break
 		counter += 1
-	return merged_paths
+	return paths
 
 def build_subgraph(reads_in_subgraph, barcodes_unzipped):
 	barcodes_iter = IO_utils.read_fastq_random(
