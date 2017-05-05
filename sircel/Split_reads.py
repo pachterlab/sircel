@@ -386,7 +386,7 @@ def plot_capacity_vs_depth(params):
 
 	print('Finding second tier paths')
 	_, start_nodes_required = get_paths_dict(first_paths)
-	print('\t%i second round paths needed' % len(start_nodes_required))
+	print('\t%i second round subgraphs needed' % len(start_nodes_required))
 	second_paths = find_paths(
 		(kmer_idx_pipe,
 		kmer_counts,
@@ -396,7 +396,7 @@ def plot_capacity_vs_depth(params):
 		starting_kmers = list(start_nodes_required))
 	print('\t%i second round paths found' % len(first_paths))
 	output_files['second_round_paths'] = IO_utils.save_paths_text(
-		output_dir, cyclic_paths, prefix='second')	
+		output_dir, second_paths, prefix='second')	
 
 	#merge paths
 	paths = first_paths + second_paths
