@@ -410,12 +410,12 @@ def plot_capacity_vs_depth(params):
 
 	top_paths = []
 	#for each path in dict, get mean and std ranks and capacities
-	for seq, paths in paths_dict.items():
-		mean_capacity = np.mean([tup[0] for tup in paths])
-		std_capacity = np.std([tup[0] for tup in paths])
+	for seq, items in paths_dict.items():
+		mean_capacity = np.mean([tup[0] for tup in items.values()])
+		std_capacity = np.std([tup[0] for tup in items.values()])
 	
-		mean_depth = np.mean([tup[1] for tup in paths])
-		std_depth = np.std([tup[1] for tup in paths])
+		mean_depth = np.mean([tup[1] for tup in items.values()])
+		std_depth = np.std([tup[1] for tup in items.values()])
 
 		ax.scatter(
 			mean_capacity, 
