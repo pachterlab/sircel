@@ -60,6 +60,14 @@ def run_all(cmdline_args):
 	kmer_counts = get_kmer_counts(kmer_idx_db, kmer_idx_pipe)
 	print('\t%i kmers indexed' % len(kmer_counts.items()))
 	
+	_ = plot_capacity_vs_depth((kmer_idx_pipe,
+			kmer_counts,
+			barcodes_unzipped, 
+			reads_unzipped,
+			output_dir))
+	
+	
+	
 	print('Finding cyclic paths')
 	cyclic_paths = find_paths(
 		(kmer_idx_pipe,
@@ -165,7 +173,7 @@ def get_kmer_counts(kmer_idx_db, kmer_idx_pipe):
 			pass
 	return kmer_counts
 
-def find_paths(params):
+def find_paths(params, starting_kmers = None):
 	(	kmer_idx_pipe,
 		kmer_counts,
 		barcodes_unzipped, 
@@ -177,12 +185,13 @@ def find_paths(params):
 		key = lambda tup: tup[1],
 		reverse = True)]
 	
-	starting_kmers = []
-	for kmer in kmers_sorted:
-		#if(kmer[0] == '$'):
-		starting_kmers.append(kmer)
-		if(len(starting_kmers) >= args['breadth']):
-			break	
+	if(starting_kmers == None):
+		starting_kmers = []
+		for kmer in kmers_sorted:
+			#if(kmer[0] == '$'):
+			starting_kmers.append(kmer)
+			if(len(starting_kmers) >= args['breadth']):
+				break	
 	
 	pool = Pool(processes = args['threads'])
 	paths = []
@@ -194,43 +203,7 @@ def find_paths(params):
 				itertools.repeat(barcodes_unzipped),
 				itertools.repeat(barcode_length)))
 		paths += [item for sublist in paths_group for item in sublist]
-	
-	plot_cycles_multi(
-		get_cycles_multi(paths), output_dir)
-	
 	return paths
-
-def get_cycles_multi(paths):
-	paths_multi = {}
-	for path in paths:
-		(seq, weight, depth, nodes) = path
-		start_node = nodes[0]
-		if(seq not in paths_multi.keys()):
-			paths_multi[seq] = []
-		paths_multi[seq].append((start_node, weight))
-	return paths_multi
-
-def plot_cycles_multi(paths_multi, output_dir):
-	#plots a scatter plot of mean vs variance over mean for capacity
-	
-	import matplotlib as mpl
-	mpl.use('Agg')
-	from matplotlib import pyplot as plt
-	from scipy import signal
-	
-	fig, ax = plt.subplots(
-		nrows = 1, 
-		ncols = 1,
-		figsize = (4,4))
-	
-	for lst in paths_multi.values():
-		x = []
-		y = []
-		for i, tup in enumerate(lst):
-			x.append(i + 1)
-			y.append(tup[1])
-		ax.plot(x, sorted(y, reverse=True), color = 'b', alpha = 0.01)
-	fig.savefig('%s/mean_variance_paths.pdf' % output_dir)
 
 def find_path_from_kmer(params):
 	(	starting_kmer,
@@ -261,7 +234,8 @@ def find_path_from_kmer(params):
 		if(counter > args['depth']):
 			break
 		counter += 1
-	return paths
+	
+	return merge_paths(paths)
 
 def build_subgraph(reads_in_subgraph, barcodes_unzipped):
 	barcodes_iter = IO_utils.read_fastq_random(
@@ -345,7 +319,7 @@ def threshold_paths(output_dir, paths):
 	fig.savefig(threshold_out['paths_plot'])
 	
 	return threshold, top_paths, threshold_out
-	
+
 def local_lin_fit(y, window_len=10):
 	from scipy.optimize import curve_fit
 	num_windows = len(y) - window_len
@@ -367,6 +341,115 @@ def local_lin_fit(y, window_len=10):
 def linear(x, *p):
 	(slope, intercept) = p
 	return slope*x + intercept
+	
+def merge_paths(paths):
+	paths_sorted = sorted(paths, key = lambda tup: tup[1])
+	num_paths = len(paths)
+	
+	get_seq = lambda paths, i: paths[i][0]
+	paths_merged = {tup[0] : tup for tup in paths_sorted}
+	
+	for (i, path) in enumerate(paths_sorted):
+		for j in range(i+1, num_paths):
+			hamming = hamming_distance(get_seq(paths, i), get_seq(paths, j))
+			if(hamming <= args['min_dist']):
+				bad_path = min([paths[i], paths[j]], key = lambda tup: tup[1])
+				if(bad_path[0] in paths_merged.keys()):
+					del(paths_merged[bad_path[0]])
+	return list(paths_merged.values())
+
+def hamming_distance(seq1, seq2):
+	hamming = 0
+	for (i,j) in zip(seq1, seq2):
+		if(i != j):
+			hamming += 1
+	return hamming	
+	
+def plot_capacity_vs_depth(params):
+	(kmer_idx_pipe,
+		kmer_counts,
+		barcodes_unzipped, 
+		reads_unzipped,
+		output_dir) = params
+
+	print('Finding first round cyclic paths')
+	initial_paths = find_paths(
+		(kmer_idx_pipe,
+		kmer_counts,
+		barcodes_unzipped, 
+		reads_unzipped,
+		output_dir))	
+	print('\t%i initial paths found' % len(initial_paths))
+	output_files['first_round_paths'] = IO_utils.save_paths_text(
+		output_dir, cyclic_paths, prefix='first')
+
+	print('Finding second tier paths')
+	_, start_nodes_required = get_paths_dict(paths)
+	new_paths = find_paths(
+		(kmer_idx_pipe,
+		kmer_counts,
+		barcodes_unzipped, 
+		reads_unzipped,
+		output_dir),
+		starting_kmers = list(start_nodes_required))
+	print('\t%i second round paths found' % len(initial_paths))
+	output_files['second_round_paths'] = IO_utils.save_paths_text(
+		output_dir, cyclic_paths, prefix='second')	
+
+	#merge paths
+	paths = paths + new_paths
+	paths_dict, _ = get_paths_dict(paths)
+
+
+	import matplotlib as mpl
+	mpl.use('Agg')
+	from matplotlib import pyplot as plt
+	from scipy import signal
+
+	top_paths = []
+	#for each path in dict, get mean and std ranks and capacities
+	for seq, paths in paths_dict.items():
+		mean_capacity = np.mean([tup[0] for tup in paths])
+		std_capacity = np.std([tup[0] for tup in paths])
+	
+		mean_depth = np.mean([tup[1] for tup in paths])
+		std_depth = np.std([tup[1] for tup in paths])
+
+		ax.scatter(
+			mean_capacity, 
+			mean_depth,
+			xerr = std_capacity,
+			yerr = std_depth,
+			alpha = 0.5)
+	fig.savefig('%s/capacity_vs_depth.pdf' % output_dir)
+
+def get_paths_dict(paths):
+	paths_dict = {}
+	#paths_dict[seq] -> {
+	#	start_node : (capaciy, depth), 
+	#	start_node : (capacity, depth), ...}
+
+	observed_start_nodes = set()
+	all_nodes = set()
+
+	for tup in paths:
+		(seq, capacity, depth, nodes) = tup
+		all_nodes.update(nodes)
+	
+		start_node = nodes[0]
+		if seq not in paths_dict.keys():
+			paths_dict[seq] = {}
+		path_entries = paths_dict[seq]
+		if start_node not in path_entries:
+			path_entries[start_node] = (capacity, depth)
+		observed_start_nodes.add(start_node)
+	
+	start_nodes_required = all_nodes - observed_start_nodes
+	return paths_dict, start_nodes_required
+	
+	
+	
+	
 		
 def assign_all_reads(top_paths, reads_unzipped, barcodes_unzipped):
 	MIN_KMER_SIZE = 4
