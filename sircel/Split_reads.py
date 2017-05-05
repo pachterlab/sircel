@@ -158,8 +158,11 @@ def index_read(params):
 def get_kmer_counts(kmer_idx_db, kmer_idx_pipe):
 	kmer_counts = {}
 	for key in kmer_idx_db.keys():
-		entries = IO_utils.get_from_db(kmer_idx_pipe,[key])[0]
-		kmer_counts[key.decode('utf-8')] = len(entries)
+		try:
+			entries = IO_utils.get_from_db(kmer_idx_pipe,[key])[0]
+			kmer_counts[key.decode('utf-8')] = len(entries)
+		except IndexError:
+			pass
 	return kmer_counts
 
 def find_paths(params):
@@ -483,7 +486,12 @@ def write_split_fastqs(params):
 		barcodes_writer = gzip.open(output_files[cell_name]['barcodes'], 'wb')
 		umi_writer = open(output_files[cell_name]['umi'], 'wb')
 		
-		cell_offsets = IO_utils.get_from_db(reads_assigned_pipe, [cell])[0]
+		try:
+			cell_offsets = IO_utils.get_from_db(reads_assigned_pipe, [cell])[0]
+		except IndexError:
+			pass
+			
+			
 		assert len(cell_offsets) % 2 == 0, \
 			'Cell offsets must contain an even number of entries'
 		reads_iter = IO_utils.read_fastq_random(
