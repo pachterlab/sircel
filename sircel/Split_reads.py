@@ -381,10 +381,11 @@ def plot_capacity_vs_depth(params):
 		output_dir))	
 	print('\t%i initial paths found' % len(initial_paths))
 	output_files['first_round_paths'] = IO_utils.save_paths_text(
-		output_dir, cyclic_paths, prefix='first')
+		output_dir, initial_paths, prefix='first')
 
 	print('Finding second tier paths')
 	_, start_nodes_required = get_paths_dict(paths)
+	print('\t%i second round paths needed' % len(start_nodes_required))
 	new_paths = find_paths(
 		(kmer_idx_pipe,
 		kmer_counts,
