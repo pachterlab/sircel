@@ -219,7 +219,8 @@ def run_sircel(simulation_dir):
 		'--depth', '10',
 		'--breadth', '10000',
 		'--dropseq',
-		'--index_depth', '1']
+		'--index_depth', '1',
+		'--kmer_size', '9']
 	
 	split_reads = subprocess.Popen(cmd)
 	_ = split_reads.communicate()[0]	

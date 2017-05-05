@@ -284,7 +284,7 @@ def build_subgraph(reads_in_subgraph, barcodes_unzipped):
 	return subgraph
 
 def threshold_paths(output_dir, paths):
-	WINDOW = [200, 1000]
+	WINDOW = [100, 5000]
 	LOCAL_WINDOW_LEN = 25
 	
 	#keep only unique paths
