@@ -366,6 +366,7 @@ def hamming_distance(seq1, seq2):
 	return hamming	
 	
 def plot_capacity_vs_depth(params):
+	output_files = {}
 	(kmer_idx_pipe,
 		kmer_counts,
 		barcodes_unzipped, 
