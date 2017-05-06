@@ -425,7 +425,6 @@ def plot_capacity_vs_depth(params):
 			mean_depth,
 			#xerr = std_capacity,
 			#yerr = std_depth,
-			capsize = 0,
 			color = 'b')
 	ax.set_xscale('log')
 	fig.savefig('%s/capacity_vs_depth.png' % output_dir)
