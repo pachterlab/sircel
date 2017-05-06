@@ -18,8 +18,6 @@ Split reads for dropseq data
 4. Assign reads
 		For each read, find the path that it shares the most kmers with
 """
-
-import IO_utils
 import argparse
 import os
 import sys
@@ -29,11 +27,11 @@ import collections
 import itertools
 import gc
 import numpy as np
+from multiprocessing import Pool 
 np.random.seed(0)
 
-
+import IO_utils
 from Graph_utils import Edge, Graph, Path
-from multiprocessing import Pool 
 
 
 args = {}
@@ -380,11 +378,11 @@ def plot_capacity_vs_depth(params):
 		barcodes_unzipped, 
 		reads_unzipped,
 		output_dir))	
-	print('\t%i initial paths found' % len(first_paths))
+	print('\t%i first round paths found' % len(first_paths))
 	output_files['first_round_paths'] = IO_utils.save_paths_text(
 		output_dir, first_paths, prefix='first')
 
-	print('Finding second tier paths')
+	print('Finding second round paths')
 	_, start_nodes_required = get_paths_dict(first_paths)
 	print('\t%i second round subgraphs needed' % len(start_nodes_required))
 	second_paths = find_paths(
@@ -407,6 +405,11 @@ def plot_capacity_vs_depth(params):
 	mpl.use('Agg')
 	from matplotlib import pyplot as plt
 	from scipy import signal
+
+	fig, ax = plt.subplots(
+		nrows = 1, 
+		ncols = 1,
+		figsize = (8,8))
 
 	top_paths = []
 	#for each path in dict, get mean and std ranks and capacities
@@ -448,10 +451,6 @@ def get_paths_dict(paths):
 	
 	start_nodes_required = all_nodes - observed_start_nodes
 	return paths_dict, start_nodes_required
-	
-	
-	
-	
 		
 def assign_all_reads(top_paths, reads_unzipped, barcodes_unzipped):
 	MIN_KMER_SIZE = 4
