@@ -420,12 +420,13 @@ def plot_capacity_vs_depth(params):
 		mean_depth = np.mean([tup[1] for tup in items.values()])
 		std_depth = np.std([tup[1] for tup in items.values()])
 
-		ax.scatter(
+		ax.errorbar(
 			mean_capacity, 
 			mean_depth,
 			xerr = std_capacity,
 			yerr = std_depth,
-			alpha = 0.5)
+			alpha = 0.5,
+			capsize = 0)
 	fig.savefig('%s/capacity_vs_depth.pdf' % output_dir)
 
 def get_paths_dict(paths):
