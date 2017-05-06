@@ -429,7 +429,7 @@ def plot_capacity_vs_depth(params):
 			capsize = 0,
 			color = 'k')
 	ax.set_xscale('log')
-	fig.savefig('%s/capacity_vs_depth.pdf' % output_dir)
+	fig.savefig('%s/capacity_vs_depth.png' % output_dir)
 
 def get_paths_dict(paths):
 	paths_dict = {}
