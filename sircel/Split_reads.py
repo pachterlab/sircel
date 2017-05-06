@@ -420,14 +420,13 @@ def plot_capacity_vs_depth(params):
 		mean_depth = np.mean([tup[1] for tup in items.values()])
 		std_depth = np.std([tup[1] for tup in items.values()])
 
-		ax.errorbar(
+		ax.scatter(
 			mean_capacity, 
 			mean_depth,
 			#xerr = std_capacity,
 			#yerr = std_depth,
-			alpha = 0.1,
 			capsize = 0,
-			color = 'k')
+			color = 'b')
 	ax.set_xscale('log')
 	fig.savefig('%s/capacity_vs_depth.png' % output_dir)
 
