@@ -428,6 +428,9 @@ def plot_capacity_vs_depth(params):
 			color = 'b')
 	ax.set_xscale('log')
 	fig.savefig('%s/capacity_vs_depth.png' % output_dir)
+	with open('%s/paths_circular_permuted.txt' % output_dir, 'w') as w:
+		w.write(json.dumps(paths_dict, indent = 3))
+	
 
 def get_paths_dict(paths):
 	paths_dict = {}
