@@ -392,9 +392,9 @@ def plot_capacity_vs_depth(params):
 		reads_unzipped,
 		output_dir),
 		starting_kmers = list(start_nodes_required))
-	print('\t%i second round paths found' % len(first_paths))
+	print('\t%i second round paths found' % len(second_paths))
 	output_files['second_round_paths'] = IO_utils.save_paths_text(
-		output_dir, second_paths, prefix='second')	
+		output_dir, second_paths, prefix='second')
 
 	#merge paths
 	paths = first_paths + second_paths
@@ -423,10 +423,12 @@ def plot_capacity_vs_depth(params):
 		ax.errorbar(
 			mean_capacity, 
 			mean_depth,
-			xerr = std_capacity,
-			yerr = std_depth,
-			alpha = 0.5,
-			capsize = 0)
+			#xerr = std_capacity,
+			#yerr = std_depth,
+			alpha = 0.1,
+			capsize = 0,
+			color = 'k')
+	ax.set_xscale('log')
 	fig.savefig('%s/capacity_vs_depth.pdf' % output_dir)
 
 def get_paths_dict(paths):
