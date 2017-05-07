@@ -58,13 +58,13 @@ def run_all(cmdline_args):
 	kmer_counts = get_kmer_counts(kmer_idx_db, kmer_idx_pipe)
 	print('\t%i kmers indexed' % len(kmer_counts.items()))
 	
+	"""
 	_ = plot_capacity_vs_depth((kmer_idx_pipe,
 			kmer_counts,
 			barcodes_unzipped, 
 			reads_unzipped,
 			output_dir))
-	
-	
+	"""
 	
 	print('Finding cyclic paths')
 	cyclic_paths = find_paths(
@@ -316,7 +316,8 @@ def threshold_paths(output_dir, paths):
 	top_paths = paths_sorted[0:threshold]
 	fig.savefig(threshold_out['paths_plot'])
 	
-	return threshold, top_paths, threshold_out
+	top_paths = merge_paths(top_paths)
+	return len(top_paths), top_paths, threshold_out
 
 def local_lin_fit(y, window_len=10):
 	from scipy.optimize import curve_fit
@@ -362,7 +363,8 @@ def hamming_distance(seq1, seq2):
 		if(i != j):
 			hamming += 1
 	return hamming	
-	
+
+"""	
 def plot_capacity_vs_depth(params):
 	output_files = {}
 	(kmer_idx_pipe,
@@ -431,7 +433,6 @@ def plot_capacity_vs_depth(params):
 	with open('%s/paths_circular_permuted.txt' % output_dir, 'w') as w:
 		w.write(json.dumps(paths_dict, indent = 3))
 	
-
 def get_paths_dict(paths):
 	paths_dict = {}
 	#paths_dict[seq] -> {
@@ -455,6 +456,9 @@ def get_paths_dict(paths):
 	
 	start_nodes_required = all_nodes - observed_start_nodes
 	return paths_dict, start_nodes_required
+"""
+
+
 		
 def assign_all_reads(top_paths, reads_unzipped, barcodes_unzipped):
 	MIN_KMER_SIZE = 4
