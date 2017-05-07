@@ -74,7 +74,7 @@ def run_all(args):
 	split_args['depth'] = args['depth']
 	split_args['kmer_size'] = args['kmer_size']	
 	split_args['output_dir'] = args['output_dir']
-	split_args['min_dist'] = 1
+	split_args['min_dist'] = args['min_dist']
 	split_args['index_depth'] = args['index_depth']
 
 	check_split_input(split_args)
