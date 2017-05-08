@@ -322,7 +322,7 @@ def write_barcodes(barcodes, abundances, output_dir):
 
 if __name__ == "__main__":
 	summary_file = run_simulations()
-	summary_processed_file = evaluate_simulations()
+	summary_processed_file = evaluate_simulations(summary_file)
 	
 
 
