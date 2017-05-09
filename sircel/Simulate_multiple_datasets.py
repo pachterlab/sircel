@@ -5,6 +5,7 @@ Prepare all simulated datasets
 """
 
 import numpy as np
+np.random.seed(0)
 import sys
 import os
 import gzip
@@ -136,7 +137,7 @@ def run_simulations():
 	UMI_LENGTH = 8
 	NUM_READS = 100000
 	NUM_BARCODES = 500
-	NUM_REPS = 3
+	NUM_REPS = 5
 	
 	abundances = ['normal', 'uniform', 'exponential']
 	error_types = ['any', 'mismatch', 'insertion', 'deletion']
@@ -152,7 +153,6 @@ def run_simulations():
 		'Simulation\tReplicate\tAbundances\tError_type\tPoiss_error\tOutput_dir\n')
 	count = 1
 	for rep in range(0, NUM_REPS):
-		np.random.seed(rep)
 		true_barcodes = get_barcodes(
 			NUM_BARCODES,
 			BARCODE_LENGTH,
@@ -173,7 +173,7 @@ def run_simulations():
 			
 			print('\tSimulating ground truth')
 			barcode_abundances = get_barcodes_abundance(
-				NUM_BARCODES, abundance_distr = abundance)
+				NUM_BARCODES, abundance_distr = abundance, seed = seed)
 						
 			write_barcodes(true_barcodes, barcode_abundances, simulation_dir)
 			print('\tSimulating random reads')
@@ -185,6 +185,7 @@ def run_simulations():
 				BARCODE_LENGTH,
 				ALPHABET,
 				UMI_LENGTH,
+				seed,
 				simulation_dir))
 			print('\tRunning sircel')
 			run_sircel(simulation_dir)
@@ -208,8 +209,6 @@ def run_sircel(simulation_dir):
 		'--barcodes', bc_file,
 		'--output_dir', simulation_dir,
 		'--threads', '32',
-		'--depth', '10',
-		'--breadth', '10000',
 		'--dropseq',
 		'--index_depth', '1',
 		'--kmer_size', '9']
@@ -286,8 +285,8 @@ def write_reads(params):
 		BARCODE_LENGTH,
 		ALPHABET,
 		UMI_LENGTH,
+		seed,
 		output_dir) = params
-	
 	
 	barcodes_file = '%s/barcodes.fastq.gz' % output_dir
 	with gzip.open(barcodes_file, 'wb') as writer:

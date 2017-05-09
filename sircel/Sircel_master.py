@@ -277,15 +277,15 @@ def get_args():
 	parser.add_argument('--kmer_size', 
 		type=int, 
 		help='Size of kmers for making barcode De Bruijn graph.', 
-		default=7)
+		default=9)
 	parser.add_argument('--depth', 
 		type=int, 
 		help='Fraction of edge weight at starting node to assign to path.', 
-		default=6)
+		default=10)
 	parser.add_argument('--breadth', 
 		type=int, 
 		help='How many nodes search.', 
-		default=1000)
+		default=10000)
 	parser.add_argument('--threads', 
 		type=int, 
 		help='Number of threads to use.', 
