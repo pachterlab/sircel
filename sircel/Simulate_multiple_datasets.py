@@ -11,6 +11,7 @@ import gzip
 import json
 import itertools
 import subprocess
+import IO_utils
 
 def evaluate_simulations(summary_file):
 	output_dir = sys.argv[1]
@@ -123,15 +124,6 @@ def get_fraction_correct_reads(pred_bc, simulation_output_dir):
 	fpr /= total_reads
 	
 	return(tpr, fpr)
-
-
-
-
-
-
-
-
-
 
 
 
@@ -321,7 +313,11 @@ def write_barcodes(barcodes, abundances, output_dir):
 
 
 if __name__ == "__main__":
-	summary_file = run_simulations()
+	print("Running simulations")
+	#summary_file = run_simulations()
+	summary_file = '%s/summary.txt' % sys.argv[1]
+
+	print("Evaluating simulations")
 	summary_processed_file = evaluate_simulations(summary_file)
 	
 
