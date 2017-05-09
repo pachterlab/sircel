@@ -173,7 +173,7 @@ def run_simulations():
 			
 			print('\tSimulating ground truth')
 			barcode_abundances = get_barcodes_abundance(
-				NUM_BARCODES, abundance_distr = abundance, seed = seed)
+				NUM_BARCODES, abundance_distr = abundance)
 						
 			write_barcodes(true_barcodes, barcode_abundances, simulation_dir)
 			print('\tSimulating random reads')
@@ -185,7 +185,6 @@ def run_simulations():
 				BARCODE_LENGTH,
 				ALPHABET,
 				UMI_LENGTH,
-				seed,
 				simulation_dir))
 			print('\tRunning sircel')
 			run_sircel(simulation_dir)
@@ -285,7 +284,6 @@ def write_reads(params):
 		BARCODE_LENGTH,
 		ALPHABET,
 		UMI_LENGTH,
-		seed,
 		output_dir) = params
 	
 	barcodes_file = '%s/barcodes.fastq.gz' % output_dir
