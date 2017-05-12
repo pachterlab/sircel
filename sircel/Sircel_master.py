@@ -45,8 +45,8 @@ def run_all(args):
 
 	elif(args['10xgenomics'] == True):
 		split_args['barcode_start'] = 0
-		split_args['barcode_end'] = 26
-		split_args['umi_start'] = 26
+		split_args['barcode_end'] = 24
+		split_args['umi_start'] = 24
 		split_args['umi_end'] = 34
 	
 		print('Unzipping files (temporary)')
