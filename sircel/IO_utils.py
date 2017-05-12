@@ -225,11 +225,11 @@ def merge_barcodefiles_10x(reads1, index1):
 	out_file_name = out_file.name
 	out_file.seek(0)
 	
-	writer = open(out_file, 'wb')
+	writer = open(out_file_name, 'wb')
 	reads_iter = read_multiple_fastq_sequential(
 		reads1, gzip=True)
 	index_iter = read_multiple_fastq_sequential(
-		indexq, gzip=True)
+		index1, gzip=True)
 	
 	while(True):
 		try:
