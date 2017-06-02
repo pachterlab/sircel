@@ -4,14 +4,16 @@ Pachter and Doudna groups
 """
 
 
-import IO_utils
-import Split_reads
+from . import IO_utils
+from . import Split_reads
 import argparse
 import os
 import sys
 import json
 import time
+import shutil
 import subprocess
+from pathlib import Path
 
 from scipy.sparse import coo_matrix
 from sklearn.preprocessing import normalize
@@ -25,35 +27,38 @@ def run_all(args):
 		args['output_dir'] = args['output_dir'][0:-1]
 	if not os.path.exists(args['output_dir']):
 		os.makedirs(args['output_dir'])
-	with open(sys.path[0] + '/params.json', 'r') as r:
-		params = json.load(r)	
-	
-	split_args = {}
-	check_pipeline_input(args, params)
+	with (Path(__file__).parent / 'params.json').open() as r:
+		kallisto = json.load(r)['kallisto']
+	assert kallisto
 
-	if(args['dropseq'] == True):
+	split_args = {}
+	check_pipeline_input(args, kallisto)
+	
+
+	if args['dropseq']:
 		split_args['barcode_start'] = 0
 		split_args['barcode_end'] = 12
 		split_args['umi_start'] = 12
 		split_args['umi_end'] = 20
 	
 		print('Unzipping files (temporary)')
-		reads_unzipped = IO_utils.unzip(args['reads'].split(','))
-		barcodes_unzipped = IO_utils.unzip(args['barcodes'].split(','))
+		reads_is_gz, reads_unzipped = IO_utils.unzip(args['reads'].split(',')[0])
+		barcodes_is_gz, barcodes_unzipped = IO_utils.unzip(args['barcodes'].split(',')[0])
 		split_args['reads'] = reads_unzipped
 		split_args['barcodes'] = barcodes_unzipped
 
-	elif(args['10xgenomics'] == True):
+	elif args['10xgenomics']:
 		split_args['barcode_start'] = 0
 		split_args['barcode_end'] = 26
 		split_args['umi_start'] = 26
 		split_args['umi_end'] = 34
 	
 		print('Unzipping files (temporary)')
-		reads_unzipped = IO_utils.unzip(args['reads'].split(','))
+		reads_is_gz, reads_unzipped = IO_utils.unzip(args['reads'].split(',')[0])
 		barcodes_unzipped = IO_utils.merge_barcodefiles_10x(
 			args['barcodes'].split(','),
 			args['umis'].split(','))
+		barcodes_is_gz = True
 		split_args['reads'] = reads_unzipped
 		split_args['barcodes'] = barcodes_unzipped		
 
@@ -64,8 +69,8 @@ def run_all(args):
 		split_args['umi_end'] = args['umi_end']
 	
 		print('Unzipping files (temporary)')
-		reads_unzipped = IO_utils.unzip(args['reads'].split(','))
-		barcodes_unzipped = IO_utils.unzip(args['barcodes'].split(','))
+		reads_is_gz, reads_unzipped = IO_utils.unzip(args['reads'].split(',')[0])
+		barcodes_is_gz, barcodes_unzipped = IO_utils.unzip(args['barcodes'].split(',')[0])
 		split_args['reads'] = reads_unzipped
 		split_args['barcodes'] = barcodes_unzipped	
 	
@@ -91,7 +96,7 @@ def run_all(args):
 			os.makedirs(kallisto_dir)
 		
 		output_files['kallisto'] = run_kallisto(
-			params,
+			kallisto,
 			kallisto_dir,
 			output_files)
 		print('Getting transcript compatibility counts')
@@ -101,8 +106,8 @@ def run_all(args):
 		#write output data
 	
 	print('Removing temp files')
-	os.unlink(reads_unzipped)
-	os.unlink(barcodes_unzipped)
+	if reads_is_gz: os.unlink(reads_unzipped)
+	if barcodes_is_gz: os.unlink(barcodes_unzipped)
 	
 	output_files['run_outputs'] = '%s/run_outputs.json' % args['output_dir']
 	with open(output_files['run_outputs'], 'w') as writer:
@@ -115,20 +120,17 @@ def run_all(args):
 
 
 
-def run_kallisto(params, kallisto_dir, output_files):
+def run_kallisto(kallisto, kallisto_dir, output_files):
 	kallisto_start_time = time.time()
 	
-	KALLISTO_PATH = params['kallisto']
-	
 	kallisto_cmd = [
-		KALLISTO_PATH, 'pseudo',
+		kallisto, 'pseudo',
 		'-b',			output_files['split']['batch'],
 		'-i', 		args['kallisto_idx'],
 		'-o',			kallisto_dir,
 		'-t',			str(args['threads']),
 		'--umi']
-	kallisto = subprocess.Popen(kallisto_cmd)
-	_ = kallisto.communicate()
+	kallisto = subprocess.check_call(kallisto_cmd)
 	kallisto_output = {
 		'tsv' :				'%s/matrix.tsv' % kallisto_dir,
 		'run_info'	:		'%s/run_info.json' % kallisto_dir,
@@ -206,25 +208,24 @@ def write_transcript_compatability_counts(input_files, kallisto_dir):
 def get_l1_distance(p,q):
     return cityblock(p,q).sum()
 
-def check_pipeline_input(args, params):
+def check_pipeline_input(args, kallisto):
 	
-	assert(os.path.exists(args['reads'])), \
+	assert os.path.exists(args['reads']), \
 		'Cannot find reads file %s' % args['reads']	
-	assert(os.path.exists(args['barcodes'])), \
+	assert os.path.exists(args['barcodes']), \
 		'Cannot find barcodes file %s' % args['barcodes']
 	
-	if(args['kallisto_idx'] != None):
+	if args['kallisto_idx'] is not None:
 		assert(os.path.exists(args['kallisto_idx'])), \
 			'Cannot find kallisto index %s' % \
 			args['kallisto_idx']
 	
-	assert( (args['10xgenomics'] != 'False') and (args['dropseq'] != 'False')), \
+	assert not (args['10xgenomics'] and args['dropseq']), \
 		'10xgenomics and dropseq options are mutually exclusive'
-	assert(os.path.exists(params['kallisto'])), \
-		'Cannot find kallisto executable %s' % \
-		params['kallisto']
+	assert Path(kallisto).is_file() or shutil.which(kallisto), \
+		'Cannot find kallisto executable %s' % kallisto
 	
-	if(args['10xgenomics'] == True):
+	if args['10xgenomics']:
 		assert(os.path.exists(args['umis'])), \
 			'Cannot find reads file %s' % args['umis']
 
@@ -232,20 +233,23 @@ def check_split_input(args):
 	"""
 	More here
 	"""
-	assert(args['barcode_start'] < args['barcode_end']), \
-		'Barcode end position %i is less than start position %i' % \
+	assert args['barcode_start'] < args['barcode_end'], \
+		'Barcode end position %i is <= start position %i' % \
 		(args['barcode_end'], args['barcode_start'])	
-	assert(args['umi_start'] < args['umi_end']), \
-		'Barcode end position %i is less than start position %i' % \
+	assert args['umi_start'] <= args['umi_end'], \
+		'UMI end position %i is less than start position %i' % \
 		(args['umi_end'], args['umi_start'])	
-	assert(os.path.exists(args['reads'])), \
+	assert os.path.exists(args['reads']), \
 		'Cannot find reads file %s' % args['reads']	
-	assert(os.path.exists(args['barcodes'])), \
+	assert os.path.exists(args['barcodes']), \
 		'Cannot find barcodes file %s' % args['barcodes']
-	assert(0 < args['index_depth'] <= 1), \
+	assert 0 < args['index_depth'] <= 1, \
 		'index_depth must be between 0 and 1'
 
-def get_args():
+def get_args(args=None):
+	if args is None:
+		args = sys.argv[1:]
+
 	parser = argparse.ArgumentParser(
 		description = 'This script splits reads for dropseq data')
 		
@@ -303,22 +307,12 @@ def get_args():
 		type=float,
 		help='Fraction of reads to build kmer index from',
 		default=0.1)
-		
-	return vars(parser.parse_args())
-
-
-
-
-
-
-
-
-if __name__ == '__main__':
-	args = get_args()
-	output_files = run_all(args)
-
-
-
-
-
 	
+	parser.add_argument('--barcode_start', type=int, default=None)
+	parser.add_argument('--barcode_end', type=int, default=None)
+	parser.add_argument('--umi_start', type=int, default=0)
+	parser.add_argument('--umi_end', type=int, default=0)
+
+
+	return vars(parser.parse_args(args))
+

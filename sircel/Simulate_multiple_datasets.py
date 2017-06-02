@@ -12,7 +12,9 @@ import gzip
 import json
 import itertools
 import subprocess
-import IO_utils
+
+from . import IO_utils
+from .Sircel_master import get_args, run_all
 
 def evaluate_simulations(summary_file):
 	output_dir = sys.argv[1]
@@ -194,15 +196,10 @@ def run_simulations():
 	return summary_file
 	
 def run_sircel(simulation_dir):
-	with open(sys.path[0] + '/params.json', 'r') as r:
-		params = json.load(r)
-		
-	sircel_master = params['sircel']
-	
 	bc_file = '%s/barcodes.fastq.gz' % simulation_dir
 	output_dir = '%s/barcodes_split' % simulation_dir
 	
-	cmd = ['python3', sircel_master, 
+	args = get_args([ 
 		'--dropseq',
 		'--reads', bc_file,
 		'--barcodes', bc_file,
@@ -210,10 +207,9 @@ def run_sircel(simulation_dir):
 		'--threads', '32',
 		'--dropseq',
 		'--index_depth', '1',
-		'--kmer_size', '9']
-	
-	split_reads = subprocess.Popen(cmd)
-	_ = split_reads.communicate()[0]	
+		'--kmer_size', '9',
+	])
+	output_files = run_all(args)
 
 def get_barcodes(NUM_BARCODES, BARCODE_LENGTH, ALPHABET):
 	barcodes = []
