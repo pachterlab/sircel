@@ -30,8 +30,8 @@ import numpy as np
 from multiprocessing import Pool 
 np.random.seed(0)
 
-import IO_utils
-from Graph_utils import Edge, Graph, Path
+from . import IO_utils
+from .Graph_utils import Edge, Graph, Path
 
 
 args = {}
@@ -259,6 +259,14 @@ def build_subgraph(reads_in_subgraph, barcodes_unzipped):
 	return subgraph
 
 def threshold_paths(output_dir, paths):
+	threshold_out = {
+		'slopes' : '%s/slopes.txt' % output_dir,
+		'paths_plot' : '%s/paths_plotted.pdf' % output_dir,
+	}
+
+	if not paths:
+		return 0, [], threshold_out
+	
 	WINDOW = [100, 5000]
 	LOCAL_WINDOW_LEN = 25
 	
@@ -281,9 +289,6 @@ def threshold_paths(output_dir, paths):
 	from matplotlib import pyplot as plt
 	from scipy import signal
 
-	threshold_out = {
-		'slopes' : '%s/slopes.txt' % output_dir,
-		'paths_plot' : '%s/paths_plotted.pdf' % output_dir}
 
 	fig, ax = plt.subplots(
 		nrows = 1, 

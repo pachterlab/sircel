@@ -12,7 +12,8 @@ import numpy as np
 np.random.seed(0)
 import redis
 import itertools
-
+import shutil
+import gzip as gzip_
 
 def get_kmers(sequence, k):
 	"""
@@ -70,25 +71,21 @@ def get_cyclic_kmers(read, k, start, end, indel=True):
 	ret = [tup for tup in zip(kmers, quals)]
 	return ret
 
-def unzip(gzipped_lst):
+def unzip(gzipped):
 	"""
 	Args
 		gzipped (string)
 	Returns
-		unzipped (string) as a tempfile
+		temp file path (string)
 	"""
-	with open(sys.path[0] + '/params.json', 'r') as r:
-		params = json.load(r)
-		
-	out_file = tempfile.NamedTemporaryFile(delete=False)
-	out_file_name = out_file.name
-	out_file.seek(0)
-	zcat = subprocess.Popen(
-		[params['zcat'],  gzipped_lst[0]],
-		stdout = out_file)
-	zcat.communicate()
-	out_file.close()
-	return out_file.name
+	
+	if not gzipped.endswith('.gz'):
+		return False, gzipped
+
+	with gzip_.open(gzipped) as in_file, \
+			tempfile.NamedTemporaryFile(delete=False) as out_file:
+		shutil.copyfileobj(in_file, out_file)
+		return True, out_file.name
 
 def get_read_chunks(barcodes, reads, lines=None, random_subset = 1):
 	"""
@@ -150,25 +147,16 @@ def read_fastq_sequential(fq_file, gzip=False):
 			lines: list of 4 lines from fastq file, in order in file
 			offset: character offset from beginning of the file for this fq read
 	"""
-	with open(sys.path[0] + '/params.json', 'r') as r:
-		params = json.load(r)
 	
 	line_num = 0
 	offset = 0
-	if(gzip):
-		cat = subprocess.Popen(
-			[params['zcat'], fq_file],
-			stdout = subprocess.PIPE)
-	else:
-		cat = subprocess.Popen(
-			['cat', fq_file],
-			stdout = subprocess.PIPE)
-	for lines in grouper(cat.stdout, 4):
-		read_len = sum([len(line) for line in lines])#length of read in characters
-		lines = [(l.rstrip()).decode('utf-8') for l in list(lines)]
-		yield(lines, offset)
-		line_num += 1
-		offset += read_len
+	with gzip_.open(fq_file) if gzip else open(fq_file, 'rb') as f:
+		for lines in grouper(f, 4):
+			read_len = sum([len(line) for line in lines])#length of read in characters
+			lines = [(l.rstrip()).decode('utf-8') for l in list(lines)]
+			yield(lines, offset)
+			line_num += 1
+			offset += read_len
 
 def read_multiple_fastq_sequential(fq_file_lst, gzip=False):
 	for fq_file in fq_file_lst:
