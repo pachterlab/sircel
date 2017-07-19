@@ -5,6 +5,7 @@
 import shlex
 import sys
 import os
+import json
 
 from setuptools import setup
 
@@ -24,16 +25,14 @@ if('--kallisto' in args):
 	sys.argv.remove('--kallisto')
 	sys.argv.remove(kallisto_path)
 else:
-	params['kallisto'] = None
+	params['kallisto'] = 'kallisto'
 
-if('--osx' in args):
-	params['zcat'] = 'gzcat'	#zcat function is broken on mac
-	sys.argv.remove('--osx')
-else:
-	params['zcat'] = 'zcat'
+"""
+prepare params.json
+"""
 
-
-
+with open('./sircel/params.json', 'w') as writer:
+	writer.write(json.dumps(params, indent = 3))
 
 setup(name='sircel',
       version='0.1',
@@ -43,27 +42,8 @@ setup(name='sircel',
       author_email='akshay.tambe@berkeley.edu',
       license='MIT',
       packages=['sircel'],
-		py_modules=['numpy', 'scipy', 'sklearn', 'redis'])
-
-
-
-"""
-prepare params.json
-"""
-
-import json 
-
-current_path = os.path.dirname(os.path.abspath(__file__))
-params['sircel'] = current_path + '/sircel/Sircel_master.py'
-with open('./sircel/params.json', 'w') as writer:
-	writer.write(json.dumps(params, indent = 3))
-
-
-
-
-
-
-
-
-
+      install_requires=['numpy', 'scipy', 'sklearn', 'redis'],
+      package_data={'': ['params.json']},
+      include_package_data=True,
+)
 	

@@ -21,21 +21,15 @@ We assign each read in our dataset to a consensus barcode based on the number of
 
 ## Installation
 
-Run the setup py script below. In order to use kallisto to quantify single-cell expression levels after sircel identifies cell barcodes, the --kallisto argument must point to the kallisto binary (version >= 0.43.0). Additionally if running on OSX, the --osx argument must be provided. 
-
-To instal on a mac:
-
-	python3 setup.py install --kallisto PATH_TO_KALLISTO --osx
-
-To install on a linux machine:
+Run the setup py script below. In order to use kallisto to quantify single-cell expression levels after sircel identifies cell barcodes, and kallisto is not on the PATH the --kallisto argument must point to the kallisto binary (version >= 0.43.0). 
 
 	python3 setup.py install --kallisto PATH_TO_KALLISTO
 	
-To install without kallisto:
+If kallisto is on the PATH:
 
 	python3 setup.py install
 
-
+After installation, you can run sircel via `python3 -m sircel`
 
 
 ## Requirements
@@ -99,15 +93,14 @@ This follows from the following python snippet:
 ## Use example
 #### 1 million reads from  from Macosko 2015
 
-This tutorial will run this software on an example dataset from Macosko et al (SRR1873277). According to the authors' software we expect ~570 single cells from this dataset. To speed things up we only use the first 1 million reads in the file (rather than ~400 million).Note that if you are not using kallisto to quantify expression levels, omit the --kallisto_idx option. This command will run a complete singe-cell RNA-seq analysis, going from raw, un-split reads to single-cell expression profiles. Note that the human / mouse transcriptome fasta can be found at http://bio.math.berkeley.edu/kallisto/transcriptomes/. Build a kallisto index following instrutuions https://pachterlab.github.io/kallisto/starting
+This tutorial will run this software on an example dataset from Macosko et al (SRR1873277). According to the authors' software we expect ~570 single cells from this dataset. To speed things up we only use the first 1 million reads in the file (rather than ~400 million).Note that if you are not using kallisto to quantify expression levels, omit the `--kallisto_idx` option. This command will run a complete singe-cell RNA-seq analysis, going from raw, un-split reads to single-cell expression profiles. Note that the human / mouse transcriptome fasta can be found at http://bio.math.berkeley.edu/kallisto/transcriptomes/. Build a kallisto index following instrutuions https://pachterlab.github.io/kallisto/starting
 
-	python3 sircel/sircel_master.py
-		--threads 32
-		--dropseq
-		--output_dir example
-		--reads example/SRR1873277_1m_r2.fastq.gz
-		--barcodes macosko/SRR1873277_1m_r1.fastq.gz
-		--threads 32
+	python3 -m sircel \
+		--threads 32 \
+		--dropseq \
+		--output_dir example \
+		--reads example/SRR1873277_1m_r2.fastq.gz \
+		--barcodes example/SRR1873277_1m_r1.fastq.gz \
 		--kallisto_idx kallisto_idx/hgmm_kallisto.idx
 
 The following output files will be produced in the example/ directory:
