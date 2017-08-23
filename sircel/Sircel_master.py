@@ -4,8 +4,8 @@ Pachter and Doudna groups
 """
 
 
-from . import IO_utils
-from . import Split_reads
+import IO_utils
+import Split_reads
 import argparse
 import os
 import sys

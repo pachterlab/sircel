@@ -30,8 +30,8 @@ import numpy as np
 from multiprocessing import Pool 
 np.random.seed(0)
 
-from . import IO_utils
-from .Graph_utils import Edge, Graph, Path
+import IO_utils
+from Graph_utils import Edge, Graph, Path
 
 
 args = {}
