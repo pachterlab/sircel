@@ -29,7 +29,7 @@ If kallisto is on the PATH:
 
 	python3 setup.py install
 
-After installation, you can run sircel via `python3 -m sircel`
+After installation, you can run sircel via `./sircel`
 
 
 ## Requirements
@@ -49,6 +49,8 @@ After installation, you can run sircel via `python3 -m sircel`
 
 ## Commandline arguments
 
+	--help				Prints help message
+	
 	--dropseq			Use barcode / umi positions from Macosko et al.
 	--10xgenomics		Use barcodes / umi coordinates from 10xGenomics version2 chemistry
 	--barcodes			Fastq.gz file from bead barcodes (Reads 1 for dropseq, reads 1 for 10xGenomics)
@@ -62,6 +64,7 @@ After installation, you can run sircel via `python3 -m sircel`
 	
 ## Optional arguments
 
+	--min_dist			Minimum Hamming distance between barcodes
 	--kallisto_idx		Path to pre-computed kallisto index.
 								If this is provided the script will quantify single-cell expression profiles using kallisto
 	--barcode_start	First position of cell barcode within read in --barcode file.
@@ -95,7 +98,7 @@ This follows from the following python snippet:
 
 This tutorial will run this software on an example dataset from Macosko et al (SRR1873277). According to the authors' software we expect ~570 single cells from this dataset. To speed things up we only use the first 1 million reads in the file (rather than ~400 million).Note that if you are not using kallisto to quantify expression levels, omit the `--kallisto_idx` option. This command will run a complete singe-cell RNA-seq analysis, going from raw, un-split reads to single-cell expression profiles. Note that the human / mouse transcriptome fasta can be found at http://bio.math.berkeley.edu/kallisto/transcriptomes/. Build a kallisto index following instrutuions https://pachterlab.github.io/kallisto/starting
 
-	python3 -m sircel \
+	sircel \
 		--threads 32 \
 		--dropseq \
 		--output_dir example \
@@ -109,7 +112,7 @@ The following output files will be produced in the example/ directory:
 			Tab-delimited file containing all circular paths (putative barcodes) found in the graph 
 		merged_paths.txt
 			Tab-delimited file containing circular paths after Hamming correction	
-		paths_plotted.pdf
+		paths_plotted.png
 			Plots / histograms of circular path weights
 		fits.txt
 			Tab-delimited file containing Gaussian fits for plots above
