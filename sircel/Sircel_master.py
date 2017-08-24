@@ -4,8 +4,8 @@ Pachter and Doudna groups
 """
 
 
-import IO_utils
-import Split_reads
+from sircel import IO_utils
+from sircel import Split_reads
 import argparse
 import os
 import sys
@@ -41,26 +41,29 @@ def run_all(args):
 		split_args['umi_start'] = 12
 		split_args['umi_end'] = 20
 	
-		print('Unzipping files (temporary)')
-		reads_is_gz, reads_unzipped = IO_utils.unzip(args['reads'].split(',')[0])
-		barcodes_is_gz, barcodes_unzipped = IO_utils.unzip(args['barcodes'].split(',')[0])
+		print('Unzipping and indexing files (temporary)')
+		reads_unzipped, reads_offsets = IO_utils.unzip(args['reads'].split(','))
+		barcodes_unzipped, barcodes_offsets = IO_utils.unzip(args['barcodes'].split(','))
 		split_args['reads'] = reads_unzipped
 		split_args['barcodes'] = barcodes_unzipped
-
+		split_args['reads_offsets'] = reads_offsets
+		split_args['barcodes_offsets'] = barcodes_offsets
+		
 	elif args['10xgenomics']:
 		split_args['barcode_start'] = 0
 		split_args['barcode_end'] = 24
 		split_args['umi_start'] = 24
 		split_args['umi_end'] = 34
 	
-		print('Unzipping files (temporary)')
-		reads_is_gz, reads_unzipped = IO_utils.unzip(args['reads'].split(',')[0])
-		barcodes_unzipped = IO_utils.merge_barcodefiles_10x(
+		print('Unzipping and indexing files (temporary)')
+		reads_unzipped, reads_offsets = IO_utils.unzip(args['reads'].split(',')[0])
+		barcodes_unzipped, barcodes_offsets = IO_utils.merge_barcodefiles_10x(
 			args['barcodes'].split(','),
 			args['umis'].split(','))
-		barcodes_is_gz = True
 		split_args['reads'] = reads_unzipped
-		split_args['barcodes'] = barcodes_unzipped		
+		split_args['barcodes'] = barcodes_unzipped	
+		split_args['reads_offsets'] = reads_offsets
+		split_args['barcodes_offsets'] = barcodes_offsets	
 
 	else:
 		split_args['barcode_start'] = args['barcode_start']
@@ -68,11 +71,14 @@ def run_all(args):
 		split_args['umi_start'] = args['umi_start']
 		split_args['umi_end'] = args['umi_end']
 	
-		print('Unzipping files (temporary)')
-		reads_is_gz, reads_unzipped = IO_utils.unzip(args['reads'].split(',')[0])
-		barcodes_is_gz, barcodes_unzipped = IO_utils.unzip(args['barcodes'].split(',')[0])
+		print('Unzipping and indexing files (temporary)')
+		reads_unzipped, reads_offsets = IO_utils.unzip(args['reads'].split(',')[0])
+		barcodes_unzipped, barcodes_offsets = IO_utils.unzip(args['barcodes'].split(',')[0])
 		split_args['reads'] = reads_unzipped
 		split_args['barcodes'] = barcodes_unzipped	
+		split_args['reads_offsets'] = reads_offsets
+		split_args['barcodes_offsets'] = barcodes_offsets
+		
 	
 	split_args['threads'] = args['threads']
 	split_args['breadth'] = args['breadth']
@@ -80,7 +86,6 @@ def run_all(args):
 	split_args['kmer_size'] = args['kmer_size']	
 	split_args['output_dir'] = args['output_dir']
 	split_args['min_dist'] = args['min_dist']
-	split_args['index_depth'] = args['index_depth']
 
 	check_split_input(split_args)
 	print('\n')
@@ -96,18 +101,20 @@ def run_all(args):
 			os.makedirs(kallisto_dir)
 		
 		output_files['kallisto'] = run_kallisto(
+			args,
 			kallisto,
 			kallisto_dir,
 			output_files)
 		print('Getting transcript compatibility counts')
 		output_files['tcc'] = write_transcript_compatability_counts(
+			args,
 			output_files,
 			kallisto_dir)
 		#write output data
 	
 	print('Removing temp files')
-	if reads_is_gz: os.unlink(reads_unzipped)
-	if barcodes_is_gz: os.unlink(barcodes_unzipped)
+	os.unlink(reads_unzipped)
+	os.unlink(barcodes_unzipped)
 	
 	output_files['run_outputs'] = '%s/run_outputs.json' % args['output_dir']
 	with open(output_files['run_outputs'], 'w') as writer:
@@ -116,11 +123,7 @@ def run_all(args):
 	print('Done.')
 	return output_files
 	
-
-
-
-
-def run_kallisto(kallisto, kallisto_dir, output_files):
+def run_kallisto(args, kallisto, kallisto_dir, output_files):
 	kallisto_start_time = time.time()
 	
 	kallisto_cmd = [
@@ -142,7 +145,7 @@ def run_kallisto(kallisto, kallisto_dir, output_files):
 	
 	return kallisto_output
 
-def write_transcript_compatability_counts(input_files, kallisto_dir):
+def write_transcript_compatability_counts(args, input_files, kallisto_dir):
 	"""
 	Modifed from Vasilis Ntranos scRNA-seq-TCC-prep
 	https://github.com/pachterlab/scRNA-Seq-TCC-prep
@@ -243,8 +246,6 @@ def check_split_input(args):
 		'Cannot find reads file %s' % args['reads']	
 	assert os.path.exists(args['barcodes']), \
 		'Cannot find barcodes file %s' % args['barcodes']
-	assert 0 < args['index_depth'] <= 1, \
-		'index_depth must be between 0 and 1'
 
 def get_args(args=None):
 	if args is None:
@@ -278,18 +279,19 @@ def get_args(args=None):
 		type=str, 
 		help='Directory where outputs are written', 
 		required=True)
+	
 	parser.add_argument('--kmer_size', 
 		type=int, 
 		help='Size of kmers for making barcode De Bruijn graph.', 
-		default=9)
+		default=8)
 	parser.add_argument('--depth', 
 		type=int, 
 		help='Fraction of edge weight at starting node to assign to path.', 
-		default=10)
+		default=25)
 	parser.add_argument('--breadth', 
 		type=int, 
 		help='How many nodes search.', 
-		default=10000)
+		default=25000)
 	parser.add_argument('--threads', 
 		type=int, 
 		help='Number of threads to use.', 
@@ -303,16 +305,11 @@ def get_args(args=None):
 		type=int,
 		help='Minimum Hamming distance between error-corrected barcodes.',
 		default=1)
-	parser.add_argument('--index_depth',
-		type=float,
-		help='Fraction of reads to build kmer index from',
-		default=0.1)
 	
 	parser.add_argument('--barcode_start', type=int, default=None)
 	parser.add_argument('--barcode_end', type=int, default=None)
 	parser.add_argument('--umi_start', type=int, default=0)
 	parser.add_argument('--umi_end', type=int, default=0)
-
 
 	return vars(parser.parse_args(args))
 

@@ -1,5 +1,8 @@
-from Sircel_master import get_args, run_all
+from sircel.Sircel_master import get_args, run_all
 
-args = get_args()
-output_files = run_all(args)
+def main():	
+	args = get_args()
+	output_files = run_all(args)
 
+if __name__ == "__main__":
+	main()
