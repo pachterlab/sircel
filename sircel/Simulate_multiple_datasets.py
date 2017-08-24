@@ -13,8 +13,8 @@ import json
 import itertools
 import subprocess
 
-from . import IO_utils
-from .Sircel_master import get_args, run_all
+from sircel import IO_utils
+from sircel.Sircel_master import get_args, run_all
 
 def evaluate_simulations(summary_file):
 	output_dir = sys.argv[1]

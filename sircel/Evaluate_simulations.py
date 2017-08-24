@@ -8,8 +8,8 @@
 		
 """
 import sys
-import IO_utils
 import os
+from sircel import IO_utils
 
 def run_all():
 	#read summary file
