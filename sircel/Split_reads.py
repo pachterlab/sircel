@@ -18,7 +18,6 @@ Split reads for dropseq data
 4. Assign reads
 		For each read, find the path that it shares the most kmers with
 """
-import argparse
 import os
 import sys
 import time
@@ -28,47 +27,46 @@ import itertools
 import gc
 import numpy as np
 from multiprocessing import Pool 
+from sircel import IO_utils
+from sircel.Graph_utils import Edge, Graph, Path
+
+import matplotlib as mpl
+mpl.use('Agg')
+from matplotlib import pyplot as plt
+
 np.random.seed(0)
-
-import IO_utils
-from Graph_utils import Edge, Graph, Path
-
-
 args = {}
+output_files = {}
+output_dir = ''
 
 def run_all(cmdline_args):
+	print('Running Split_reads')
+	
 	global args
+	global output_files
+	global output_dir
+	
 	args = cmdline_args
-	output_files = {}
 	output_dir = args['output_dir']
 	output_files['log'] = '%s/run_log.txt' % output_dir
 	sys.stdout = IO_utils.Logger(output_files['log'])
 	
-	print('Running Dropseq_subgraphs\nArgs:%s' % \
-		json.dumps(args, indent = 5))
-	
 	start_time = time.time()
+	
 	reads_unzipped = args['reads']
 	barcodes_unzipped = args['barcodes']
-	print('Initializing redis-db server')
-	kmer_idx_db, kmer_idx_pipe = IO_utils.initialize_redis_pipeline(db=0)
-	print('Indexing reads by circularized kmers')
-	kmer_idx_pipe = get_kmer_index_db(
-		(kmer_idx_pipe, barcodes_unzipped, reads_unzipped))
-	kmer_counts = get_kmer_counts(kmer_idx_db, kmer_idx_pipe)
-	print('\t%i kmers indexed' % len(kmer_counts.items()))
+	reads_offsets = args['reads_offsets']
+	barcodes_offsets = args['barcodes_offsets']
 	
-	"""
-	_ = plot_capacity_vs_depth((kmer_idx_pipe,
-			kmer_counts,
-			barcodes_unzipped, 
-			reads_unzipped,
-			output_dir))
-	"""
+	print('Indexing reads by circularized kmers')
+	kmer_index, kmer_counts = get_kmer_index(barcodes_unzipped, list(barcodes_offsets))
+		#list(barcodes_offsets) makes a copy of barcodes_offsets. 
+		#this allows use of the pop() method without modifying the old list
+	print('\t%i unique kmers indexed' % len(kmer_counts.items()))
 	
 	print('Finding cyclic paths')
 	cyclic_paths = find_paths(
-		(kmer_idx_pipe,
+		(kmer_index,
 		kmer_counts,
 		barcodes_unzipped, 
 		reads_unzipped,
@@ -80,15 +78,16 @@ def run_all(cmdline_args):
 	print('Thresholding paths')
 	(threshold, top_paths, fit_out) = threshold_paths(output_dir, cyclic_paths)
 	output_files.update(fit_out)
-	print('\tThreshold is %i' % threshold)
-	print('\t%i paths have weight higher than the threshold' % len(top_paths))
 	output_files['thresholded_paths'] = IO_utils.save_paths_text(
 		output_dir, top_paths, prefix='threshold')
-	kmer_idx_db.flushall()
 	
 	print('Assigning reads')
 	reads_assigned_db, reads_assigned_pipe = assign_all_reads(
-		top_paths, reads_unzipped, barcodes_unzipped)
+		(top_paths,
+		reads_unzipped, 
+		reads_offsets, 
+		barcodes_unzipped, 
+		barcodes_offsets))
 	
 	print('Splitting reads by cell')
 	output_files['split'] = write_split_fastqs(
@@ -105,50 +104,63 @@ def run_all(cmdline_args):
 	elapsed_time = current_time - start_time
 	return(output_files, elapsed_time)
 	
-def get_kmer_index_db(params):
+def get_kmer_index(barcodes_unzipped, barcodes_offsets):
+	PEARSONR_CUTOFF = 0.999
+	MIN_ITERS = 5
 	
-	(	kmer_idx_pipe,
-		barcodes_unzipped, 
-		reads_unzipped) = params
 	length = args['barcode_end'] - args['barcode_start']
 	pool = Pool(processes = args['threads'])
 	
 	read_count = 0
-	for reads_chunk in IO_utils.get_read_chunks(
-		barcodes_unzipped,
-		reads_unzipped,
-		lines = None,
-		random_subset = args['index_depth']):
+	kmer_idx = {}
+	counts_corr_coefs = []
+	num_reads = []
+	
+	for (chunk_num, reads_chunk) in enumerate(
+		IO_utils.get_read_chunks(
+			barcodes_unzipped,
+			barcodes_offsets,
+			random = True,
+			BUFFER_SIZE = 10000)):
 				
 		read_count += len(reads_chunk)
+		num_reads.append(read_count)
+		
 		chunk_kmer_indices = pool.map(
 			index_read,
 			reads_chunk)
-		#chunk_kmer_indices is a list of dicts
-		for element in chunk_kmer_indices:
-			for(key, offsets) in element.items():
-				#value is a list: [offset1, offset2, offset3 ...]
-				value = ','.join(['%i' % i for i in offsets]) + ','
-				kmer_idx_pipe.append(key.encode('utf-8'), value.encode('utf-8'))
-		pipe_out = kmer_idx_pipe.execute()#slow. chunks are large...
-		del(chunk_kmer_indices); _ = gc.collect()
-		print('\t%i reads indexed' % read_count)
+			#chunk_kmer_indices is a list of dicts
 		
-		"""
-		#snapshot the database 
-		try:
-			pipe_out = kmer_idx_pipe.save()
-		except redis.exceptions.ResponseError:
-			pass
-		"""
-	return kmer_idx_pipe
+		old_kmer_counts = get_kmer_counts(kmer_idx)
+			#kmer counts before updating with chunk_kmer_indexes
+		
+		for element in chunk_kmer_indices:
+			for(key, read_offsets) in element.items():
+				#read_offsets: [offset1, offset2, offset3 ...]
+				if key not in kmer_idx:
+					kmer_idx[key] = []
+				kmer_idx[key] = kmer_idx[key] + read_offsets
+		
+		del(chunk_kmer_indices); _ = gc.collect()
+		
+		new_kmer_counts = get_kmer_counts(kmer_idx)
+		#check kmer count correlation
+		counts_corr_coef = get_kmer_count_correlation(
+			old_kmer_counts, new_kmer_counts)
+		counts_corr_coefs.append(counts_corr_coef)
+		print('\t%i reads indexed. %f running pearsonr' % \
+				(read_count, counts_corr_coef))
+		
+		if(len(counts_corr_coefs) >= MIN_ITERS):
+			if(all(corr >= PEARSONR_CUTOFF for corr in counts_corr_coefs[-MIN_ITERS:])):
+				break
+		
+	plot_kmer_subsamp_pearson(counts_corr_coefs, num_reads)
+	return kmer_idx, new_kmer_counts
 
 def index_read(params):
-	(	reads_data,
-		reads_offset,
-		barcodes_data, 
-		barcodes_offset) = params
-		
+	(barcodes_data, barcodes_offset) = params
+	
 	kmer_index = {}
 	read_kmers = IO_utils.get_cyclic_kmers(
 		barcodes_data, 
@@ -161,18 +173,44 @@ def index_read(params):
 		kmer_index[kmer].append(barcodes_offset)
 	return kmer_index
 
-def get_kmer_counts(kmer_idx_db, kmer_idx_pipe):
+def get_kmer_counts(kmer_idx):
 	kmer_counts = {}
-	for key in kmer_idx_db.keys():
-		try:
-			entries = IO_utils.get_from_db(kmer_idx_pipe,[key])[0]
-			kmer_counts[key.decode('utf-8')] = len(entries)
-		except IndexError:
-			pass
+	for kmer, offsets in kmer_idx.items():
+		kmer_counts[kmer] = len(offsets)
 	return kmer_counts
 
+def get_kmer_count_correlation(kmer_counts_a, kmer_counts_b):
+	from scipy.stats.stats import pearsonr
+	
+	common_elements = kmer_counts_a.keys() & kmer_counts_b.keys()
+	if(len(common_elements) <= 1):
+		return 0
+	
+	x = []
+	y = []
+	for element in common_elements:
+		x.append(kmer_counts_a[element])
+		y.append(kmer_counts_b[element])
+	
+	corr_coef, pval = pearsonr(x, y)
+	return corr_coef
+	
+def plot_kmer_subsamp_pearson(counts_corr_coefs, num_reads):
+	fig, ax = plt.subplots(
+		nrows = 1, 
+		ncols = 1,
+		figsize = (4,4))
+	
+	ax.plot(num_reads, counts_corr_coefs)
+	ax.set_xlabel('Number of reads indexed')
+	ax.set_ylabel('Pearson R')
+	ax.set_title('Correlation between relative kmer counts \nas number of reads are incrementally increased')
+	ax.grid()
+	ax.set_ylim([0,1])
+	fig.savefig('%s/indexed_reads_correlation.png' % output_dir, dpi = 300)
+	
 def find_paths(params, starting_kmers = None):
-	(	kmer_idx_pipe,
+	(	kmer_index,
 		kmer_counts,
 		barcodes_unzipped, 
 		reads_unzipped,
@@ -187,19 +225,28 @@ def find_paths(params, starting_kmers = None):
 		starting_kmers = []
 		for kmer in kmers_sorted:
 			if(kmer[0] == '$'):
-				starting_kmers.append(kmer)
+				starting_kmers.append((kmer, kmer_index[kmer]))
 			if(len(starting_kmers) >= args['breadth']):
 				break	
+	else:
+		starting_kmers_tmp = []
+		for kmer in starting_kmers:
+			starting_kmers_tmp.append(kmer, kmer_index[kmer])
+		starting_kmers = starting_kmers_tmp
+		
 	
 	pool = Pool(processes = args['threads'])
 	paths = []
-	for kmers_group in IO_utils.grouper(starting_kmers, args['threads']):
-		offsets_group = IO_utils.get_from_db(kmer_idx_pipe, kmers_group)
+	for group in IO_utils.grouper(
+		starting_kmers, args['threads']):
+		
+		kmers_group = [tup[0] for tup in group]
+		offsets_group = [tup[1] for tup in group]
 		paths_group = pool.map(find_path_from_kmer, zip(
-				kmers_group,
-				offsets_group,
-				itertools.repeat(barcodes_unzipped),
-				itertools.repeat(barcode_length)))
+			kmers_group,
+			offsets_group,
+			itertools.repeat(barcodes_unzipped),
+			itertools.repeat(barcode_length)))
 		paths += [item for sublist in paths_group for item in sublist]
 	return paths
 
@@ -236,7 +283,7 @@ def find_path_from_kmer(params):
 	return merge_paths(paths)
 
 def build_subgraph(reads_in_subgraph, barcodes_unzipped):
-	barcodes_iter = IO_utils.read_fastq_random(
+	barcodes_iter = IO_utils.read_fastq(
 		barcodes_unzipped, reads_in_subgraph)
 	subgraph_kmer_counts = collections.Counter()
 	while(True):
@@ -259,76 +306,94 @@ def build_subgraph(reads_in_subgraph, barcodes_unzipped):
 	return subgraph
 
 def threshold_paths(output_dir, paths):
+	from scipy import signal
+	
+	NUM_CELLS = [100, 5000]
+	LOCAL_WINDOW_LEN = 50
+	MIN_CAPACITY = 10
+	
 	threshold_out = {
 		'slopes' : '%s/slopes.txt' % output_dir,
-		'paths_plot' : '%s/paths_plotted.pdf' % output_dir,
+		'paths_plot' : '%s/paths_plotted.png' % output_dir,
 	}
 
-	if not paths:
-		return 0, [], threshold_out
-	
-	WINDOW = [100, 5000]
-	LOCAL_WINDOW_LEN = 25
-	
-	#keep only unique paths
 	unique_paths = {}
 	for tup in paths:
 		key = tup[0]
-		if(key not in unique_paths):
-			unique_paths[key] = tup
-		else:
-			old_capacity = unique_paths[key][1]
-			current_capacity = tup[1]
-			if(current_capacity > old_capacity):
+		if(tup[1] > MIN_CAPACITY):
+			if(key not in unique_paths):
 				unique_paths[key] = tup
-	paths = list(unique_paths.values())
+			else:
+				#note- because of the subgraph method, 
+				#	the same path in two different subgraphs might have different weight
+				#keep the instance of the path with the higher capacity
+				old_capacity = unique_paths[key][1]
+				current_capacity = tup[1]
+				if(current_capacity > old_capacity):
+					unique_paths[key] = tup
+					#keep only unique paths with a capacity higher than some threshold value
+	unique_paths_sorted = sorted(unique_paths.values(), key = lambda tup: tup[1], reverse = True)
 	
-
-	import matplotlib as mpl
-	mpl.use('Agg')
-	from matplotlib import pyplot as plt
-	from scipy import signal
-
-
 	fig, ax = plt.subplots(
 		nrows = 1, 
-		ncols = 2,
-		figsize = (8,4))
-		
-	x = range(0, len(paths))
-	y = sorted( [tup[1] for tup in paths], reverse=True)
-	ax[0].step(x,y, label='Cum dist')
+		ncols = 3,
+		figsize = (12,4))
 
-	slopes, x = local_lin_fit(
-		np.log10(y), window_len=LOCAL_WINDOW_LEN)
-	ax[1].scatter(
-		x, slopes, color='r', alpha=0.2, s=2, label='Local gradient')
-	savgol = signal.savgol_filter(slopes, 251, 4)
-	ax[1].step(x, savgol, label='Savgol filter')
-
-	threshold = int(np.argmax(
-		savgol[WINDOW[0]:WINDOW[1]]) + WINDOW[0] + x[0])
-	ax[1].axvline(threshold, color='k', ls='--', label='Threshold')
-	ax[1].legend(loc=1)
-	ax[0].axvline(threshold, color='k', ls='--', label='Threshold')
-	ax[0].legend(loc=1)
+	y = [tup[1] for tup in unique_paths_sorted]
+	x = range(len(y))
+	ax[0].step(x, y, label='Path weights')
 	ax[0].set_yscale('log')
-	ax[0].set_xscale('log')
-	ax[1].set_xscale('log')
+
+	grad = [-1 * i for i in \
+				local_lin_fit(np.log10(y), window_len=LOCAL_WINDOW_LEN)]   
+	x = [LOCAL_WINDOW_LEN / 2 + i for i in range(len(grad))]
+	ax[1].plot(x, grad, color='b', label='First derivative (smoothed)')
+	second_grad = local_lin_fit(grad, window_len = LOCAL_WINDOW_LEN)
+	x = [LOCAL_WINDOW_LEN + i for i in range(len(second_grad))]
+	ax[2].plot(x, second_grad, color = 'b', label = 'Second derivative (smoothed)')
+
+	lmax = get_lmax(second_grad, LOCAL_WINDOW_LEN)
+	threshold = get_threshold(grad, lmax)
+	print('\tThreshold is %i' % threshold)
+	top_paths = unique_paths_sorted[0:threshold]
 	
-	paths_sorted = sorted(
-		paths, key = lambda tup: tup[1], reverse = True)
-	top_paths = paths_sorted[0:threshold]
-	fig.savefig(threshold_out['paths_plot'])
+	for a in ax:
+		for m in lmax:
+			a.axvline(m, color = 'gray', alpha = 0.25)
+		a.axvline(threshold, color='k', label='Threshold')
+		a.legend(loc = 1, fontsize = 6)
+		a.grid()
+		#a.set_xscale('log')
+		a.set_xlim([0, 1000])
+		a.set_xlabel('Path (sorted)')
 	
-	top_paths = merge_paths(top_paths)
+	plt.tight_layout()
+	fig.savefig(threshold_out['paths_plot'], dpi = 300)
+	print('\tMerging similar paths by Hamming distance')
+	top_paths = merge_paths(top_paths)#merges by hamming distance
+	print('\t%i paths remaining after merging' % len(top_paths))
 	return len(top_paths), top_paths, threshold_out
+
+def get_lmax(second_grad, LOCAL_WINDOW_LEN):
+	#finds zeros in
+	lmax = []
+	for i in range(len(second_grad) - 1):
+		if(second_grad[i] > 0 and second_grad[i + 1] <= 0):
+			lmax.append(int(i + LOCAL_WINDOW_LEN))
+	return lmax
+
+def get_threshold(grad, lmax):
+	threshold = lmax[0]
+	for z in lmax:
+		if(grad[z] > grad[threshold]):
+			threshold = z
+	return threshold
 
 def local_lin_fit(y, window_len=10):
 	from scipy.optimize import curve_fit
+	
 	num_windows = len(y) - window_len
 	slopes = []
-	x = []
 	for window_start in range(0, num_windows):
 		window_x = range(window_start, window_start + window_len)
 		window_y = y[window_start : window_start + window_len]
@@ -336,15 +401,14 @@ def local_lin_fit(y, window_len=10):
 			linear,
 			window_x,
 			window_y,
-			p0=[window_y[-1] - window_y[0], window_y[0]])
+			p0 = [window_y[-1] - window_y[0], window_y[0]])
 		(slope, intercept) = coeff
-		slopes.append(-slope)
-		x.append(window_start + window_len / 2)
-	return slopes, x
+		slopes.append(slope)
+	return slopes
 
 def linear(x, *p):
 	(slope, intercept) = p
-	return slope*x + intercept
+	return slope * x + intercept
 	
 def merge_paths(paths):
 	paths_sorted = sorted(paths, key = lambda tup: tup[1])
@@ -368,112 +432,22 @@ def hamming_distance(seq1, seq2):
 		if(i != j):
 			hamming += 1
 	return hamming	
-
-"""	
-def plot_capacity_vs_depth(params):
-	output_files = {}
-	(kmer_idx_pipe,
-		kmer_counts,
-		barcodes_unzipped, 
-		reads_unzipped,
-		output_dir) = params
-
-	print('Finding first round cyclic paths')
-	first_paths = find_paths(
-		(kmer_idx_pipe,
-		kmer_counts,
-		barcodes_unzipped, 
-		reads_unzipped,
-		output_dir))	
-	print('\t%i first round paths found' % len(first_paths))
-	output_files['first_round_paths'] = IO_utils.save_paths_text(
-		output_dir, first_paths, prefix='first')
-
-	print('Finding second round paths')
-	_, start_nodes_required = get_paths_dict(first_paths)
-	print('\t%i second round subgraphs needed' % len(start_nodes_required))
-	second_paths = find_paths(
-		(kmer_idx_pipe,
-		kmer_counts,
-		barcodes_unzipped, 
-		reads_unzipped,
-		output_dir),
-		starting_kmers = list(start_nodes_required))
-	print('\t%i second round paths found' % len(second_paths))
-	output_files['second_round_paths'] = IO_utils.save_paths_text(
-		output_dir, second_paths, prefix='second')
-
-	#merge paths
-	paths = first_paths + second_paths
-	paths_dict, _ = get_paths_dict(paths)
-
-
-	import matplotlib as mpl
-	mpl.use('Agg')
-	from matplotlib import pyplot as plt
-	from scipy import signal
-
-	fig, ax = plt.subplots(
-		nrows = 1, 
-		ncols = 1,
-		figsize = (8,8))
-
-	top_paths = []
-	#for each path in dict, get mean and std ranks and capacities
-	for seq, items in paths_dict.items():
-		mean_capacity = np.mean([tup[0] for tup in items.values()])
-		std_capacity = np.std([tup[0] for tup in items.values()])
-	
-		mean_depth = np.mean([tup[1] for tup in items.values()])
-		std_depth = np.std([tup[1] for tup in items.values()])
-
-		ax.scatter(
-			mean_capacity, 
-			mean_depth,
-			#xerr = std_capacity,
-			#yerr = std_depth,
-			color = 'b')
-	ax.set_xscale('log')
-	fig.savefig('%s/capacity_vs_depth.png' % output_dir)
-	with open('%s/paths_circular_permuted.txt' % output_dir, 'w') as w:
-		w.write(json.dumps(paths_dict, indent = 3))
-	
-def get_paths_dict(paths):
-	paths_dict = {}
-	#paths_dict[seq] -> {
-	#	start_node : (capaciy, depth), 
-	#	start_node : (capacity, depth), ...}
-
-	observed_start_nodes = set()
-	all_nodes = set()
-
-	for tup in paths:
-		(seq, capacity, depth, nodes) = tup
-		all_nodes.update(nodes)
-	
-		start_node = nodes[0]
-		if seq not in paths_dict.keys():
-			paths_dict[seq] = {}
-		path_entries = paths_dict[seq]
-		if start_node not in path_entries:
-			path_entries[start_node] = (capacity, depth)
-		observed_start_nodes.add(start_node)
-	
-	start_nodes_required = all_nodes - observed_start_nodes
-	return paths_dict, start_nodes_required
-"""
-
-
 		
-def assign_all_reads(top_paths, reads_unzipped, barcodes_unzipped):
+def assign_all_reads(params):
+	(	top_paths,
+		reads_unzipped, 
+		reads_offsets, 
+		barcodes_unzipped, 
+		barcodes_offsets) = params
+	
 	MIN_KMER_SIZE = 4
 	MAX_KMER_SIZE = args['barcode_end'] - args['barcode_start']
 	
 	#initialize vars
-	reads_assigned_db, reads_assigned_pipe = IO_utils.initialize_redis_pipeline(db=1)
+	reads_assigned_db, reads_assigned_pipe = IO_utils.initialize_redis_pipeline(db=0)
 	kmers_to_paths = {}
 	
-	print('\tGetting kmers in paths')
+	#print('\tGetting kmers in paths')
 	for path in top_paths:
 		cell_barcode = path[0]
 		for kmer_size in range(MIN_KMER_SIZE, MAX_KMER_SIZE):
@@ -488,21 +462,31 @@ def assign_all_reads(top_paths, reads_unzipped, barcodes_unzipped):
 					kmers_to_paths[kmer] = []
 				kmers_to_paths[kmer].append(cell_barcode)
 
-	print('\tAssigning reads to paths')
+	#print('\tAssigning reads to paths')
 	pool = Pool(processes = args['threads'])	
 	read_count = 0
 	num_unassigned = 0
-	for reads_chunk in IO_utils.get_read_chunks(
-		barcodes_unzipped,
-		reads_unzipped,
-		lines=None):
+	BUFFER_SIZE = 100000	
+	
+	for reads_chunk, barcodes_chunk in zip(
+		IO_utils.get_read_chunks(
+			reads_unzipped,
+			reads_offsets,
+			random = False,
+			BUFFER_SIZE = BUFFER_SIZE),
+		IO_utils.get_read_chunks(
+			barcodes_unzipped,
+			barcodes_offsets,
+			random = False,
+			BUFFER_SIZE = BUFFER_SIZE)):
 		
 		read_count += len(reads_chunk)
 		assignments = pool.map(assign_read, 
 			zip(itertools.repeat(kmers_to_paths),
 			itertools.repeat(MIN_KMER_SIZE),
 			itertools.repeat(MAX_KMER_SIZE),
-			reads_chunk))
+			reads_chunk,
+			barcodes_chunk))
 		for (assignment, offset1, offset2) in assignments:
 			if(assignment == 'unassigned'):
 				num_unassigned += 1
@@ -518,7 +502,7 @@ def assign_read(params):
 	"""
 	Assigns a single read to a cell barcode by kmer compatibility
 	args (tuple)
-		kemers_to_paths: dict of kmer -> list of paths that contain it
+		kmers_to_paths: dict of kmer -> list of paths that contain it
 		min_kmer_size
 		max_kmer_size
 		read: list of fastq entry lines
@@ -528,11 +512,8 @@ def assign_read(params):
 	(kmers_to_paths,
 		min_kmer_size,
 		max_kmer_size,
-		read) = params
-	(reads_data,
-		reads_offset,
-		barcodes_data, 
-		barcodes_offset) = read
+		(reads_data, reads_offset),
+		(barcodes_data, barcodes_offset)) = params
 	
 	read_assignment = collections.Counter()
 	for kmer_size in range(max_kmer_size, min_kmer_size, -1):
@@ -591,10 +572,10 @@ def write_split_fastqs(params):
 			
 		assert len(cell_offsets) % 2 == 0, \
 			'Cell offsets must contain an even number of entries'
-		reads_iter = IO_utils.read_fastq_random(
+		reads_iter = IO_utils.read_fastq(
 			reads_unzipped, 
 			[cell_offsets[i] for i in range(len(cell_offsets)) if i % 2 == 0])
-		barcodes_iter = IO_utils.read_fastq_random(
+		barcodes_iter = IO_utils.read_fastq(
 			barcodes_unzipped,
 			[cell_offsets[i] for i in range(len(cell_offsets)) if i % 2 == 1])
 		
@@ -623,18 +604,28 @@ def write_split_fastqs(params):
 	batch_file.close()
 	return output_files
 
-
 def get_args():
+	import argparse
+	
 	parser = argparse.ArgumentParser(
 		description = 'This script splits reads for dropseq data')
 	parser.add_argument('--barcodes', 
 		type=str, 
 		help='Barcodes file name (unzipped)', 
 		required=True)
+	parser.add_argument('--barcodes_offset',
+		type=list,
+		help='Fq entry line offsets for barcoddes file',
+		required=True)
 	parser.add_argument('--reads', 
 		type=str, 
 		help='RNAseq reads file name (unzipped)', 
 		required=True)
+	parser.add_argument('--reads_offset',
+		type=list,
+		help='Fq entry line offsets for reads file',
+		required=True)
+		
 	parser.add_argument('--output_dir', 
 		type=str, 
 		help='Directory where outputs are written', 
@@ -675,10 +666,6 @@ def get_args():
 		type=int, 
 		help='Minimum Hamming distance between barcodes.', 
 		default=3)
-	parser.add_argument('--index_depth',
-		type=float,
-		help='Fraction of reads to build kmer index from',
-		default=0.1)
 	
 	return vars(parser.parse_args())
 
