@@ -27,9 +27,9 @@ Run the setup py script below. In order to use kallisto to quantify single-cell 
 	
 If kallisto is on the PATH:
 
-	python3 setup.py install
+	python3 setup.py install --install-scripts=./sircel/
 
-After installation, you can run sircel via `./sircel`
+The sircel executable should be in the directory `./sircel/sircel`. After installation, you can run sircel via `sircel`.
 
 
 ## Requirements
