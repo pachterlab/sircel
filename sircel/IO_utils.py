@@ -2,18 +2,39 @@
 Akshay Tambe
 Pachter and Doudna groups
 """
-
-
 import subprocess
 import sys
-import json
 import tempfile
 import numpy as np
-np.random.seed(0)
 import redis
 import itertools
 import shutil
 import gzip as gz
+
+np.random.seed(0)
+
+def get_nuc_content(unzipped, num_reads):
+	nuc_content = {}
+	increment = 1.0 / num_reads
+	seq_len = 0
+	
+	with open(unzipped) as in_file:
+		for lines in grouper(in_file, 4):
+			seq = lines[1].strip().upper()
+			
+			#some datasets have variable read lengths
+			if len(seq) > seq_len:
+				seq_len = len(seq)
+				for nt, freqs in nuc_content.items():
+					while len(freqs) < seq_len:
+						freqs.append(0)
+					nuc_content[nt] = freqs
+			
+			for i, nt in enumerate(seq):
+				if(nt not in nuc_content):
+					nuc_content[nt] = [0] * len(seq)
+				nuc_content[nt][i] += increment
+	return nuc_content
 
 def get_kmers(sequence, k):
 	"""
@@ -76,7 +97,7 @@ def unzip(gzipped_lst):
 	Args
 		gzipped (string)
 	Returns
-		temp file path (string), offsets (list)
+		temp file path (string), offsets (list), nuc_content (counter)
 	"""
 	out_file = tempfile.NamedTemporaryFile(delete=False)
 	offsets = []
@@ -87,10 +108,12 @@ def unzip(gzipped_lst):
 			raise TypeError('File does not appear to be gzipped: %s' % gzipped)
 		with gz.open(gzipped) as in_file:
 			for lines in grouper(in_file, 4):
+				
 				lines = b''.join(lines)
 				offset += len(lines)
 				offsets.append(offset)
 				out_file.write(lines)
+				
 	return out_file.name, offsets
 
 def get_read_chunks(barcodes, offsets, random = False, BUFFER_SIZE = 10000):
@@ -144,72 +167,69 @@ def read_fastq(fq_file, offsets, random = False):
 		except IndexError:
 			break
 		fq_reader.seek(offset, 0)
-		lines = [fq_reader.readline().rstrip().decode('utf-8') for i in range(4)]
+		lines = [fq_reader.readline().strip().decode('utf-8') for i in range(4)]
 		yield (lines, offset)
 	fq_reader.close()
 
-def merge_barcodefiles_10x(reads1, index1):
+def merge_barcodefiles_10x(cells_gz, umis_gz):
 	""""
-	10x genomics to dropseq
+	10x genomics to dropseq conversion
 
 	3 fastq.gz files from each file
 		I1: read index, UMI
 		R1: cell barcode(?)
 		R2: RNAseq read
 
-	I1
+	I1- contains cell barcodes
 	@ST-K00126:307:HFM3NBBXX:1:1101:3772:1244 1:N:0:NTCGCCCT
 	NTCGCCCT
 	+
 	#AAAFJ-J
 
-	R1
+	R1- contains umis
 	@ST-K00126:307:HFM3NBBXX:1:1101:3772:1244 1:N:0:NTCGCCCT
 	NCATTTGAGTAACCCTGATGTCATAA
 	+
 	#AAFFJJJJJJJJJJJJJJJFJJJJJ
 
-	R2
+	R2- contains RNAseq data
 	@ST-K00126:307:HFM3NBBXX:1:1101:3772:1244 2:N:0:NTCGCCCT
-	NAAGCCAGTTGTGAATCATGCACATCAGCTCCTTCTGAAATGTGTTTATGGCCTAGGACACAGGGACCCTGGAGACTATGGTGCTGCAGTGCATTATG
+	NAAGCCAGTTGTGAATCATGCACATCAGCTCCTTCTGAAATGTGTTTATGGCCTAG
 	+
-	#<<A<FJJJFJFJJJJJJJJJFJFJJJJJJJJJJJJJJJFJJFFJJJJJAFJJFJF7JJJJFJAJJJ<J<7-A<FFFFJ-F<FJJJJJJJJJJ7FJJA
+	#<<A<FJJJFJFJJJJJJJJJFJFJJJJJJJJJJJJJJJFJJFFJJJJJAFJJFJF
 	"""
-	
+	cells, cells_offsets = unzip(cells_gz)
+	cells_iter = read_fastq(cells, cells_offsets)
+	umis, umis_offsets = unzip(umis_gz)
+	umis_iter = read_fastq(umis, umis_offsets)
 	out_file = tempfile.NamedTemporaryFile(delete=False)
-	out_file_name = out_file.name
-	out_file.seek(0)
 	
+	out_file.seek(0)
 	offset = 0
 	offsets = []
-	
-	writer = open(out_file_name, 'wb')
-	reads_iter = read_multiple_fastq_sequential(
-		reads1, gzip=True)
-	index_iter = read_multiple_fastq_sequential(
-		index1, gzip=True)
+	writer = open(out_file.name, 'wb')
 	
 	while(True):
 		try:
-			reads, _ = next(reads_iter)
-			index, _ = next(index_iter)
+			cell, _ = next(cells_iter)
+			umi, _ = next(umis_iter)
 		except StopIteration:
 			break
 		get_prefix = lambda r: r[0].split(' ')[0]
-		assert(get_prefix(reads) == get_prefix(index)), \
+		assert(get_prefix(umis) == get_prefix(cells)), \
 			'Reads are not in order\n%s\n%s' % \
-			('\n'.join(reads), '\n'.join(index))
-		combined_seq = index[1] + reads[1]
-		combined_phred = index[3] + reads[3]
+			('\n'.join(umis), '\n'.join(cells))				
+		combined_seq =  cells[1] + umis[1]
+		combined_phred = cells[3] + umis[3]
 		
 		output = [
-			reads[0],
+			cells[0],
 			combined_seq,
-			reads[2],
+			cells[2],
 			combined_phred]
 		output_str = ('\n'.join(output) + '\n').encode('utf-8')
 		writer.write(output_str)
-		offsets += len(output_str)
+		offset += len(output_str)
 		offsets.append(offset)
 	writer.close()
 	return out_file.name, offsets
@@ -222,7 +242,10 @@ def grouper(iterable, n, fillvalue=None):
 def save_paths_text(output_dir, paths, prefix=''):
 	paths_file = '%s/%s_paths.txt' % (output_dir, prefix)
 	with open(paths_file, 'w') as writer:
-		for tup in paths:
+		for tup in sorted(
+				paths,
+				key = lambda tup: tup[1],
+				reverse = True):
 			writer.write('%s\t%i\t%i\t%s\n' %
 				(tup[0], tup[1], tup[2], ','.join(tup[3])))
 	return paths_file
@@ -311,9 +334,6 @@ def read_tsv_by_cell(tsv_file):
 				prev_cell = cell
 				total_counts = count
 
-
-
-
 class Logger(object):
 	"""
 	Copypasta from stackoverflow forums. All credit to user Eric Leschinsky
@@ -322,7 +342,6 @@ class Logger(object):
 	Writes all stdout to file as well as printing to stdout
 	Initialize with sys.stdout = Logger()
 	"""
-	
 	def __init__(self, fname):
 		self.terminal = sys.stdout
 		self.log = open(fname, 'w')

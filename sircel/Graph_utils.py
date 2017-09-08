@@ -1,19 +1,26 @@
 """
-Author
-
 Akshay Tambe
 Pachter and Doudna groups
 UC Berkeley
 
-
 Dropseq_utils.py
-A few useful tools for working with Dropseq data
-
+A few useful objects for working with single-cell barcode
+data as de Bruijn graphs
 """
 import sys
 import numpy as np
 
 class Edge:
+	"""
+	An edge in a de Bruijn graph
+	Attributes
+		node (string)
+		neighbor (string)
+		weight (float)
+	To be a valid edge, all the nucleotides in node and neighbor must 
+		be the same, except for the first nt of the node / 
+		last nt of the edge
+	"""
 	def __init__(self, _node, _neighbor, _weight):
 		self.node = _node
 		self.neighbor = _neighbor
@@ -22,6 +29,9 @@ class Edge:
 			print('Not a valid edge: %s\t%s' % (self.node, self.neighbor))
 	
 	def get_name(self):
+		"""
+		Returns a tuple (node, neighbor) for this edge
+		"""
 		return(self.node, self.neighbor)
 	
 	def get_weight(self):
@@ -36,18 +46,38 @@ class Edge:
 			(self.weight >= 0.0))
 	
 	def is_self_edge(self):
+		""""
+		Returns true if node and neigobor are the same
+		"""
 		return(self.node == self.neighbor)
 
 class Path:
+	"""
+	A path through a de Bruijn graph
+	Attributes
+		edges (list): a list of Edge objects
+	
+	To be a valid path, edges[i].node must be equal to edges[i-1].neighbor
+		for all entries in self.edges
+	"""
 	def __init__(self, _edges):
 		self.edges = _edges
 		assert (self.is_valid_path()), \
 			print('Not a valid path\n%s' % self.get_nodes_ordered())
 	
 	def get_weight(self):
+		"""
+		Returns float
+			the weight of the lowest-weight edge
+		"""
 		return(self.get_lowest_weight_edge().get_weight())
 	
 	def get_cycle_weight(self):
+		"""
+		Returns float
+			0 if the path is not a cycle
+			the path weight otherwise
+		"""
 		if(not self.is_cycle()):
 			return 0.0
 		else:
@@ -67,6 +97,9 @@ class Path:
 		return seq
 	
 	def get_sequence_circular(self):
+		"""
+		Gets the sequence for a cycle by starting at a node beginning with '$'
+		"""
 		seq = self.get_sequence()
 		if(not self.is_cycle()):
 			return seq
@@ -111,8 +144,8 @@ class Path:
 		"""
 		Returns whether this path might be part of a cycle of fixed length
 			If path_length > (cycle_length - kmer_size) there is some substring
-			that is shared between the last positions of the path's end node and
-			the first position of its start node
+			that is shared between the last position(s) of the path's end node and
+			the first position(s) of its start node
 		"""		
 		kmer_size = len(self.get_start_node())
 		if(self.get_length() < (cycle_length - kmer_size)):
@@ -122,10 +155,8 @@ class Path:
 		
 		overlap = self.get_length() - (cycle_length - kmer_size)
 		if((self.get_start_node()[0:overlap]) == 
-				(self.get_end_node()[kmer_size - overlap:])
-		):
+				(self.get_end_node()[kmer_size - overlap:])):
 			return True
-		
 		return False
 
 class Graph:
@@ -157,8 +188,8 @@ class Graph:
 			key = lambda edge: edge.get_weight(),
 			reverse=True)
 		return edges_list
-			
-	def get_outgoing_edges_sorted(self, node):
+	
+	def get_outgoing_edges(self, node):
 		alphabet = ['A', 'C', 'G', 'T', '$']
 		outgoing_edges = []
 		for a in alphabet:
@@ -166,11 +197,13 @@ class Graph:
 			key = (node, neighbor)
 			if(key in self.edges):
 				outgoing_edges.append(self.edges[key])
-		outgoing_edges = sorted(
-			outgoing_edges, 
+		return outgoing_edges
+	
+	def get_outgoing_edges_sorted(self, node):
+		return sorted(
+			self.get_outgoing_edges(node), 
 			key = lambda edge: edge.get_weight(), 
 			reverse = True)#sorted by edge weight (descending)]
-		return outgoing_edges
 
 	def find_cyclic_path(self, current_path, expected_path_length):
 		"""
@@ -179,8 +212,9 @@ class Graph:
 				a Path (of variable length)
 			expected_path_length (int):
 				length of cycles to look for (# edges in cyclic path)
-		Returns Path:
-				path (Path): a path object
+		Returns 
+			Cycle (boolean): whether or not a cycle was found
+			Path (Path): a path object representing the best path
 
 		Recursively finds high-weight cyclic paths of fixed length
 			Initialize by passing a path of length 1 (a single edge)
@@ -239,7 +273,6 @@ class Graph:
 		return(best_path.is_cycle(), best_path)
 	
 	def check_possible_self_edges(self, current_path, expected_path_length):
-		
 		possible_self_edges = []
 		for edge in current_path.edges:
 			node = edge.node
@@ -288,7 +321,4 @@ class Graph:
 			
 		
 		
-		
-
-
 

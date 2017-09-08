@@ -4,8 +4,7 @@ Pachter and Doudna groups
 """
 
 
-from sircel import IO_utils
-from sircel import Split_reads
+from sircel import IO_utils, Plot_utils, Split_reads
 import argparse
 import os
 import sys
@@ -14,6 +13,7 @@ import time
 import shutil
 import subprocess
 from pathlib import Path
+import gc
 
 from scipy.sparse import coo_matrix
 from sklearn.preprocessing import normalize
@@ -27,6 +27,8 @@ def run_all(args):
 		args['output_dir'] = args['output_dir'][0:-1]
 	if not os.path.exists(args['output_dir']):
 		os.makedirs(args['output_dir'])
+	if not os.path.exists(args['output_dir'] + '/plots'):
+		os.makedirs(args['output_dir'] + '/plots')
 	with (Path(__file__).parent / 'params.json').open() as r:
 		kallisto = json.load(r)['kallisto']
 	assert kallisto
@@ -34,64 +36,84 @@ def run_all(args):
 	split_args = {}
 	check_pipeline_input(args, kallisto)
 	
-
 	if args['dropseq']:
-		split_args['barcode_start'] = 0
-		split_args['barcode_end'] = 12
-		split_args['umi_start'] = 12
-		split_args['umi_end'] = 20
+		args['barcode_start']	= 0
+		args['barcode_end'] 		= 12
+		args['umi_start']			= 12
+		args['umi_end'] 			= 20	
+		if args['kmer_size'] == None:
+			args['kmer_size'] = 8
 	
 		print('Unzipping and indexing files (temporary)')
-		reads_unzipped, reads_offsets = IO_utils.unzip(args['reads'].split(','))
-		barcodes_unzipped, barcodes_offsets = IO_utils.unzip(args['barcodes'].split(','))
-		split_args['reads'] = reads_unzipped
-		split_args['barcodes'] = barcodes_unzipped
-		split_args['reads_offsets'] = reads_offsets
-		split_args['barcodes_offsets'] = barcodes_offsets
+		reads_unzipped, reads_offsets = \
+			IO_utils.unzip(args['reads'].split(','))
+		barcodes_unzipped, barcodes_offsets = \
+			IO_utils.unzip(args['barcodes'].split(','))
+		args['reads'] = reads_unzipped
+		args['barcodes'] = barcodes_unzipped
+		args['reads_offsets'] = reads_offsets
+		args['barcodes_offsets'] = barcodes_offsets
 		
 	elif args['10xgenomics']:
-		split_args['barcode_start'] = 0
-		split_args['barcode_end'] = 24
-		split_args['umi_start'] = 24
-		split_args['umi_end'] = 34
+		args['barcode_start']	= 0
+		args['barcode_end'] 		= 26
+		args['umi_start'] 		= 26
+		args['umi_end'] 			= 34
+		if args['kmer_size'] == None:
+			args['kmer_size'] = 16		
 	
 		print('Unzipping and indexing files (temporary)')
-		reads_unzipped, reads_offsets = IO_utils.unzip(args['reads'].split(',')[0])
+		reads_unzipped, reads_offsets = \
+			IO_utils.unzip(args['reads'].split(','))
 		barcodes_unzipped, barcodes_offsets = IO_utils.merge_barcodefiles_10x(
 			args['barcodes'].split(','),
 			args['umis'].split(','))
-		split_args['reads'] = reads_unzipped
-		split_args['barcodes'] = barcodes_unzipped	
-		split_args['reads_offsets'] = reads_offsets
-		split_args['barcodes_offsets'] = barcodes_offsets	
+				
+		args['reads'] = reads_unzipped
+		args['barcodes'] = barcodes_unzipped	
+		args['reads_offsets'] = reads_offsets
+		args['barcodes_offsets'] = barcodes_offsets	
 
 	else:
-		split_args['barcode_start'] = args['barcode_start']
-		split_args['barcode_end'] = args['barcode_end']
-		split_args['umi_start'] = args['umi_start']
-		split_args['umi_end'] = args['umi_end']
+		if args['kmer_size'] == None:
+			args['kmer_size'] = 8
 	
 		print('Unzipping and indexing files (temporary)')
-		reads_unzipped, reads_offsets = IO_utils.unzip(args['reads'].split(',')[0])
-		barcodes_unzipped, barcodes_offsets = IO_utils.unzip(args['barcodes'].split(',')[0])
-		split_args['reads'] = reads_unzipped
-		split_args['barcodes'] = barcodes_unzipped	
-		split_args['reads_offsets'] = reads_offsets
-		split_args['barcodes_offsets'] = barcodes_offsets
-		
+		reads_unzipped, reads_offsets = \
+			IO_utils.unzip(args['reads'].split(',')[0])
+		barcodes_unzipped, barcodes_offsets = \
+			IO_utils.unzip(args['barcodes'].split(',')[0])
+		args['reads'] = reads_unzipped
+		args['barcodes'] = barcodes_unzipped	
+		args['reads_offsets'] = reads_offsets
+		args['barcodes_offsets'] = barcodes_offsets
 	
-	split_args['threads'] = args['threads']
-	split_args['breadth'] = args['breadth']
-	split_args['depth'] = args['depth']
-	split_args['kmer_size'] = args['kmer_size']	
-	split_args['output_dir'] = args['output_dir']
-	split_args['min_dist'] = args['min_dist']
-
-	check_split_input(split_args)
+	assert len(reads_offsets) == len(barcodes_offsets), \
+		'Reads file and barcodes file do not have the same number of reads\n%i, %i' % \
+		(len(reads_offsets), len(barcodes_offsets))
+	
+	check_split_input(args)
+	reads_nuc_content = \
+		IO_utils.get_nuc_content(reads_unzipped, len(reads_offsets))
+	barcodes_nuc_content = \
+		IO_utils.get_nuc_content(barcodes_unzipped, len(barcodes_offsets))
+		
+	nuc_content_plt = \
+		Plot_utils.plot_nuc_content(
+			args['output_dir'], 
+			reads_nuc_content,
+			barcodes_nuc_content)
 	print('\n')
 	
-	output_files, elapsed_time = Split_reads.run_all(split_args)
+	output_files, elapsed_time = Split_reads.run_all(args)
+	output_files['args'] = args
 	print('Split reads. Time elapsed %s seconds' % elapsed_time)
+	
+	output_files['nuc_content'] = nuc_content_plt
+	
+	del(reads_offsets)
+	del(barcodes_offsets)
+	_ = gc.collect()
 	
 	#print(args['kallisto_idx'])
 	if(args['kallisto_idx'] != None):
@@ -110,16 +132,15 @@ def run_all(args):
 			args,
 			output_files,
 			kallisto_dir)
-		#write output data
-	
+				
 	print('Removing temp files')
 	os.unlink(reads_unzipped)
 	os.unlink(barcodes_unzipped)
 	
-	output_files['run_outputs'] = '%s/run_outputs.json' % args['output_dir']
+	output_files['run_outputs'] = \
+		'%s/run_outputs.json' % args['output_dir']
 	with open(output_files['run_outputs'], 'w') as writer:
 		writer.write(json.dumps(output_files, indent=3))
-	
 	print('Done.')
 	return output_files
 	
@@ -148,7 +169,7 @@ def run_kallisto(args, kallisto, kallisto_dir, output_files):
 def write_transcript_compatability_counts(args, input_files, kallisto_dir):
 	"""
 	Modifed from Vasilis Ntranos scRNA-seq-TCC-prep
-	https://github.com/pachterlab/scRNA-Seq-TCC-prep
+		https://github.com/pachterlab/scRNA-Seq-TCC-prep
 	"""	
 	
 	import numpy as np
@@ -213,6 +234,10 @@ def get_l1_distance(p,q):
 
 def check_pipeline_input(args, kallisto):
 	
+	assert not (args['10xgenomics'] and args['dropseq']), \
+		'10xgenomics and dropseq options are mutually exclusive'
+	assert Path(kallisto).is_file() or shutil.which(kallisto), \
+		'Cannot find kallisto executable %s' % kallisto
 	assert os.path.exists(args['reads']), \
 		'Cannot find reads file %s' % args['reads']	
 	assert os.path.exists(args['barcodes']), \
@@ -222,12 +247,6 @@ def check_pipeline_input(args, kallisto):
 		assert(os.path.exists(args['kallisto_idx'])), \
 			'Cannot find kallisto index %s' % \
 			args['kallisto_idx']
-	
-	assert not (args['10xgenomics'] and args['dropseq']), \
-		'10xgenomics and dropseq options are mutually exclusive'
-	assert Path(kallisto).is_file() or shutil.which(kallisto), \
-		'Cannot find kallisto executable %s' % kallisto
-	
 	if args['10xgenomics']:
 		assert(os.path.exists(args['umis'])), \
 			'Cannot find reads file %s' % args['umis']
@@ -246,13 +265,16 @@ def check_split_input(args):
 		'Cannot find reads file %s' % args['reads']	
 	assert os.path.exists(args['barcodes']), \
 		'Cannot find barcodes file %s' % args['barcodes']
+	assert args['kmer_size'] > 0, \
+		'Kmer size must be positve. %i' % args['kmer_size']
 
 def get_args(args=None):
 	if args is None:
 		args = sys.argv[1:]
 
 	parser = argparse.ArgumentParser(
-		description = 'This script splits reads for dropseq data')
+		description = 'This script splits reads for dropseq data',
+		formatter_class = argparse.ArgumentDefaultsHelpFormatter)
 		
 	parser.add_argument('--dropseq',
 		help='Use barcode / umi positions from Macosko et al Dropseq dataset',
@@ -265,15 +287,15 @@ def get_args(args=None):
 	
 	parser.add_argument('--barcodes', 
 		type=str, 
-		help='Cell barcodes file name or comma separarted list', 
+		help='Cell barcodes file name or comma separarted list. File I1 for 10x genomics', 
 		required=True)
 	parser.add_argument('--umis', 
 		type=str,
-		help='Umis file name or comma separarted list. Only required for 10x genomics', 
+		help='Umis (R1) file name or comma separarted list. Only required for 10x genomics', 
 		required=False)
 	parser.add_argument('--reads', 
 		type=str, 
-		help='RNAseq reads file name or comma separarted list.', 
+		help='RNAseq reads file name or comma separarted list. File R2 for 10x genomics', 
 		required=True)
 	parser.add_argument('--output_dir', 
 		type=str, 
@@ -283,15 +305,15 @@ def get_args(args=None):
 	parser.add_argument('--kmer_size', 
 		type=int, 
 		help='Size of kmers for making barcode De Bruijn graph.', 
-		default=8)
-	parser.add_argument('--depth', 
-		type=int, 
-		help='Fraction of edge weight at starting node to assign to path.', 
-		default=25)
+		default=None)
 	parser.add_argument('--breadth', 
 		type=int, 
 		help='How many nodes search.', 
-		default=25000)
+		default=10000)
+	parser.add_argument('--depth', 
+		type=int, 
+		help='How many paths to search for at each node.', 
+		default=10)
 	parser.add_argument('--threads', 
 		type=int, 
 		help='Number of threads to use.', 
@@ -305,11 +327,27 @@ def get_args(args=None):
 		type=int,
 		help='Minimum Hamming distance between error-corrected barcodes.',
 		default=1)
+	parser.add_argument('--num_cells',
+		type=int,
+		help='Estimated number of cells.',
+		default=None)
 	
-	parser.add_argument('--barcode_start', type=int, default=None)
-	parser.add_argument('--barcode_end', type=int, default=None)
-	parser.add_argument('--umi_start', type=int, default=0)
-	parser.add_argument('--umi_end', type=int, default=0)
+	parser.add_argument(
+		'--barcode_start',
+		type=int,
+		default=None)
+	parser.add_argument(
+		'--barcode_end',
+		type=int,
+		default=None)
+	parser.add_argument(
+		'--umi_start',
+		type=int,
+		default=0)
+	parser.add_argument(
+		'--umi_end',
+		type=int,
+		default=0)
 
 	return vars(parser.parse_args(args))
 
