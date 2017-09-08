@@ -23,13 +23,13 @@ We assign each read in our dataset to a consensus barcode based on the number of
 
 Run the setup py script below. In order to use kallisto to quantify single-cell expression levels after sircel identifies cell barcodes, and kallisto is not on the PATH the --kallisto argument must point to the kallisto binary (version >= 0.43.0). 
 
-	python3 setup.py install --kallisto PATH_TO_KALLISTO
+	python3 setup.py install --kallisto PATH_TO_KALLISTO --install-scripts=./sircel/
 	
 If kallisto is on the PATH:
 
-	python3 setup.py install
+	python3 setup.py install --install-scripts=./sircel/
 
-After installation, you can run sircel via `./sircel`
+The sircel executable should be in the directory `./sircel/sircel`. After installation, you can run sircel via `sircel`.
 
 
 ## Requirements
@@ -52,11 +52,11 @@ After installation, you can run sircel via `./sircel`
 	--help				Prints help message
 	
 	--dropseq			Use barcode / umi positions from Macosko et al.
-	--10xgenomics		Use barcodes / umi coordinates from 10xGenomics version2 chemistry
+	--10xgenomics			Use barcodes / umi coordinates from 10xGenomics version2 chemistry
 	--barcodes			Fastq.gz file from bead barcodes (Reads 1 for dropseq, reads 1 for 10xGenomics)
 	--reads				Fastq.gz file from RNA-seq / 3' sequence tags (Reads 2 for dropseq, reads 2 for 10xGenomics)
 	--umis				UMIs file. (Index I1 file, only required for 10xGenomics )
-	--output_dir		Directory where output files are written
+	--output_dir			Directory where output files are written
 	--kmer_size			Size of k-mer to use for building the barcode graph
 	--depth				Search depth at each node [Default: 4]
 	--breadth			Search breadth through the graph [Default: 1000]
@@ -64,17 +64,18 @@ After installation, you can run sircel via `./sircel`
 	
 ## Optional arguments
 
-	--min_dist			Minimum Hamming distance between barcodes
+	--min_dist		Minimum Hamming distance between barcodes
 	--kallisto_idx		Path to pre-computed kallisto index.
-								If this is provided the script will quantify single-cell expression profiles using kallisto
-	--barcode_start	First position of cell barcode within read in --barcode file.
-								Not needed if --dropseq or --10xgenomics arguments are provided
+					If this is provided the script will quantify single-cell expression profiles using kallisto
+	--barcode_start		First position of cell barcode within read in --barcode file.
+					Not needed if --dropseq or --10xgenomics arguments are provided
 	--barcode_end		Last position of cell barcode within read in --barcode file.
-								Not needed if --dropseq or --10xgenomics arguments are provided
-	--umi_start			First position of unique molecule ID within read in --barcode file.
-								Not needed if --dropseq or --10xgenomics arguments are provided
-	--umi_end			Last position of unique molecule ID within read in --barcode file.
-								Not needed if --dropseq or --10xgenomics arguments are provided
+					Not needed if --dropseq or --10xgenomics arguments are provided
+	--umi_start		First position of unique molecule ID within read in --barcode file.
+					Not needed if --dropseq or --10xgenomics arguments are provided
+	--umi_end		Last position of unique molecule ID within read in --barcode file.
+					Not needed if --dropseq or --10xgenomics arguments are provided
+	--num_cells		Estimated number of cells. Not required
 	
 Note about barcode and UMI position indexing
 Barcode and UMI positions within a read follow the same indexing convension as python strings. For example, the string BARCODEUMI would have coordinates:
