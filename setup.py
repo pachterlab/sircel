@@ -40,7 +40,10 @@ setup(name='sircel',
       version = '0.1.1',
       packages = find_packages(),
       install_requires = [
-			'numpy', 'scipy', 'sklearn', 'redis'],
+			'numpy',
+			'scipy',
+			'python-Levenshtein',
+			'matplotlib'],
       package_data = {'': ['params.json']},
       include_package_data = True,
 		entry_points = {
