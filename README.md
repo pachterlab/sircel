@@ -1,4 +1,4 @@
-## Readme.md
+## Readme
 
 	Akshay Tambe
 	Pachter and Doudna groups
@@ -21,16 +21,11 @@ We assign each read in our dataset to a consensus barcode based on the number of
 
 ## Installation
 
-Run the setup py script below. In order to use kallisto to quantify single-cell expression levels after sircel identifies cell barcodes, and kallisto is not on the PATH the --kallisto argument must point to the kallisto binary (version >= 0.43.0). 
+Run the setup py script below. In order to use kallisto to quantify single-cell expression levels after sircel identifies cell barcodes, and kallisto is not on the PATH the --kallisto argument must point to the kallisto binary (requires kallisto version >= 0.43.0). 
 
 	python3 setup.py install --kallisto PATH_TO_KALLISTO --install-scripts=./sircel/
 	
-If kallisto is on the PATH:
-
-	python3 setup.py install --install-scripts=./sircel/
-
 The sircel executable should be in the directory `./sircel/sircel`. After installation, you can run sircel via `sircel`.
-
 
 ## Requirements
 
