@@ -2,39 +2,15 @@
 Akshay Tambe
 Pachter and Doudna groups
 """
-import subprocess
 import sys
 import tempfile
 import numpy as np
-import redis
-import itertools
-import shutil
 import gzip as gz
+import io
+from collections import deque
+from itertools import islice
 
 np.random.seed(0)
-
-def get_nuc_content(unzipped, num_reads):
-	nuc_content = {}
-	increment = 1.0 / num_reads
-	seq_len = 0
-	
-	with open(unzipped) as in_file:
-		for lines in grouper(in_file, 4):
-			seq = lines[1].strip().upper()
-			
-			#some datasets have variable read lengths
-			if len(seq) > seq_len:
-				seq_len = len(seq)
-				for nt, freqs in nuc_content.items():
-					while len(freqs) < seq_len:
-						freqs.append(0)
-					nuc_content[nt] = freqs
-			
-			for i, nt in enumerate(seq):
-				if(nt not in nuc_content):
-					nuc_content[nt] = [0] * len(seq)
-				nuc_content[nt][i] += increment
-	return nuc_content
 
 def get_kmers(sequence, k):
 	"""
@@ -100,76 +76,83 @@ def unzip(gzipped_lst):
 		temp file path (string), offsets (list), nuc_content (counter)
 	"""
 	out_file = tempfile.NamedTemporaryFile(delete=False)
-	offsets = []
-	offset = 0
-	
+	#offsets = []
+	#offset = 0
 	for gzipped in gzipped_lst:
 		if not gzipped.endswith('.gz'):
 			raise TypeError('File does not appear to be gzipped: %s' % gzipped)
 		with gz.open(gzipped) as in_file:
 			for lines in grouper(in_file, 4):
-				
 				lines = b''.join(lines)
-				offset += len(lines)
-				offsets.append(offset)
 				out_file.write(lines)
-				
-	return out_file.name, offsets
+	return out_file.name
 
-def get_read_chunks(barcodes, offsets, random = False, BUFFER_SIZE = 10000):
-	"""
-	Args: 
-		barcodes (unzipped fq file)
-		reads (unzipped fq file)
-		lines (list)
-	yields
-		data_buffer (list of tuples)
-	
-	simultaneously reads two fastq files (line-by-line) and stores data in a list
-	yields this list (chunks of the datasets)
-	"""
-	barcodes_iter = read_fastq(barcodes, offsets, random = random)
-	
-	break_outer = False
-	while(not break_outer):
-		data_buffer = []#list of tuples(barcodes_data, barcodes_offset, reads_offset)
-		while(True):
-			try:
-				barcodes_data, barcodes_offset = next(barcodes_iter)
-			except StopIteration:
-				break_outer = True
-				break
-			
-			if(len(data_buffer) % BUFFER_SIZE == 0 and len(data_buffer) > 0):
-				#break_inner = True
-				break
-			data_buffer.append((
-				barcodes_data, 
-				barcodes_offset))			
-		yield data_buffer
-
-def read_fastq(fq_file, offsets, random = False):
-	"""
-	Args:
-		fq_file (path to a fastq format file), unzipped
-		offsets (list)
-	Yields
-		tuple (lines, offset)
-			lines: list of 4 lines from fastq file, ordered by offets
-			offset: character offset from beginning of the file for this fq read
-	"""
-	fq_reader = open(fq_file, 'rb')
-	if(random):
-		np.random.shuffle(offsets)
+def get_read_chunks(barcodes_file, random = False, BUFFER_SIZE = 10000):
+	if random:
+		barcodes_iter = read_fastq_random(barcodes_file)
+	else:
+		barcodes_iter = read_fastq_sequential(barcodes_file)
+	data_buffer = []
 	while True:
-		try:
-			offset = offsets.pop()
-		except IndexError:
-			break
-		fq_reader.seek(offset, 0)
-		lines = [fq_reader.readline().strip().decode('utf-8') for i in range(4)]
-		yield (lines, offset)
-	fq_reader.close()
+		data_buffer.append(next(barcodes_iter))
+		if len(data_buffer) == BUFFER_SIZE:
+			yield data_buffer
+			data_buffer = []
+
+def read_fastq_random(fq_file, offsets = None):
+	with open(fq_file, 'rb') as fq:
+		file_size = fq.seek(0, io.SEEK_END)
+		while True:
+			if offsets == None:
+				pos = np.random.randint(file_size)
+			else:
+				try:
+					pos = offsets.pop()
+				except IndexError:
+					break
+			try:
+				lines = get_next_complete_read(fq, pos)
+				yield (bytes_to_str(lines), pos)
+			except StopIteration:
+				pass
+
+def bytes_to_str(tup):
+	try:
+		return [item.decode('utf-8').strip() for item in tup]
+	except AttributeError:
+		return [i for i in tup]#convert to list otherwise
+							 
+def get_next_complete_read(fq, pos):
+	fq.seek(pos)
+	lines = deque(islice(fq, 4))
+	while not is_valid_fq_entry(lines):
+		_ = lines.popleft()
+		lines.append(next(fq))
+	return lines
+	
+def is_valid_fq_entry(lines):
+	"""
+	FQ format requirements
+		line 1: begins with '@'
+		line 2: seq
+		line 3: '+' or '-'
+		line 4: phred score, same len as seq
+	"""
+	get_first_char = lambda lines: lines[0].decode('utf-8')[0]
+	if get_first_char(lines) != '@':
+		return False
+	if len(lines[1]) != len(lines[3]):
+		return False
+	if len(lines[2].strip()) != 1:
+		return False
+	return True
+	
+def read_fastq_sequential(fq_file):
+	offset = 0
+	with open(fq_file, 'r') as inf:
+		for lines in grouper(inf, 4):
+			yield (bytes_to_str(lines), offset)
+			offset += sum([len(i) for i in lines])
 
 def merge_barcodefiles_10x(cells_gz, umis_gz):
 	""""
@@ -205,8 +188,6 @@ def merge_barcodefiles_10x(cells_gz, umis_gz):
 	out_file = tempfile.NamedTemporaryFile(delete=False)
 	
 	out_file.seek(0)
-	offset = 0
-	offsets = []
 	writer = open(out_file.name, 'wb')
 	
 	while(True):
@@ -229,10 +210,8 @@ def merge_barcodefiles_10x(cells_gz, umis_gz):
 			combined_phred]
 		output_str = ('\n'.join(output) + '\n').encode('utf-8')
 		writer.write(output_str)
-		offset += len(output_str)
-		offsets.append(offset)
 	writer.close()
-	return out_file.name, offsets
+	return out_file.name
 
 def grouper(iterable, n, fillvalue=None):
     "Collect data into fixed-length chunks or blocks"
@@ -249,38 +228,7 @@ def save_paths_text(output_dir, paths, prefix=''):
 			writer.write('%s\t%i\t%i\t%s\n' %
 				(tup[0], tup[1], tup[2], ','.join(tup[3])))
 	return paths_file
-
-def initialize_redis_pipeline(db=0):
-	redis_db = redis.StrictRedis(host="localhost", port=6379, db=db)#redis
 	
-	redis_db.flushall()
-	redis_pipe = redis_db.pipeline()
-	return redis_db, redis_pipe
-
-def get_from_db(kmer_idx_pipe, keys):
-	for key in keys:
-		kmer_idx_pipe.get(key)
-	pipe_out = kmer_idx_pipe.execute()	
-	entries = []
-	for entry in pipe_out:
-		#entry is a comma separated bytestring of ints. return just the list
-		if(entry != None):
-			offsets = [int(i) for i in entry.decode('utf-8').split(',')[0:-1]]
-			entries.append(offsets)
-	return entries
-
-def get_digital_expression(tsv_file, cells_file):
-	num_cells = get_num_cells(cells)
-	nonzero_ec, ec_to_index = get_nonzero_ec(tsv_file)
-	
-	dge = np.zeros((num_cells, len(nonzero_ec)))
-	cells_iter = read_tsv_by_cell(tsv_file)
-	for (i, (cell, total_counts, ec_counts)) in enumerate(cells_iter):
-		for (eq_class, count) in ec_counts:
-			dge[i, ec_to_idx[eq_class]] = count / total_counts
-	#print('Shape of DGE: %i %i' % (np.shape(dge)))
-	return dge
-
 def get_nonzero_ec(tsv_file):
 	nonzero_ec = set()
 	with open(tsv_file, 'rb') as inf:

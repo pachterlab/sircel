@@ -101,63 +101,41 @@ def plot_cell_distance_hmap(output_dir, distances, bc_len):
 	distances is a
 	list of tuples: (cell_name (str), lev_dist (counter), ham_dist (counter) )
 	
-	plot as 2x hmap, each row is a cell. each column is a distance
+	scatter plot for each cell: 
+		average lev dist (x), 
+		average ham dist(y)
+		ebars
 	"""
 	
-	fig, ax = plt.subplots(nrows = 1, ncols = 3)
+	fig, ax = plt.subplots(nrows = 1, ncols = 1, figsize = (4,4))
 	
 	num_cells = len(distances)
-	lev_img = np.zeros((num_cells, bc_len))
-	ham_img = np.zeros((num_cells, bc_len))
-	diff_img = np.zeros((num_cells, bc_len))
-	
 	ham_medians = []
 	lev_medians = []
 	
-	for i, (cell_name, lev_dist, ham_dist, dist_diff) in enumerate(distances):
-		ham_y = counter_to_vect(ham_dist, bc_len)
-		lev_y = counter_to_vect(lev_dist, bc_len)
-		diff_y = counter_to_vect(dist_diff, bc_len)
-		ham_img[i, :] = ham_y
-		lev_img[i, :] = lev_y
-		diff_img[i, :] = diff_y
-
-	ax[0].imshow(
-		ham_img,
-		interpolation = 'nearest',
-		aspect='auto',
-		cmap = 'Blues')
-	ax[0].set_xlabel('Hamming distance', fontsize = 6)
-	ax[1].imshow(
-		lev_img,
-		interpolation = 'nearest',
-		aspect='auto',
-		cmap = 'Blues')
-	ax[1].set_xlabel('Levenshtein distance', fontsize = 6)
+	for i, (cell_name, lev_dist, ham_dist) in enumerate(distances):
+		ham_mean = np.mean(ham_dist)
+		ham_std = np.std(ham_dist)
+		lev_mean = np.mean(lev_dist)
+		lev_std = np.std(lev_dist)
+		
+		ax.scatter(ham_mean, lev_mean, alpha = 0.1)
+		#ax.errorbar(ham_mean, lev_mean, xerr=ham_std, yerr = lev_std, alpha = 0.1, color = 'b')
 	
-	ax[2].imshow(
-		diff_img,
-		interpolation = 'nearest',
-		aspect='auto',
-		cmap = 'Blues')
-	ax[2].set_xlabel(\
-		'Difference between \nLevenshtein and Hamming distance', fontsize = 6)
+	ax.plot([0,15], [0,15], color = 'grey', ls='-')
+	ax.set_xlim([0, bc_len])
+	ax.set_ylim([0, bc_len])
+	ax.grid()
 	
-	for a in ax:
-		a.set_ylabel('Cell', fontsize = 6)
-		a.set_title('Per-cell edit distances', fontsize = 6)
+	ax.set_xlabel('Average Hamming distance to consensus')
+	ax.set_ylabel('Average Levenshtein distance to consensus')
 	
 	plt.tight_layout()
 	fname = '%s/plots/per_cell_edit_distance.png' % output_dir
 	fig.savefig(fname, dpi = 300)
 	return fname
 		
-def counter_to_vect(counter, x_len):
-	x = list(range(x_len))
-	y = [0] * x_len
-	for i in x:
-		y[i] = counter[str(i)]
-	return np.array(y) / np.sum(y)
+
 		
 		
 		

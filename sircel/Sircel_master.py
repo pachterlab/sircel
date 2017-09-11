@@ -43,16 +43,13 @@ def run_all(args):
 		args['umi_end'] 			= 20	
 		if args['kmer_size'] == None:
 			args['kmer_size'] = 8
-	
-		print('Unzipping and indexing files (temporary)')
-		reads_unzipped, reads_offsets = \
+		print('Unzipping files (temporary)')
+		reads_unzipped = \
 			IO_utils.unzip(args['reads'].split(','))
-		barcodes_unzipped, barcodes_offsets = \
+		barcodes_unzipped = \
 			IO_utils.unzip(args['barcodes'].split(','))
 		args['reads'] = reads_unzipped
 		args['barcodes'] = barcodes_unzipped
-		args['reads_offsets'] = reads_offsets
-		args['barcodes_offsets'] = barcodes_offsets
 		
 	elif args['10xgenomics']:
 		args['barcode_start']	= 0
@@ -61,59 +58,31 @@ def run_all(args):
 		args['umi_end'] 			= 34
 		if args['kmer_size'] == None:
 			args['kmer_size'] = 16		
-	
 		print('Unzipping and indexing files (temporary)')
-		reads_unzipped, reads_offsets = \
+		reads_unzipped = \
 			IO_utils.unzip(args['reads'].split(','))
-		barcodes_unzipped, barcodes_offsets = IO_utils.merge_barcodefiles_10x(
+		barcodes_unzipped = IO_utils.merge_barcodefiles_10x(
 			args['barcodes'].split(','),
 			args['umis'].split(','))
 				
 		args['reads'] = reads_unzipped
 		args['barcodes'] = barcodes_unzipped	
-		args['reads_offsets'] = reads_offsets
-		args['barcodes_offsets'] = barcodes_offsets	
 
 	else:
 		if args['kmer_size'] == None:
 			args['kmer_size'] = 8
-	
 		print('Unzipping and indexing files (temporary)')
-		reads_unzipped, reads_offsets = \
-			IO_utils.unzip(args['reads'].split(',')[0])
-		barcodes_unzipped, barcodes_offsets = \
-			IO_utils.unzip(args['barcodes'].split(',')[0])
+		reads_unzipped = \
+			IO_utils.unzip(args['reads'].split(','))
+		barcodes_unzipped = \
+			IO_utils.unzip(args['barcodes'].split(','))
 		args['reads'] = reads_unzipped
-		args['barcodes'] = barcodes_unzipped	
-		args['reads_offsets'] = reads_offsets
-		args['barcodes_offsets'] = barcodes_offsets
-	
-	assert len(reads_offsets) == len(barcodes_offsets), \
-		'Reads file and barcodes file do not have the same number of reads\n%i, %i' % \
-		(len(reads_offsets), len(barcodes_offsets))
+		args['barcodes'] = barcodes_unzipped
 	
 	check_split_input(args)
-	reads_nuc_content = \
-		IO_utils.get_nuc_content(reads_unzipped, len(reads_offsets))
-	barcodes_nuc_content = \
-		IO_utils.get_nuc_content(barcodes_unzipped, len(barcodes_offsets))
-		
-	nuc_content_plt = \
-		Plot_utils.plot_nuc_content(
-			args['output_dir'], 
-			reads_nuc_content,
-			barcodes_nuc_content)
-	print('\n')
-	
 	output_files, elapsed_time = Split_reads.run_all(args)
 	output_files['args'] = args
 	print('Split reads. Time elapsed %s seconds' % elapsed_time)
-	
-	output_files['nuc_content'] = nuc_content_plt
-	
-	del(reads_offsets)
-	del(barcodes_offsets)
-	_ = gc.collect()
 	
 	#print(args['kallisto_idx'])
 	if(args['kallisto_idx'] != None):
@@ -121,7 +90,6 @@ def run_all(args):
 		kallisto_dir = '%s/kallisto_outputs' % args['output_dir']
 		if not os.path.exists(kallisto_dir):
 			os.makedirs(kallisto_dir)
-		
 		output_files['kallisto'] = run_kallisto(
 			args,
 			kallisto,
@@ -136,11 +104,11 @@ def run_all(args):
 	print('Removing temp files')
 	os.unlink(reads_unzipped)
 	os.unlink(barcodes_unzipped)
-	
 	output_files['run_outputs'] = \
 		'%s/run_outputs.json' % args['output_dir']
 	with open(output_files['run_outputs'], 'w') as writer:
 		writer.write(json.dumps(output_files, indent=3))
+	
 	print('Done.')
 	return output_files
 	

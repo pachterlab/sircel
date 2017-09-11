@@ -51,8 +51,8 @@ def get_cell_error_rate(split_files, split_args):
 		#contain distributions of levenshtein and hamming distances
 	
 	ret = []
-	for cell_name, (lev_dist, ham_dist, dist_diff) in zip(cell_names, distances):
-		ret.append((cell_name, lev_dist, ham_dist, dist_diff))
+	for cell_name, (lev_dist, ham_dist) in zip(cell_names, distances):
+		ret.append((cell_name, lev_dist, ham_dist))
 	return ret
 
 def get_consensus_seq(cell_name):
@@ -66,19 +66,17 @@ def get_single_cell_error_rate(params):
 	consensus = get_consensus_seq(cell_name)
 	bc_fq = split_files[cell_name]['barcodes']
 	
-	lev_dist = Counter()
-	ham_dist = Counter()
-	dist_diff = Counter()
+	lev_dist = []
+	ham_dist = []
 	for read in read_fastq_gz(bc_fq):
 		seq = read[1].decode('utf-8').strip()[ \
 			split_args['barcode_start']: split_args['barcode_end']]
 		lev = distance(consensus, seq)
 		ham = hamming(consensus, seq)
 		
-		lev_dist.update(str(lev))
-		ham_dist.update(str(ham))
-		dist_diff.update(str(lev - ham))
-	return (lev_dist, ham_dist, dist_diff)
+		lev_dist.append(lev)
+		ham_dist.append(ham)
+	return (lev_dist, ham_dist)
 
 def read_fastq_gz(fq_file):
 	import gzip as gz

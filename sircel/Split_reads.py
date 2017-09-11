@@ -7,7 +7,6 @@ Split reads for dropseq data
 1. Index kmers
 		Produce a dict kmer_index 
 		kmer_index[kmer] -> list of read line numbers that contain this kmer
-	Use redis database to store
 2. Find cyclic paths
 		pick a popular kmer
 		get all reads that contain the kmer
@@ -27,15 +26,13 @@ import gc
 import numpy as np
 
 from collections import Counter
-from itertools import repeat
+from itertools import repeat, chain
 from multiprocessing import Pool
+from Levenshtein import distance, hamming
+from scipy import signal
  
 from sircel import IO_utils, Plot_utils
 from sircel.Graph_utils import Edge, Graph, Path
-
-import matplotlib as mpl
-mpl.use('Agg')
-from matplotlib import pyplot as plt
 
 np.random.seed(0)
 
@@ -44,7 +41,7 @@ output_files = {}
 output_dir = ''
 
 def run_all(cmdline_args):
-	print('Running Split_reads')
+	print('Splitting reads by barcodes')
 	
 	global args
 	global output_files
@@ -59,14 +56,8 @@ def run_all(cmdline_args):
 	
 	reads_unzipped = args['reads']
 	barcodes_unzipped = args['barcodes']
-	reads_offsets = args['reads_offsets']
-	barcodes_offsets = args['barcodes_offsets']
-	
-	print('Indexing reads by circularized kmers')
-	kmer_index, kmer_counts, subsamp_pearson = get_kmer_index(
-		barcodes_unzipped, list(barcodes_offsets))
-		#list(barcodes_offsets) makes a copy of barcodes_offsets. 
-		#this allows use of the pop() method without modifying the old list
+	print('Building kmer index')
+	kmer_index, kmer_counts, subsamp_pearson = get_kmer_index(barcodes_unzipped)
 	output_files['subsamp_pearson_plot'] = subsamp_pearson
 	print('\t%i unique kmers indexed' % len(kmer_counts.items()))
 	
@@ -88,34 +79,29 @@ def run_all(cmdline_args):
 	output_files['thresholded_paths'] = IO_utils.save_paths_text(
 		output_dir, top_paths, prefix='threshold')
 	
-	print('Assigning reads')
-	reads_assigned_db, reads_assigned_pipe = assign_all_reads(
-		(top_paths,
+	consensus_bcs = set([tup[0] for tup in top_paths])
+	
+	print('Assigning reads by kmer compatability')
+	reads_assigned = assign_all_reads(
+		(consensus_bcs,
 		reads_unzipped, 
-		reads_offsets, 
-		barcodes_unzipped, 
-		barcodes_offsets))
+		barcodes_unzipped))
 	
 	print('Splitting reads by cell')
 	output_files['split'] = write_split_fastqs(
-		(reads_assigned_db,
-		reads_assigned_pipe,
+		(reads_assigned,
 		output_dir,
 		reads_unzipped,
 		barcodes_unzipped))
-	
-	print('Flushing assignments index')
-	reads_assigned_db.flushall()
 	
 	current_time = time.time()
 	elapsed_time = current_time - start_time
 	return(output_files, elapsed_time)
 	
-def get_kmer_index(barcodes_unzipped, barcodes_offsets):
+def get_kmer_index(barcodes_unzipped):
 	"""
 	Args:
 		barcodes_unzipped (str): filename for unzipped barcodes fq
-		barcodes_offsets (list): huge list of line offsets for file
 	
 	Returns
 		kmer_idx (dict): map of kmer to list of line offsets for reads 
@@ -128,7 +114,6 @@ def get_kmer_index(barcodes_unzipped, barcodes_offsets):
 	
 	General approach:
 	
-		shuffle the line offsets
 		initialize:
 			get a random chunk of reads based on line offsets
 			compute kmer counts
@@ -137,7 +122,7 @@ def get_kmer_index(barcodes_unzipped, barcodes_offsets):
 			compute kmer counts for the new chunk
 			compare kmer counts with previous iteration
 		terminate when:
-			pearsonR >= some cutoff value for some number of cycles
+			pearsonR >= some cutoff value
 	
 	"""
 	PEARSONR_CUTOFF = 0.9999
@@ -154,7 +139,6 @@ def get_kmer_index(barcodes_unzipped, barcodes_offsets):
 	for (chunk_num, reads_chunk) in enumerate(
 		IO_utils.get_read_chunks(
 			barcodes_unzipped,
-			barcodes_offsets,
 			random = True,
 			BUFFER_SIZE = 10000)):
 				
@@ -183,11 +167,11 @@ def get_kmer_index(barcodes_unzipped, barcodes_offsets):
 			old_kmer_counts, new_kmer_counts)
 		counts_corr_coefs.append(counts_corr_coef)
 		print('\t%i reads indexed. Running pearsonr is %f' % \
-				(read_count, counts_corr_coef))
+			(read_count, counts_corr_coef))
 		
-		if(len(counts_corr_coefs) >= MIN_ITERS):
-			if(all(corr >= PEARSONR_CUTOFF for corr in counts_corr_coefs[-MIN_ITERS:])):
-				break
+		if(len(counts_corr_coefs) >= MIN_ITERS) and \
+			(counts_corr_coef > PEARSONR_CUTOFF):
+			break
 		
 	return (kmer_idx, 
 		new_kmer_counts,
@@ -205,8 +189,6 @@ def index_read(params):
 	Returns
 		kmer_index (dict): 
 	"""
-	
-	
 	(barcodes_data, barcodes_offset) = params
 	
 	kmer_index = {}
@@ -317,8 +299,8 @@ def find_path_from_kmer(params):
 	return merge_paths(paths)
 
 def build_subgraph(reads_in_subgraph, barcodes_unzipped):
-	barcodes_iter = IO_utils.read_fastq(
-		barcodes_unzipped, reads_in_subgraph)
+	barcodes_iter = IO_utils.read_fastq_random(
+		barcodes_unzipped, offsets = reads_in_subgraph)
 	subgraph_kmer_counts = Counter()
 	while(True):
 		try:
@@ -340,7 +322,6 @@ def build_subgraph(reads_in_subgraph, barcodes_unzipped):
 	return subgraph
 
 def threshold_paths(output_dir, paths, num_cells):
-	from scipy import signal
 	LOCAL_WINDOW_LEN = 50
 	MIN_CAPACITY = 0
 	
@@ -375,13 +356,11 @@ def threshold_paths(output_dir, paths, num_cells):
 	second_grad = local_lin_fit(grad, window_len = LOCAL_WINDOW_LEN)
 	lmax = get_lmax(second_grad, LOCAL_WINDOW_LEN)
 	threshold = get_threshold(grad, lmax, num_cells, unique_paths_sorted)
-	print('\tThreshold is %i' % threshold)	
 	top_paths = unique_paths_sorted[0:threshold]
 
 	print('\tMerging similar paths by Hamming distance')
 	top_paths = merge_paths(top_paths)#merges by hamming distance
 	print('\t%i paths remaining after merging' % len(top_paths))
-	
 	threshold_out['paths_threshold_plot'] = Plot_utils.plot_path_threshold(
 		(output_dir, 
 			path_weights,
@@ -438,9 +417,7 @@ def linear(x, *p):
 	(slope, intercept) = p
 	return slope * x + intercept
 	
-def merge_paths(paths):
-	from Levenshtein import hamming
-	
+def merge_paths(paths):	
 	paths_sorted = sorted(paths, key = lambda tup: tup[1])
 	num_paths = len(paths)
 	
@@ -455,74 +432,77 @@ def merge_paths(paths):
 				if(bad_path[0] in paths_merged.keys()):
 					del(paths_merged[bad_path[0]])
 	return list(paths_merged.values())
-		
+
 def assign_all_reads(params):
-	(	top_paths,
-		reads_unzipped,
-		reads_offsets,
-		barcodes_unzipped,
-		barcodes_offsets) = params
+	(	consensus_bcs,
+		reads_unzipped, 
+		barcodes_unzipped) = params
 	
+	BUFFER_SIZE = 100000
 	MIN_KMER_SIZE = 6
 	MAX_KMER_SIZE = args['barcode_end'] - args['barcode_start']
+	pool = Pool(processes = args['threads'])
 	
-	#initialize vars
-	reads_assigned_db, reads_assigned_pipe = \
-		IO_utils.initialize_redis_pipeline(db=0)
-	kmers_to_paths = {}
+	print('\tMapping kmers to consensus barcodes')
+	#populate map of kmer to path
+	kmer_map = {}
+	for kmer_size in range(MAX_KMER_SIZE, MIN_KMER_SIZE, -1):
+		kmer_map_ = \
+			map_kmers_to_bcs(consensus_bcs, kmer_size)
+		kmer_map = {**kmer_map_, **kmer_map}
 	
-	#print('\tGetting kmers in paths')
-	for path in top_paths:
-		cell_barcode = path[0]
-		for kmer_size in range(MIN_KMER_SIZE, MAX_KMER_SIZE):
-			kmers = IO_utils.get_cyclic_kmers(
-				['na', cell_barcode, 'na', cell_barcode],
-				kmer_size,
-				0,
-				len(cell_barcode),
-				indel=False)
-			for (kmer, _) in kmers:
-				if(kmer not in kmers_to_paths.keys()):
-					kmers_to_paths[kmer] = []
-				kmers_to_paths[kmer].append(cell_barcode)
-
-	#print('\tAssigning reads to paths')
-	pool = Pool(processes = args['threads'])	
+	reads_assigned = {}
+		#key / value map of: [cell name] :-> list of line offsets
+	for bc in consensus_bcs:
+		reads_assigned[bc] = []
+	reads_assigned['unassigned'] = []
+	
+	print('\tAssigning reads')
 	read_count = 0
-	num_unassigned = 0
-	BUFFER_SIZE = 100000	
-	
+	num_unassigned = 0	
 	for reads_chunk, barcodes_chunk in zip(
 		IO_utils.get_read_chunks(
 			reads_unzipped,
-			reads_offsets,
 			random = False,
 			BUFFER_SIZE = BUFFER_SIZE),
 		IO_utils.get_read_chunks(
 			barcodes_unzipped,
-			barcodes_offsets,
 			random = False,
 			BUFFER_SIZE = BUFFER_SIZE)):
-		
 		read_count += len(reads_chunk)
-		assignments = pool.map(assign_read, 
-			zip(repeat(kmers_to_paths),
+		
+		assignments = pool.map(assign_read_kmers, 
+			zip(
+			repeat(kmer_map),
 			repeat(MIN_KMER_SIZE),
 			repeat(MAX_KMER_SIZE),
 			reads_chunk,
 			barcodes_chunk))
+		
 		for (assignment, offset1, offset2) in assignments:
 			if(assignment == 'unassigned'):
 				num_unassigned += 1
-			reads_assigned_pipe.append(
-				assignment.encode('utf-8'), 
-				('%i,%i,' % (offset1, offset2)).encode('utf-8'))
-		reads_assigned_pipe.execute()
-		print('\t%i reads assigned' % read_count)
-	print('%i reads could not be assigned' % num_unassigned)
-	return(reads_assigned_db, reads_assigned_pipe)
+			reads_assigned[assignment].append((offset1, offset2))
+		print('\tProcessed %i reads' % read_count)
+	print('\t%i reads could not be assigned' % num_unassigned)
+	return reads_assigned
 	
-def assign_read(params):
+def map_kmers_to_bcs(consensus_bcs, kmer_size):
+	kmers_to_paths = {}
+	for cell_barcode in consensus_bcs:
+		kmers = IO_utils.get_cyclic_kmers(
+			['na', cell_barcode, 'na', cell_barcode],
+			kmer_size,
+			0,
+			len(cell_barcode),
+			indel=True)
+		for (kmer, _) in kmers:
+			if(kmer not in kmers_to_paths.keys()):
+				kmers_to_paths[kmer] = []
+			kmers_to_paths[kmer].append(cell_barcode)
+	return kmers_to_paths
+	
+def assign_read_kmers(params):
 	"""
 	Assigns a single read to a cell barcode by kmer compatibility
 	args (tuple)
@@ -531,13 +511,12 @@ def assign_read(params):
 		max_kmer_size
 		read: list of fastq entry lines
 	"""
-	(kmers_to_paths,
+	(kmer_map,
 		min_kmer_size,
 		max_kmer_size,
 		(reads_data, reads_offset),
 		(barcodes_data, barcodes_offset)) = params
 	
-	read_assignment = Counter()
 	for kmer_size in range(max_kmer_size, min_kmer_size, -1):
 		read_kmers = IO_utils.get_cyclic_kmers(
 			barcodes_data, 
@@ -545,22 +524,70 @@ def assign_read(params):
 			args['barcode_start'], 
 			args['barcode_end'],
 			indel = True)
+		bcs, is_assigned, is_unique = get_most_common_bc(
+			kmer_map, read_kmers)
+		if is_assigned and is_unique:
+			return (bcs[0], reads_offset, barcodes_offset)
+		#outherwise decrement kmer size and try again
+	return ('unassigned', reads_offset, barcodes_offset)
+
+def get_most_common_bc(kmer_map, read_kmers):
+	compatable_bcs = {}
+	for (kmer, _) in read_kmers:
+		bcs = kmer_map.get(kmer, None)
+		if bcs != None:
+			increment = 1.0 / len(bcs)
+			for bc in bcs:
+				if bc not in compatable_bcs:
+					compatable_bcs[bc] = 0
+				compatable_bcs[bc] += increment
+	most_common = None
+	highest_count = 0
+	for bc, count in compatable_bcs.items():
+		if count > highest_count:
+			highest_count = count
+			most_common = [bc]
+		elif count == highest_count and count > 0:
+			most_common.append(bc)
 	
-		for (kmer, _ ) in read_kmers:
-			paths_with_kmer = kmers_to_paths.get(kmer, [])
-			for path in paths_with_kmer:
-				read_assignment[path] += 1
-		most_common = read_assignment.most_common(1)
-		if(len(most_common) == 1):
-			assignment = most_common[0][0]
-			return (assignment, reads_offset, barcodes_offset)
-		#else decremenet kmer size
+	if most_common == None:
+		return None, False, False
+	elif len(most_common) == 1:
+		return most_common, True, True
+	else:
+		return most_common, True, False
+
+def assign_read_levenshtein(params):	
+	(consensus_bcs,
+		(reads_data, reads_offset),
+		(barcodes_data, barcodes_offset)) = params
+	
+	obs_bc = reads_data[1].strip()[ \
+		args['barcode_start']: args['barcode_end']]
+	#first check for perfect match	
+	if obs_bc in consensus_bcs:
+		return (obs_bc, reads_offset, barcodes_offset)
+	
+	#otherwise minimize levenshtein distance
+	min_lev_dist = None
+	assignment = []
+	for consensus_bc in consensus_bcs:
+		lev_dist = distance(obs_bc, consensus_bc)
+		if min_lev_dist == None or lev_dist < min_lev_dist:
+			min_lev_dist = lev_dist
+			assignment = [consensus_bc]
+		#in the case of a tie,
+		elif lev_dist == min_lev_dist:
+			assignment.append(consensus_bc)
+	#return the best unique assignment
+	if len(assignment) == 1:
+		return (assignment[0], reads_offset, barcodes_offset)
+	#or don't assign read (in the case of a tie)
 	return ('unassigned', reads_offset, barcodes_offset)
 
 def write_split_fastqs(params):
 	import gzip
-	(	reads_assigned_db,
-		reads_assigned_pipe,
+	(	reads_assigned,
 		output_dir,
 		reads_unzipped,
 		barcodes_unzipped) = params
@@ -571,8 +598,9 @@ def write_split_fastqs(params):
 	output_files = {'batch' : '%s/batch.txt' % (split_dir)}
 	batch_file = open(output_files['batch'], 'w')
 		
-	for cell in reads_assigned_db.keys():
-		cell_name = 'cell_%s' % cell.decode('utf-8')		
+	for cell, cell_offsets in reads_assigned.items():
+		
+		cell_name = 'cell_%s' % cell
 		output_files[cell_name] = {
 			'reads' : '%s/%s_reads.fastq.gz' % (split_dir, cell_name),
 			'barcodes' : '%s/%s_barcodes.fastq.gz' % (split_dir, cell_name),
@@ -585,29 +613,22 @@ def write_split_fastqs(params):
 		barcodes_writer = gzip.open(output_files[cell_name]['barcodes'], 'wb')
 		umi_writer = open(output_files[cell_name]['umi'], 'wb')
 		
-		try:
-			cell_offsets = IO_utils.get_from_db(reads_assigned_pipe, [cell])[0]
-		except IndexError:
-			pass
-			
-			
-		assert len(cell_offsets) % 2 == 0, \
-			'Cell offsets must contain an even number of entries'
-		reads_iter = IO_utils.read_fastq(
+		reads_iter = IO_utils.read_fastq_random(
 			reads_unzipped, 
-			[cell_offsets[i] for i in range(len(cell_offsets)) if i % 2 == 0])
-		barcodes_iter = IO_utils.read_fastq(
+			offsets = [tup[0] for tup in cell_offsets])
+		barcodes_iter = IO_utils.read_fastq_random(
 			barcodes_unzipped,
-			[cell_offsets[i] for i in range(len(cell_offsets)) if i % 2 == 1])
+			offsets = [tup[1] for tup in cell_offsets])
 		
 		reads_in_cell = 0
 		while(True):
 			try:
 				reads_data, _ = next(reads_iter)
-				barcodes_data, _ =  next(barcodes_iter)
+				barcodes_data, _ = next(barcodes_iter)
 				reads_in_cell += 1
 			except StopIteration:
 				break
+			
 			reads_data[0] += ' %s' % cell_name.replace('_', ':')
 			reads_data[0] = reads_data[0].replace(' ', '_')
 			barcodes_data[0] += ' %s' % cell_name.replace('_', ':')	
@@ -624,8 +645,8 @@ def write_split_fastqs(params):
 		reads_writer.close()
 		umi_writer.close()
 		barcodes_writer.close()
-		print('\tWrote data for cell %s, which contains %i reads.' % \
-			(cell_name, reads_in_cell))
+		print('\tWrote %i reads to cell %s.' % \
+			(reads_in_cell, cell_name))
 	batch_file.close()
 	return output_files
 
