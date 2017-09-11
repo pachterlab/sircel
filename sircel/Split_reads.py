@@ -449,7 +449,7 @@ def assign_all_reads(params):
 	for kmer_size in range(MAX_KMER_SIZE, MIN_KMER_SIZE, -1):
 		kmer_map_ = \
 			map_kmers_to_bcs(consensus_bcs, kmer_size)
-		kmer_map = {**kmer_map_, **kmer_map}
+		kmer_map = dict(list(kmer_map_.items()) + list(kmer_map.items()))
 	
 	reads_assigned = {}
 		#key / value map of: [cell name] :-> list of line offsets
