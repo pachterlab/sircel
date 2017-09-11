@@ -37,10 +37,6 @@ The sircel executable should be in the directory `./sircel/sircel`. After instal
 	python3
 	numpy
 	scipy
-	redis
-		In-memory database structure: https://redis.io/
-	redis-py
-		Python binding for redis server
 	scikit-learn (for TCCs)
 		Optional. Not needed if only splitting reads by barcode (not quantifying single-cell expression levels)
 	kallisto (0.43.0 or higher)
