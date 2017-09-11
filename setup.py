@@ -37,13 +37,14 @@ with open('./sircel/params.json', 'w') as writer:
 	writer.write(json.dumps(params, indent = 3))
 
 setup(name='sircel',
-      version = '0.1.1',
+      version = '0.1.2',
       packages = find_packages(),
       install_requires = [
 			'numpy',
 			'scipy',
 			'python-Levenshtein',
-			'matplotlib'],
+			'matplotlib',
+			'scikit-learn'],
       package_data = {'': ['params.json']},
       include_package_data = True,
 		entry_points = {
