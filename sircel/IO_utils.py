@@ -120,7 +120,7 @@ def bytes_to_str(tup):
 	try:
 		return [item.decode('utf-8').strip() for item in tup]
 	except AttributeError:
-		return [i for i in tup]#convert to list otherwise
+		return [i.strip() for i in tup]#convert to list otherwise
 							 
 def get_next_complete_read(fq, pos):
 	fq.seek(pos)
@@ -154,7 +154,7 @@ def read_fastq_sequential(fq_file):
 			yield (bytes_to_str(lines), offset)
 			offset += sum([len(i) for i in lines])
 
-def merge_barcodefiles_10x(cells_gz, umis_gz):
+def merge_barcodefiles_10x(cells_bc_gz, umis_gz):
 	""""
 	10x genomics to dropseq conversion
 
@@ -181,35 +181,33 @@ def merge_barcodefiles_10x(cells_gz, umis_gz):
 	+
 	#<<A<FJJJFJFJJJJJJJJJFJFJJJJJJJJJJJJJJJFJJFFJJJJJAFJJFJF
 	"""
-	cells, cells_offsets = unzip(cells_gz)
-	cells_iter = read_fastq(cells, cells_offsets)
-	umis, umis_offsets = unzip(umis_gz)
-	umis_iter = read_fastq(umis, umis_offsets)
-	out_file = tempfile.NamedTemporaryFile(delete=False)
-	
-	out_file.seek(0)
+	cells_bc_file = unzip(cells_bc_gz)
+	cells_bc_iter = read_fastq_sequential(cells_bc_file)
+	umis_file = unzip(umis_gz)
+	umis_iter = read_fastq_sequential(umis_file)
+	get_prefix = lambda r: r[0].split(' ')[0]
+
+	out_file = tempfile.NamedTemporaryFile(delete = False)
+	out_file.seek(0)#not sure doing this explicitly is required
 	writer = open(out_file.name, 'wb')
-	
 	while(True):
 		try:
-			cell, _ = next(cells_iter)
+			bc, _ = next(cells_bc_iter)
 			umi, _ = next(umis_iter)
 		except StopIteration:
 			break
-		get_prefix = lambda r: r[0].split(' ')[0]
-		assert(get_prefix(umis) == get_prefix(cells)), \
+		assert(get_prefix(umi) == get_prefix(bc)), \
 			'Reads are not in order\n%s\n%s' % \
-			('\n'.join(umis), '\n'.join(cells))				
-		combined_seq =  cells[1] + umis[1]
-		combined_phred = cells[3] + umis[3]
-		
-		output = [
-			cells[0],
-			combined_seq,
-			cells[2],
-			combined_phred]
-		output_str = ('\n'.join(output) + '\n').encode('utf-8')
-		writer.write(output_str)
+			('\n'.join(umis), '\n'.join(cells))	
+					
+		combined_seq =  bc[1] + umi[1]
+		combined_phred = bc[3] + umi[3]		
+		output = [	bc[0],
+						combined_seq,
+						bc[2],
+						combined_phred]
+		output_str = ('\n'.join(output) + '\n')
+		writer.write(output_str.encode('utf-8'))
 	writer.close()
 	return out_file.name
 
@@ -220,13 +218,23 @@ def grouper(iterable, n, fillvalue=None):
 
 def save_paths_text(output_dir, paths, prefix=''):
 	paths_file = '%s/%s_paths.txt' % (output_dir, prefix)
+	
+	paths = sorted(paths,
+		key = lambda tup: tup[1],
+		reverse = True)
+	
 	with open(paths_file, 'w') as writer:
-		for tup in sorted(
-				paths,
-				key = lambda tup: tup[1],
-				reverse = True):
-			writer.write('%s\t%i\t%i\t%s\n' %
-				(tup[0], tup[1], tup[2], ','.join(tup[3])))
+		if len(paths[0]) == 3:
+			writer.write('Seq\tCapacity\tDepth\n')
+		elif len(paths[0]) == 4:
+			writer.write('Seq\tCapacity\tDepth\tNumReads\n')
+		for tup in paths:
+			if(len(tup) == 3):
+				writer.write('%s\t%i\t%i\n' % \
+					(tup[0], tup[1], tup[2]))				
+			elif(len(tup) == 4):
+				writer.write('%s\t%i\t%i\t%i\n' % \
+					(tup[0], tup[1], tup[2], tup[3]))
 	return paths_file
 	
 def get_nonzero_ec(tsv_file):
@@ -245,9 +253,9 @@ def get_nonzero_ec(tsv_file):
 	
 	return nonzero_ec, ec_to_index
 
-def get_num_cells(cells_file):
+def get_num_cells(cells_bc_file):
 	cells = set()
-	with open(cells_file, 'rb') as inf:
+	with open(cells_bc_file, 'rb') as inf:
 		for (i, line) in enumerate(inf):
 			pass
 	print('Total number of cells: %i' % i)

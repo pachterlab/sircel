@@ -25,7 +25,7 @@ import json
 import gc
 import numpy as np
 
-from collections import Counter
+from collections import Counter, namedtuple
 from itertools import repeat, chain
 from multiprocessing import Pool
 from Levenshtein import distance, hamming
@@ -76,9 +76,6 @@ def run_all(cmdline_args):
 	(top_paths, fit_out) = threshold_paths(
 		output_dir, cyclic_paths, args['num_cells'])
 	output_files.update(fit_out)
-	output_files['thresholded_paths'] = IO_utils.save_paths_text(
-		output_dir, top_paths, prefix='threshold')
-	
 	consensus_bcs = set([tup[0] for tup in top_paths])
 	
 	print('Assigning reads by kmer compatability')
@@ -93,6 +90,11 @@ def run_all(cmdline_args):
 		output_dir,
 		reads_unzipped,
 		barcodes_unzipped))
+		
+	#update paths list
+	top_paths = update_paths_list(top_paths, reads_assigned)
+	output_files['thresholded_paths'] = IO_utils.save_paths_text(
+		output_dir, top_paths, prefix='threshold')
 	
 	current_time = time.time()
 	elapsed_time = current_time - start_time
@@ -125,23 +127,21 @@ def get_kmer_index(barcodes_unzipped):
 			pearsonR >= some cutoff value
 	
 	"""
-	PEARSONR_CUTOFF = 0.9999
+	PEARSONR_CUTOFF = 0.999
 	MIN_ITERS = 10
 	
 	length = args['barcode_end'] - args['barcode_start']
 	pool = Pool(processes = args['threads'])
-	
 	read_count = 0
 	kmer_idx = {}
 	counts_corr_coefs = []
-	num_reads = []
-	
+	num_reads = []	
 	for (chunk_num, reads_chunk) in enumerate(
 		IO_utils.get_read_chunks(
 			barcodes_unzipped,
 			random = True,
 			BUFFER_SIZE = 10000)):
-				
+						
 		read_count += len(reads_chunk)
 		num_reads.append(read_count)
 		chunk_kmer_indices = pool.map(
@@ -280,6 +280,7 @@ def find_path_from_kmer(params):
 	paths_iter = subgraph.find_all_cyclic_paths(
 			node, neighbor, barcode_length + 1)
 	counter = 1
+	
 	while(True):
 		try:
 			path = next(paths_iter)
@@ -287,15 +288,13 @@ def find_path_from_kmer(params):
 			break
 		if(not path.is_cycle()):
 			break
-		
 		seq = path.get_sequence_circular()
 		weight = path.get_cycle_weight()
 		nodes = [edge.get_sequence() for edge in path.edges]
-		paths.append( (seq, weight, counter, nodes) )
+		paths.append((seq, weight, counter))
 		if(counter > args['depth']):
 			break
 		counter += 1
-	
 	return merge_paths(paths)
 
 def build_subgraph(reads_in_subgraph, barcodes_unzipped):
@@ -421,16 +420,15 @@ def merge_paths(paths):
 	paths_sorted = sorted(paths, key = lambda tup: tup[1])
 	num_paths = len(paths)
 	
-	get_seq = lambda paths, i: paths[i][0]
 	paths_merged = {tup[0] : tup for tup in paths_sorted}
-	
+	get_seq = lambda tup: tup[0]
 	for (i, path) in enumerate(paths_sorted):
 		for j in range(i+1, num_paths):
-			ham_dist = hamming(get_seq(paths, i), get_seq(paths, j))
+			ham_dist = hamming(get_seq(paths[i]), get_seq(paths[j]))
 			if(ham_dist <= args['min_dist']):
 				bad_path = min([paths[i], paths[j]], key = lambda tup: tup[1])
-				if(bad_path[0] in paths_merged.keys()):
-					del(paths_merged[bad_path[0]])
+				if(get_seq(bad_path) in paths_merged.keys()):
+					del(paths_merged[get_seq(bad_path)])
 	return list(paths_merged.values())
 
 def assign_all_reads(params):
@@ -585,6 +583,13 @@ def assign_read_levenshtein(params):
 	#or don't assign read (in the case of a tie)
 	return ('unassigned', reads_offset, barcodes_offset)
 
+def update_paths_list(top_paths, read_assignments):
+	updated_paths = []
+	for (seq, capacity, depth) in top_paths:
+		num_reads = len(read_assignments.get(seq, [None]))
+		updated_paths.append((seq, capacity, depth, num_reads))
+	return updated_paths
+
 def write_split_fastqs(params):
 	import gzip
 	(	reads_assigned,
@@ -645,7 +650,7 @@ def write_split_fastqs(params):
 		reads_writer.close()
 		umi_writer.close()
 		barcodes_writer.close()
-		print('\tWrote %i reads to cell %s.' % \
+		print('\tWrote %i reads to file:\t%s' % \
 			(reads_in_cell, cell_name))
 	batch_file.close()
 	return output_files

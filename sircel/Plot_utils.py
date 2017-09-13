@@ -37,19 +37,16 @@ def plot_path_threshold(params):
 		lmax,
 		threshold,
 		LOCAL_WINDOW_LEN) = params
-	
 	fig, ax = plt.subplots(
 		nrows = 1, 
 		ncols = 3,
 		figsize = (12,4))
-	
 	x = range(len(path_weights))
 	ax[0].step(x, path_weights, label='Path weights')
 	ax[0].set_yscale('log')
 	
 	x = [LOCAL_WINDOW_LEN / 2 + i for i in range(len(grad))]
 	ax[1].plot(x, grad, color='b', label='First derivative (smoothed)')
-	
 	x = [LOCAL_WINDOW_LEN + i for i in range(len(second_grad))]
 	ax[2].plot(x, second_grad, color = 'b', label = 'Second derivative (smoothed)')
 	
@@ -59,8 +56,8 @@ def plot_path_threshold(params):
 		a.axvline(threshold, color='k', label='Threshold')
 		a.legend(loc = 1, fontsize = 6)
 		a.grid()
-		#a.set_xscale('log')
-		a.set_xlim([0, 1000])
+		a.set_xscale('log')
+		a.set_xlim([0, len(path_weights)])
 		a.set_xlabel('Path (sorted)')
 	
 	plt.tight_layout()

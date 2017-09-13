@@ -57,8 +57,8 @@ def run_all(args):
 		args['umi_start'] 		= 26
 		args['umi_end'] 			= 34
 		if args['kmer_size'] == None:
-			args['kmer_size'] = 16		
-		print('Unzipping and indexing files (temporary)')
+			args['kmer_size'] = 20	
+		print('Unzipping and merging files (temporary)')
 		reads_unzipped = \
 			IO_utils.unzip(args['reads'].split(','))
 		barcodes_unzipped = IO_utils.merge_barcodefiles_10x(
@@ -71,7 +71,7 @@ def run_all(args):
 	else:
 		if args['kmer_size'] == None:
 			args['kmer_size'] = 8
-		print('Unzipping and indexing files (temporary)')
+		print('Unzipping (temporary)')
 		reads_unzipped = \
 			IO_utils.unzip(args['reads'].split(','))
 		barcodes_unzipped = \
@@ -82,7 +82,7 @@ def run_all(args):
 	check_split_input(args)
 	output_files, elapsed_time = Split_reads.run_all(args)
 	output_files['args'] = args
-	print('Split reads. Time elapsed %s seconds' % elapsed_time)
+	print('Done splitting reads.\n\tTime elapsed: %0.002f seconds\n' % elapsed_time)
 	
 	#print(args['kallisto_idx'])
 	if(args['kallisto_idx'] != None):
