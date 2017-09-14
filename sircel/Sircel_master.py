@@ -316,6 +316,12 @@ def get_args(args=None):
 		'--umi_end',
 		type=int,
 		default=0)
+		
+	#only for reviewer expts. never actually use this!
+	parser.add_argument('--split_levenshtein',
+		type = bool,
+		help = argparse.SUPPRESS,
+		default = False)
 
 	return vars(parser.parse_args(args))
 

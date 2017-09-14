@@ -178,8 +178,10 @@ class Graph:
 			len(self.self_edges.values()))
 	
 	def get_total_weight(self):
-		total_weight = sum([edge.get_weight() for edge in self.edges.values()]) + \
-			sum([edge.get_weight() for edge in self.self_edges.values()])
+		total_weight = sum( \
+				[edge.get_weight() for edge in self.edges.values()]) + \
+			sum( \
+				[edge.get_weight() for edge in self.self_edges.values()])
 		return total_weight
 		
 	def get_edges_sorted(self):

@@ -15,6 +15,7 @@ import subprocess
 
 from sircel import IO_utils
 from sircel.Sircel_master import get_args, run_all
+from sircel.Naive_pipeline import run_naive_pipeline
 
 def evaluate_simulations(summary_file):
 	output_dir = sys.argv[1]
@@ -128,11 +129,6 @@ def get_fraction_correct_reads(pred_bc, simulation_output_dir):
 	
 	return(tpr, fpr)
 
-
-
-
-
-
 def run_simulations():
 	ALPHABET = ['A', 'C', 'G', 'T']
 	BARCODE_LENGTH = 12
@@ -188,16 +184,36 @@ def run_simulations():
 				ALPHABET,
 				UMI_LENGTH,
 				simulation_dir))
-			print('\tRunning sircel')
-			run_sircel(simulation_dir)
+			print('\tRunning sircel using kmers to assign reads')
+			run_sircel_kmers(simulation_dir)
+			print('\tRunning sircel using Levenshtein distance to assign reads')
+			run_sircel_lev(simulation_dir)
+			print('\tRunning naive pipeline to split reads')
+			run_naive(simulation_dir)
+			
 			count += 1
 	summary.close()	
 	
 	return summary_file
 	
-def run_sircel(simulation_dir):
+def run_sircel_kmers(simulation_dir):
 	bc_file = '%s/barcodes.fastq.gz' % simulation_dir
-	output_dir = '%s/barcodes_split' % simulation_dir
+	output_dir = '%s/sircel_kmers/barcodes_split' % simulation_dir
+	
+	args = get_args([ 
+		'--dropseq',
+		'--reads', bc_file,
+		'--barcodes', bc_file,
+		'--output_dir', simulation_dir,
+		'--threads', '32',
+		'--dropseq',
+		'--index_depth', '1',
+		'--kmer_size', '9'])
+	output_files = run_all(args)
+
+def run_sircel_lev(simulation_dir):
+	bc_file = '%s/barcodes.fastq.gz' % simulation_dir
+	output_dir = '%s/sircel_lev/barcodes_split' % simulation_dir
 	
 	args = get_args([ 
 		'--dropseq',
@@ -208,8 +224,16 @@ def run_sircel(simulation_dir):
 		'--dropseq',
 		'--index_depth', '1',
 		'--kmer_size', '9',
-	])
+		'--split_levenshtein', 'True'])
 	output_files = run_all(args)
+
+def run_naive(simulation_dir):
+	bc_file = '%s/barcodes.fastq.gz' % simulation_dir
+	output_dir = '%s/naive/barcodes_split' % simulation_dir
+	
+	
+	
+	
 
 def get_barcodes(NUM_BARCODES, BARCODE_LENGTH, ALPHABET):
 	barcodes = []

@@ -112,10 +112,10 @@ def get_kmer_index(barcodes_unzipped):
 	
 	This method returns a kmer index and counts dict for a random
 	subset of the dataset. The size of the subset attempts to be the
-	minimal number of reads that is 'representative' of the data
+	minimal number of reads whose kmer spectrum is representative
+	of the data
 	
 	General approach:
-	
 		initialize:
 			get a random chunk of reads based on line offsets
 			compute kmer counts
@@ -129,6 +129,7 @@ def get_kmer_index(barcodes_unzipped):
 	"""
 	PEARSONR_CUTOFF = 0.999
 	MIN_ITERS = 10
+	BUFFER_SIZE = 10000
 	
 	length = args['barcode_end'] - args['barcode_start']
 	pool = Pool(processes = args['threads'])
@@ -140,7 +141,7 @@ def get_kmer_index(barcodes_unzipped):
 		IO_utils.get_read_chunks(
 			barcodes_unzipped,
 			random = True,
-			BUFFER_SIZE = 10000)):
+			BUFFER_SIZE = BUFFER_SIZE)):
 						
 		read_count += len(reads_chunk)
 		num_reads.append(read_count)
@@ -204,6 +205,10 @@ def index_read(params):
 	return kmer_index
 
 def get_kmer_counts(kmer_idx):
+	"""
+	
+	
+	"""
 	kmer_counts = {}
 	for kmer, offsets in kmer_idx.items():
 		kmer_counts[kmer] = len(offsets)
@@ -434,7 +439,8 @@ def merge_paths(paths):
 def assign_all_reads(params):
 	(	consensus_bcs,
 		reads_unzipped, 
-		barcodes_unzipped) = params
+		barcodes_unzipped,
+		assign_kmers) = params
 	
 	BUFFER_SIZE = 100000
 	MIN_KMER_SIZE = 6
@@ -469,14 +475,24 @@ def assign_all_reads(params):
 			BUFFER_SIZE = BUFFER_SIZE)):
 		read_count += len(reads_chunk)
 		
-		assignments = pool.map(assign_read_kmers, 
-			zip(
-			repeat(kmer_map),
-			repeat(MIN_KMER_SIZE),
-			repeat(MAX_KMER_SIZE),
-			reads_chunk,
-			barcodes_chunk))
+		if not args['split_levenshtein']:
+			assignments = pool.map(assign_read_kmers, 
+				zip(
+				repeat(kmer_map),
+				repeat(MIN_KMER_SIZE),
+				repeat(MAX_KMER_SIZE),
+				reads_chunk,
+				barcodes_chunk))
 		
+		else:
+			#this is a pipeline for reviwer expts only
+			#works quite poorly, see simulation results
+			assignments = pool.map(assign_read_levenshtein,
+				zip(
+					repeat(consensus_bcs),
+					reads_chunk,
+					barcodes_chunk))
+			
 		for (assignment, offset1, offset2) in assignments:
 			if(assignment == 'unassigned'):
 				num_unassigned += 1
@@ -721,6 +737,12 @@ def get_args():
 		type=int,
 		help='Estimated number of cells.',
 		default=None)
+	
+	#only for reviewer expts. never actually use this!
+	parser.add_argument('--split_levenshtein',
+		type = bool,
+		help = argparse.SUPPRESS,
+		default = False)
 	
 	return vars(parser.parse_known_args())
 
