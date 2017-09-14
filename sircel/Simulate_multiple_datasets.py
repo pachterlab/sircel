@@ -170,15 +170,15 @@ def run_simulations():
 				None,
 				None]
 			
-			entries[5] = simulation + '/sircel_kmers'
+			entries[5] = simulation_dir + '/sircel_kmers'
 			entries[6] = 'sircel_kmers'
 			summary.write('\t'.join([str(i) for i in entries]) + '\n')
 			
-			entries[5] = simulation + '/sircel_lev'
+			entries[5] = simulation_dir + '/sircel_lev'
 			entries[6] = 'sircel_lev'
 			summary.write('\t'.join([str(i) for i in entries]) + '\n')
 			
-			entries[5] = simulation + '/naive'
+			entries[5] = simulation_dir + '/naive'
 			entries[6] = 'naive'
 			summary.write('\t'.join([str(i) for i in entries]) + '\n')
 			
