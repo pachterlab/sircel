@@ -39,8 +39,6 @@ def evaluate_simulations(summary_file):
 	writer = open(summary_processed_file, 'w')
 	writer.write('\t'.join(new_header) + '\n')
 	
-	
-	
 	for simulation_entry in summary_data:
 		simulation_dir = simulation_entry[get_col('Output_dir')]
 		
@@ -148,7 +146,7 @@ def run_simulations():
 	summary_file = '%s/summary.txt' % output_dir
 	summary = open(summary_file, 'w')
 	summary.write(
-		'Simulation\tReplicate\tAbundances\tError_type\tPoiss_error\tOutput_dir\n')
+		'Simulation\tReplicate\tAbundances\tError_type\tPoiss_error\tPipeline\tOutput_dir\n')
 	count = 1
 	for rep in range(0, NUM_REPS):
 		true_barcodes = get_barcodes(
@@ -162,10 +160,27 @@ def run_simulations():
 			simulation_dir = '%s/simulation_%i' % (output_dir, count)
 			if not os.path.exists(simulation_dir):
 				os.makedirs(simulation_dir)
-							
-			printer = [str(i) for i in \
-				[count, rep, abundance, error_type, poiss_error, simulation_dir]]
-			summary.write('\t'.join(printer) + '\n')
+			
+			entries = [
+				count,
+				rep,
+				abundance,
+				error_type,
+				poiss_error,
+				None,
+				None]
+			
+			entries[5] = simulation + '/sircel_kmers'
+			entries[6] = 'sircel_kmers'
+			summary.write('\t'.join([str(i) for i in entries]) + '\n')
+			
+			entries[5] = simulation + '/sircel_lev'
+			entries[6] = 'sircel_lev'
+			summary.write('\t'.join([str(i) for i in entries]) + '\n')
+			
+			entries[5] = simulation + '/naive'
+			entries[6] = 'naive'
+			summary.write('\t'.join([str(i) for i in entries]) + '\n')
 			
 			print('\t%s abundances\n\t%s error type\n\t%i errors per read' % vals)	
 			
@@ -206,8 +221,6 @@ def run_sircel_kmers(simulation_dir):
 		'--barcodes', bc_file,
 		'--output_dir', simulation_dir,
 		'--threads', '32',
-		'--dropseq',
-		'--index_depth', '1',
 		'--kmer_size', '9'])
 	output_files = run_all(args)
 
@@ -222,8 +235,6 @@ def run_sircel_lev(simulation_dir):
 		'--output_dir', simulation_dir,
 		'--threads', '32',
 		'--dropseq',
-		'--index_depth', '1',
-		'--kmer_size', '9',
 		'--split_levenshtein', 'True'])
 	output_files = run_all(args)
 
