@@ -13,7 +13,7 @@ import json
 import itertools
 import subprocess
 
-from sircel import IO_utils
+from sircel.utils import IO_utils
 from sircel.Sircel_master import get_args, run_all
 from sircel.Naive_pipeline import run_naive_pipeline
 
