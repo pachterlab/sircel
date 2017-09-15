@@ -31,8 +31,8 @@ from multiprocessing import Pool
 from Levenshtein import distance, hamming
 from scipy import signal
  
-from sircel import IO_utils, Plot_utils
-from sircel.Graph_utils import Edge, Graph, Path
+from sircel.utils import IO_utils, Plot_utils, Logger
+from sircel.utils.Graph_utils import Edge, Graph, Path
 
 np.random.seed(0)
 
@@ -50,8 +50,8 @@ def run_all(cmdline_args):
 	args = cmdline_args
 	output_dir = args['output_dir']
 	output_files['log'] = '%s/run_log.txt' % output_dir
-	sys.stdout = IO_utils.Logger(output_files['log'])
 	
+	Logger.start(output_files['log'])
 	start_time = time.time()
 	
 	reads_unzipped = args['reads']
@@ -61,7 +61,7 @@ def run_all(cmdline_args):
 	output_files['subsamp_pearson_plot'] = subsamp_pearson
 	print('\t%i unique kmers indexed' % len(kmer_counts.items()))
 	
-	print('Finding cyclic paths')
+	print('Finding cyclic paths in the barcode de Briujn graph')
 	cyclic_paths = find_paths(
 		(kmer_index,
 		kmer_counts,
@@ -79,25 +79,32 @@ def run_all(cmdline_args):
 	consensus_bcs = set([tup[0] for tup in top_paths])
 	
 	print('Assigning reads by kmer compatability')
-	reads_assigned = assign_all_reads(
+	reads_assigned_pickled = assign_all_reads(
 		(consensus_bcs,
 		reads_unzipped, 
 		barcodes_unzipped))
 	
 	print('Splitting reads by cell')
-	output_files['split'] = write_split_fastqs(
-		(reads_assigned,
+	output_files['split'], reads_per_cell = write_split_fastqs(
+		(consensus_bcs,
+		reads_assigned_pickled,
 		output_dir,
 		reads_unzipped,
 		barcodes_unzipped))
+	
+	#delete temp pickle files
+	for pickled in reads_assigned_pickled:
+		os.unlink(pickled)
 		
 	#update paths list
-	top_paths = update_paths_list(top_paths, reads_assigned)
+	top_paths = update_paths_list(top_paths, reads_per_cell)
 	output_files['thresholded_paths'] = IO_utils.save_paths_text(
 		output_dir, top_paths, prefix='threshold')
 	
 	current_time = time.time()
 	elapsed_time = current_time - start_time
+	
+	Logger.stop()
 	return(output_files, elapsed_time)
 	
 def get_kmer_index(barcodes_unzipped):
@@ -133,23 +140,31 @@ def get_kmer_index(barcodes_unzipped):
 	
 	length = args['barcode_end'] - args['barcode_start']
 	pool = Pool(processes = args['threads'])
+	
 	read_count = 0
 	kmer_idx = {}
 	counts_corr_coefs = []
 	num_reads = []	
-	for (chunk_num, reads_chunk) in enumerate(
-		IO_utils.get_read_chunks(
-			barcodes_unzipped,
+	
+	bc_file = open(barcodes_unzipped, 'rb')
+	read_chunks_iter = IO_utils.get_read_chunks(
+			bc_file,
 			random = True,
-			BUFFER_SIZE = BUFFER_SIZE)):
-						
+			BUFFER_SIZE = BUFFER_SIZE)
+	chunk_num = 0
+	while True:
+		try:
+			reads_chunk = next(read_chunks_iter)
+			chunk_num += 1
+		except StopIteration:
+			break
+								
 		read_count += len(reads_chunk)
 		num_reads.append(read_count)
 		chunk_kmer_indices = pool.map(
 			index_read,
 			reads_chunk)
 			#chunk_kmer_indices is a list of dicts
-		
 		old_kmer_counts = get_kmer_counts(kmer_idx)
 			#kmer counts before updating with chunk_kmer_indexes
 		
@@ -174,6 +189,9 @@ def get_kmer_index(barcodes_unzipped):
 			(counts_corr_coef > PEARSONR_CUTOFF):
 			break
 		
+	bc_file.close()
+	pool.close()
+	
 	return (kmer_idx, 
 		new_kmer_counts,
 		Plot_utils.plot_kmer_subsamp_pearson(
@@ -269,6 +287,7 @@ def find_paths(params, starting_kmers = None):
 			repeat(barcodes_unzipped),
 			repeat(barcode_length)))
 		paths += [item for sublist in paths_group for item in sublist]
+	pool.close()
 	return paths
 
 def find_path_from_kmer(params):
@@ -303,8 +322,9 @@ def find_path_from_kmer(params):
 	return merge_paths(paths)
 
 def build_subgraph(reads_in_subgraph, barcodes_unzipped):
+	bc_file = open(barcodes_unzipped, 'rb')
 	barcodes_iter = IO_utils.read_fastq_random(
-		barcodes_unzipped, offsets = reads_in_subgraph)
+		bc_file, offsets = reads_in_subgraph)
 	subgraph_kmer_counts = Counter()
 	while(True):
 		try:
@@ -318,6 +338,8 @@ def build_subgraph(reads_in_subgraph, barcodes_unzipped):
 			int(args['barcode_end']))		
 		for (kmer, _ ) in read_kmers:
 			subgraph_kmer_counts[kmer] += 1
+	bc_file.close()
+	
 	edges = []
 	for(kmer, count) in subgraph_kmer_counts.items():
 		edge = Edge(kmer[0:-1], kmer[1:], count)
@@ -332,7 +354,6 @@ def threshold_paths(output_dir, paths, num_cells):
 	threshold_out = {
 		'slopes' : '%s/slopes.txt' % output_dir,
 	}
-
 	unique_paths = {}
 	for tup in paths:
 		key = tup[0]
@@ -353,6 +374,10 @@ def threshold_paths(output_dir, paths, num_cells):
 		key = lambda tup: tup[1],
 		reverse = True)
 
+	if num_cells != None:
+		if num_cells > len(paths):
+			return unique_paths_sorted, {}
+
 	path_weights = [tup[1] for tup in unique_paths_sorted]
 	grad = [-1 * i for i in \
 				local_lin_fit(np.log10(path_weights),
@@ -362,9 +387,7 @@ def threshold_paths(output_dir, paths, num_cells):
 	threshold = get_threshold(grad, lmax, num_cells, unique_paths_sorted)
 	top_paths = unique_paths_sorted[0:threshold]
 
-	print('\tMerging similar paths by Hamming distance')
-	top_paths = merge_paths(top_paths)#merges by hamming distance
-	print('\t%i paths remaining after merging' % len(top_paths))
+	print('\t%i paths remain after thresholding' % len(top_paths))
 	threshold_out['paths_threshold_plot'] = Plot_utils.plot_path_threshold(
 		(output_dir, 
 			path_weights,
@@ -421,7 +444,7 @@ def linear(x, *p):
 	(slope, intercept) = p
 	return slope * x + intercept
 	
-def merge_paths(paths):	
+def merge_paths(paths, MIN_DIST = 1):	
 	paths_sorted = sorted(paths, key = lambda tup: tup[1])
 	num_paths = len(paths)
 	
@@ -430,7 +453,7 @@ def merge_paths(paths):
 	for (i, path) in enumerate(paths_sorted):
 		for j in range(i+1, num_paths):
 			ham_dist = hamming(get_seq(paths[i]), get_seq(paths[j]))
-			if(ham_dist <= args['min_dist']):
+			if(ham_dist <= MIN_DIST):
 				bad_path = min([paths[i], paths[j]], key = lambda tup: tup[1])
 				if(get_seq(bad_path) in paths_merged.keys()):
 					del(paths_merged[get_seq(bad_path)])
@@ -439,38 +462,33 @@ def merge_paths(paths):
 def assign_all_reads(params):
 	(	consensus_bcs,
 		reads_unzipped, 
-		barcodes_unzipped,
-		assign_kmers) = params
+		barcodes_unzipped) = params
 	
 	BUFFER_SIZE = 100000
-	MIN_KMER_SIZE = 6
+	PICKLE_SIZE = 10000000
 	MAX_KMER_SIZE = args['barcode_end'] - args['barcode_start']
+	MIN_KMER_SIZE = 7
+	
 	pool = Pool(processes = args['threads'])
 	
 	print('\tMapping kmers to consensus barcodes')
-	#populate map of kmer to path
-	kmer_map = {}
-	for kmer_size in range(MAX_KMER_SIZE, MIN_KMER_SIZE, -1):
-		kmer_map_ = \
-			map_kmers_to_bcs(consensus_bcs, kmer_size)
-		kmer_map = dict(list(kmer_map_.items()) + list(kmer_map.items()))
+	kmer_map = map_kmers_to_bcs(consensus_bcs, MIN_KMER_SIZE, MAX_KMER_SIZE)
+	reads_assigned = initialize_reads_assigned(consensus_bcs)
 	
-	reads_assigned = {}
-		#key / value map of: [cell name] :-> list of line offsets
-	for bc in consensus_bcs:
-		reads_assigned[bc] = []
-	reads_assigned['unassigned'] = []
-	
-	print('\tAssigning reads')
+	print('\tAssigning reads to consensus barcodes')
 	read_count = 0
-	num_unassigned = 0	
+	num_unassigned = 0
+	reads_f = open(reads_unzipped, 'rb')
+	barcodes_f = open(barcodes_unzipped, 'rb')
+	pickle_files = []
+		
 	for reads_chunk, barcodes_chunk in zip(
 		IO_utils.get_read_chunks(
-			reads_unzipped,
+			reads_f,
 			random = False,
 			BUFFER_SIZE = BUFFER_SIZE),
 		IO_utils.get_read_chunks(
-			barcodes_unzipped,
+			barcodes_f,
 			random = False,
 			BUFFER_SIZE = BUFFER_SIZE)):
 		read_count += len(reads_chunk)
@@ -483,7 +501,6 @@ def assign_all_reads(params):
 				repeat(MAX_KMER_SIZE),
 				reads_chunk,
 				barcodes_chunk))
-		
 		else:
 			#this is a pipeline for reviwer expts only
 			#works quite poorly, see simulation results
@@ -498,10 +515,39 @@ def assign_all_reads(params):
 				num_unassigned += 1
 			reads_assigned[assignment].append((offset1, offset2))
 		print('\tProcessed %i reads' % read_count)
-	print('\t%i reads could not be assigned' % num_unassigned)
-	return reads_assigned
+		
+		#pickle dump read assignments every 10m reads
+		if read_count % PICKLE_SIZE == 0:
+			pickle_files.append(IO_utils.write_to_pickle(reads_assigned))
+			reads_assigned = initialize_reads_assigned(consensus_bcs)
+			
+	pickle_files.append(IO_utils.write_to_pickle(reads_assigned))
 	
-def map_kmers_to_bcs(consensus_bcs, kmer_size):
+	reads_f.close()
+	barcodes_f.close()
+	pool.close()
+	
+	print('\t%i reads could not be assigned' % num_unassigned)
+	return pickle_files
+
+def initialize_reads_assigned(consensus_bcs):
+	reads_assigned = {}
+		#key / value map of: [cell name] :-> list of line offsets
+	for bc in consensus_bcs:
+		reads_assigned[bc] = []
+	reads_assigned['unassigned'] = []
+	return reads_assigned
+
+def map_kmers_to_bcs(consensus_bcs, MIN_KMER_SIZE, MAX_KMER_SIZE):
+	
+	kmer_map = {}
+	for kmer_size in range(MAX_KMER_SIZE, MIN_KMER_SIZE, -1):
+		kmer_map_ = \
+			map_kmers_to_bcs_fixed_k(consensus_bcs, kmer_size)
+		kmer_map = dict(list(kmer_map_.items()) + list(kmer_map.items()))		
+	return kmer_map
+
+def map_kmers_to_bcs_fixed_k(consensus_bcs, kmer_size):
 	kmers_to_paths = {}
 	for cell_barcode in consensus_bcs:
 		kmers = IO_utils.get_cyclic_kmers(
@@ -599,16 +645,17 @@ def assign_read_levenshtein(params):
 	#or don't assign read (in the case of a tie)
 	return ('unassigned', reads_offset, barcodes_offset)
 
-def update_paths_list(top_paths, read_assignments):
+def update_paths_list(top_paths, reads_per_cell):
 	updated_paths = []
 	for (seq, capacity, depth) in top_paths:
-		num_reads = len(read_assignments.get(seq, [None]))
+		num_reads = reads_per_cell.get(seq, [None])
 		updated_paths.append((seq, capacity, depth, num_reads))
 	return updated_paths
 
 def write_split_fastqs(params):
 	import gzip
-	(	reads_assigned,
+	(	consensus_bcs,
+		reads_assigned_pickled,
 		output_dir,
 		reads_unzipped,
 		barcodes_unzipped) = params
@@ -618,10 +665,14 @@ def write_split_fastqs(params):
 		os.makedirs(split_dir)
 	output_files = {'batch' : '%s/batch.txt' % (split_dir)}
 	batch_file = open(output_files['batch'], 'w')
-		
-	for cell, cell_offsets in reads_assigned.items():
-		
+	
+	reads_per_cell = {}
+	
+	for cell in consensus_bcs:		
+		cell_offsets = IO_utils.read_from_pickle(reads_assigned_pickled, cell)
 		cell_name = 'cell_%s' % cell
+		
+		#initialie all readers and writers
 		output_files[cell_name] = {
 			'reads' : '%s/%s_reads.fastq.gz' % (split_dir, cell_name),
 			'barcodes' : '%s/%s_barcodes.fastq.gz' % (split_dir, cell_name),
@@ -633,14 +684,15 @@ def write_split_fastqs(params):
 		reads_writer = gzip.open(output_files[cell_name]['reads'], 'wb')
 		barcodes_writer = gzip.open(output_files[cell_name]['barcodes'], 'wb')
 		umi_writer = open(output_files[cell_name]['umi'], 'wb')
+		reads_f = open(reads_unzipped, 'rb')
+		barcodes_f = open(barcodes_unzipped, 'rb')
 		
 		reads_iter = IO_utils.read_fastq_random(
-			reads_unzipped, 
+			reads_f, 
 			offsets = [tup[0] for tup in cell_offsets])
 		barcodes_iter = IO_utils.read_fastq_random(
-			barcodes_unzipped,
+			barcodes_f,
 			offsets = [tup[1] for tup in cell_offsets])
-		
 		reads_in_cell = 0
 		while(True):
 			try:
@@ -666,10 +718,14 @@ def write_split_fastqs(params):
 		reads_writer.close()
 		umi_writer.close()
 		barcodes_writer.close()
+		reads_f.close()
+		barcodes_f.close()
+		
 		print('\tWrote %i reads to file:\t%s' % \
 			(reads_in_cell, cell_name))
+		reads_per_cell[cell] = reads_in_cell
 	batch_file.close()
-	return output_files
+	return output_files, reads_per_cell
 
 def get_args():
 	import argparse
@@ -729,10 +785,6 @@ def get_args():
 		type=int, 
 		help='Number of threads to use.', 
 		default=32)
-	parser.add_argument('--min_dist', 
-		type=int, 
-		help='Minimum Hamming distance between barcodes.', 
-		default=2)
 	parser.add_argument('--num_cells',
 		type=int,
 		help='Estimated number of cells.',

@@ -4,7 +4,8 @@ Pachter and Doudna groups
 """
 
 
-from sircel import IO_utils, Plot_utils, Split_reads
+from sircel.utils import IO_utils, Plot_utils
+from sircel import Split_reads
 import argparse
 import os
 import sys
@@ -21,7 +22,7 @@ from sklearn.metrics.pairwise import pairwise_distances
 from scipy.spatial.distance import *
 
 def run_all(args):
-	print('\nInspecting and pre-processing input data')
+	print('\nInspecting and pre-processing inputs')
 	
 	if(args['output_dir'][-1] == '/'):
 		args['output_dir'] = args['output_dir'][0:-1]
@@ -82,7 +83,8 @@ def run_all(args):
 	check_split_input(args)
 	output_files, elapsed_time = Split_reads.run_all(args)
 	output_files['args'] = args
-	print('Done splitting reads.\n\tTime elapsed: %0.002f seconds\n' % elapsed_time)
+	print('Done idetifying barcodes and splitting reads.\n' + \
+		'\tTime elapsed: %0.002f seconds\n' % elapsed_time)
 	
 	#print(args['kallisto_idx'])
 	if(args['kallisto_idx'] != None):
@@ -291,10 +293,6 @@ def get_args(args=None):
 		help='Path to kallisto index. Optional.' + \
 			'If not provided, script terminates after splitting barcodes',
 		default=None)
-	parser.add_argument('--min_dist',
-		type=int,
-		help='Minimum Hamming distance between error-corrected barcodes.',
-		default=1)
 	parser.add_argument('--num_cells',
 		type=int,
 		help='Estimated number of cells.',
