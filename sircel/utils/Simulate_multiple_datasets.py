@@ -13,9 +13,9 @@ import json
 import itertools
 import subprocess
 
-from . import IO_utils
-from ..Sircel_master import get_args, run_all
-from .Naive_pipeline import run_naive_pipeline
+from sircel.utils import IO_utils
+from sircel.Sircel_master import get_args, run_all
+from sircel.utils.Naive_pipeline import run_naive_pipeline
 
 def evaluate_simulations(summary_file):
 	output_dir = sys.argv[1]
