@@ -46,7 +46,7 @@ def evaluate_simulations(summary_file):
 			num_fp,	#number of false pos barcodes
 			num_fn,	#number of false neg barcodes
 			bc_tpr,	#true positive rate (list) of barcode assignments
-			bc_fpr) = eval_single_file(simulation_dir)	#false pos ...
+			bc_fpr) = eval_single_file(simulation_dir)
 		#save all this data
 		bc_tpr_str = ','.join([str(i) for i in bc_tpr])
 		bc_fpr_str = ','.join([str(i) for i in bc_fpr])
@@ -59,13 +59,12 @@ def evaluate_simulations(summary_file):
 	
 	return summary_processed_file
 
-def eval_single_file(simulation_dir):
-	
+def eval_single_file(simulation_output_dir):
+	sim_dat_dir = simulation_output_dir[0:simulation_output_dir.rindex('/')]
 	true_barcodes = get_barcodes_set(
-		'%s/true_barcodes.txt' % simulation_dir)
+		'%s/true_barcodes.txt' % (sim_dat_dir))
 	pred_barcodes = get_barcodes_set(
-		'%s/threshold_paths.txt' % simulation_dir)
-	
+		'%s/threshold_paths.txt' % simulation_output_dir)
 	true_positives = true_barcodes & pred_barcodes
 	
 	num_tp = len(true_positives)				#number of false positive bc
@@ -215,7 +214,7 @@ def run_simulations():
 	
 def run_sircel_kmers(simulation_dir):
 	bc_file = '%s/barcodes.fastq.gz' % simulation_dir
-	output_dir = '%s/sircel_kmers/barcodes_split' % simulation_dir
+	output_dir = '%s/sircel_kmers' % simulation_dir
 	
 	args = get_args([ 
 		'--dropseq',
@@ -227,7 +226,7 @@ def run_sircel_kmers(simulation_dir):
 
 def run_sircel_lev(simulation_dir):
 	bc_file = '%s/barcodes.fastq.gz' % simulation_dir
-	output_dir = '%s/sircel_lev/barcodes_split' % simulation_dir
+	output_dir = '%s/sircel_lev' % simulation_dir
 	
 	args = get_args([ 
 		'--dropseq',
@@ -240,7 +239,7 @@ def run_sircel_lev(simulation_dir):
 
 def run_naive(simulation_dir):
 	bc_file = '%s/barcodes.fastq.gz' % simulation_dir
-	output_dir = '%s/naive/barcodes_split' % simulation_dir
+	output_dir = '%s/naive' % simulation_dir
 	
 	_ = run_naive_pipeline(bc_file, bc_file, output_dir)
 
