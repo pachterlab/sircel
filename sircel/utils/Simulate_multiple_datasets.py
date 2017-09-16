@@ -133,7 +133,7 @@ def run_simulations():
 	UMI_LENGTH = 8
 	NUM_READS = 100000
 	NUM_BARCODES = 500
-	NUM_REPS = 5
+	NUM_REPS = 3
 	
 	abundances = ['normal', 'uniform', 'exponential']
 	error_types = ['any', 'mismatch', 'insertion', 'deletion']
