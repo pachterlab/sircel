@@ -146,7 +146,7 @@ def run_simulations():
 	summary_file = '%s/summary.txt' % output_dir
 	summary = open(summary_file, 'w')
 	summary.write(
-		'Simulation\tReplicate\tAbundances\tError_type\tPoiss_error\tPipeline\tOutput_dir\n')
+		'Simulation\tReplicate\tAbundances\tError_type\tPoiss_error\tOutput_dir\tPipeline\n')
 	count = 1
 	for rep in range(0, NUM_REPS):
 		true_barcodes = get_barcodes(
