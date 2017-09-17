@@ -78,7 +78,7 @@ def eval_single_file(simulation_output_dir):
 	barcodes_fpr = []
 	for bc in pred_barcodes:
 		(bc_tpr, bc_fpr) = get_fraction_correct_reads(
-			bc, simulation_dir)
+			bc, simulation_output_dir)
 		barcodes_tpr.append(bc_tpr)
 		barcodes_fpr.append(bc_fpr)
 	
