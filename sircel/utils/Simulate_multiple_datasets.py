@@ -101,14 +101,12 @@ def get_barcodes_set(true_bc_file):
 	return barcodes
 
 def get_fraction_correct_reads(pred_bc, simulation_output_dir):
-	fq_file = '%s/reads_split/cell_%s_barcodes.fastq.gz' % \
+	fq_fname = '%s/reads_split/cell_%s_barcodes.fastq.gz' % \
 		(simulation_output_dir, pred_bc)
-	
+	fq_file = gzip.open(fq_fname, 'rb')
 	if not os.path.exists(fq_file):
 		return (0,0)
-	
-	
-	fq_iter = IO_utils.read_fastq_sequential(fq_file, gzip=True)
+	fq_iter = IO_utils.read_fastq_sequential(fq_file)
 	
 	tpr = 0.
 	fpr = 0.
@@ -339,7 +337,7 @@ def write_barcodes(barcodes, abundances, output_dir):
 
 if __name__ == "__main__":
 	print("Running simulations")
-	summary_file = run_simulations()
+	#summary_file = run_simulations()
 	#summary_file = '%s/summary.txt' % sys.argv[1]
 
 	print("Evaluating simulations")
