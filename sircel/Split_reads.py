@@ -668,7 +668,7 @@ def write_split_fastqs(params):
 	batch_file = open(output_files['batch'], 'w')
 	
 	reads_per_cell = {}
-	consensus_bcs.append('unassigned')
+	consensus_bcs.add('unassigned')
 	
 	for cell in consensus_bcs:
 		cell_offsets = IO_utils.read_from_pickle(reads_assigned_pickled, cell)
