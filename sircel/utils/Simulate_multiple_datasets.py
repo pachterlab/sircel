@@ -33,7 +33,7 @@ def evaluate_simulations(summary_file):
 	get_col = lambda key: entry_to_col[key]
 	
 	new_header = header + [
-		'num_true_pos_bc', 'num_false_pos_bc', 'num_fals_neg_bc', 'bc_tpr', 'bc_fpr']
+		'num_true_pos_bc', 'num_false_pos_bc', 'num_fals_neg_bc', 'bc_tpr', 'bc_fpr', 'unassigned']
 	
 	summary_processed_file = '%s/summary_processed.txt' % output_dir
 	writer = open(summary_processed_file, 'w')
@@ -87,6 +87,10 @@ def eval_single_file(simulation_output_dir):
 		num_fn,
 		barcodes_tpr,
 		barcodes_fpr)
+
+def get_num_unassigned(split_dir):
+	fq_fname = '%s/reads_split/cell_unassigned_barcodes.fastq.gz' % \
+		(simulation_output_dir)
 
 def get_barcodes_set(true_bc_file):
 	barcodes = set()
