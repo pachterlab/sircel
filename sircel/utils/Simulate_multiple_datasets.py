@@ -46,12 +46,13 @@ def evaluate_simulations(summary_file):
 			num_fp,	#number of false pos barcodes
 			num_fn,	#number of false neg barcodes
 			bc_tpr,	#true positive rate (list) of barcode assignments
-			bc_fpr) = eval_single_file(simulation_dir)
+			bc_fpr,
+			num_unassigned) = eval_single_file(simulation_dir)
 		#save all this data
 		bc_tpr_str = ','.join([str(i) for i in bc_tpr])
 		bc_fpr_str = ','.join([str(i) for i in bc_fpr])
 		simulation_entry += [
-			num_tp, num_fp, num_fn, bc_tpr_str, bc_fpr_str]
+			num_tp, num_fp, num_fn, bc_tpr_str, bc_fpr_str, num_unassigned]
 		printer = ('\t'.join([str(i) for i in simulation_entry]))
 		writer.write(printer + '\n')
 	writer.close()
@@ -66,10 +67,13 @@ def eval_single_file(simulation_output_dir):
 	pred_barcodes = get_barcodes_set(
 		'%s/threshold_paths.txt' % simulation_output_dir)
 	true_positives = true_barcodes & pred_barcodes
+	num_unassigned = get_num_unassigned(sim_dat_dir)
+	
 	
 	num_tp = len(true_positives)				#number of false positive bc
 	num_fp = len(pred_barcodes) - num_tp	#number of true positive bc
 	num_fn = len(true_barcodes) - num_tp	#numberof false negative bc
+	
 	
 	#print(num_tp, num_fp, num_fn)
 	
@@ -86,11 +90,24 @@ def eval_single_file(simulation_output_dir):
 		num_fp,
 		num_fn,
 		barcodes_tpr,
-		barcodes_fpr)
+		barcodes_fpr,
+		num_unassigned)
 
 def get_num_unassigned(split_dir):
 	fq_fname = '%s/reads_split/cell_unassigned_barcodes.fastq.gz' % \
 		(simulation_output_dir)
+	try:
+		inf = open(true_bc_file, 'r')
+	except FileNotFoundError:	
+		return -1
+	
+	num_unassigned = 0
+	fq_file = gzip.open(fq_fname, 'rb')
+	fq_iter = IO_utils.read_fastq_sequential(fq_file)
+	for (lines, _) in fq_iter:	
+		num_unassigned += 1
+	return num_unassigned
+		
 
 def get_barcodes_set(true_bc_file):
 	barcodes = set()
