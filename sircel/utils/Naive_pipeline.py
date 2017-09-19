@@ -54,7 +54,7 @@ def run_naive_pipeline(barcodes, reads, output_dir):
 	print('%i kmers above threshold' % len(thresholded_bcs))
 	#write thresholded kmers to file
 	output_files['threshold_paths'] = '%s/threshold_paths.txt' % args['output_dir']
-	with open(output_files['threshold_paths'], 'w') as f:
+	with open(output_files['threshold_paths'], 'w') as writer:
 		printer = '\n'.join([i for i in thresholded_bcs])
 		writer.write(printer)
 
