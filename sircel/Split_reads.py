@@ -175,7 +175,8 @@ def get_kmer_index(barcodes_unzipped):
 					kmer_idx[key] = []
 				kmer_idx[key] = kmer_idx[key] + read_offsets
 		
-		del(chunk_kmer_indices); _ = gc.collect()
+		del(chunk_kmer_indices)
+		_ = gc.collect()
 		
 		new_kmer_counts = get_kmer_counts(kmer_idx)
 		#check kmer count correlation
@@ -667,8 +668,9 @@ def write_split_fastqs(params):
 	batch_file = open(output_files['batch'], 'w')
 	
 	reads_per_cell = {}
+	consensus_bcs.append('unassigned')
 	
-	for cell in consensus_bcs:		
+	for cell in consensus_bcs:
 		cell_offsets = IO_utils.read_from_pickle(reads_assigned_pickled, cell)
 		cell_name = 'cell_%s' % cell
 		
