@@ -149,8 +149,10 @@ def run_simulations():
 	BARCODE_LENGTH = 12
 	UMI_LENGTH = 8
 	NUM_READS = 100000
-	NUM_BARCODES = 500
 	NUM_REPS = 3
+	
+	MEAN_BCS = 500
+	STDEV_BCS = 50
 	
 	abundances = ['normal', 'uniform', 'exponential']
 	error_types = ['any', 'mismatch', 'insertion', 'deletion']
@@ -166,6 +168,7 @@ def run_simulations():
 		'Simulation\tReplicate\tAbundances\tError_type\tPoiss_error\tOutput_dir\tPipeline\n')
 	count = 1
 	for rep in range(0, NUM_REPS):
+		NUM_BARCODES = int(np.random.normal(loc = MEAN_BCS, scale = STDEV_BCS)
 		true_barcodes = get_barcodes(
 			NUM_BARCODES,
 			BARCODE_LENGTH,
