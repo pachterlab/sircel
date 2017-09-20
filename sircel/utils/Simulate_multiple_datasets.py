@@ -98,9 +98,7 @@ def eval_single_file(simulation_output_dir):
 def get_num_unassigned(simulation_output_dir):
 	fq_fname = '%s/reads_split/cell_unassigned_barcodes.fastq.gz' % \
 		(simulation_output_dir)
-	
-	print(fq_fname)
-	
+
 	num_unassigned = 0
 	fq_file = gzip.open(fq_fname, 'rb')
 	fq_iter = IO_utils.read_fastq_sequential(fq_file)
@@ -240,6 +238,7 @@ def run_sircel_kmers(simulation_dir):
 		'--reads', bc_file,
 		'--barcodes', bc_file,
 		'--output_dir', output_dir,
+		'--num_cells', '500',
 		'--threads', '32'])
 	_ = run_all(args)
 
@@ -253,6 +252,7 @@ def run_sircel_lev(simulation_dir):
 		'--barcodes', bc_file,
 		'--output_dir', output_dir,
 		'--threads', '32',
+		'--num_cells', '500',
 		'--split_levenshtein', 'True'])
 	_ = run_all(args)
 
@@ -358,7 +358,7 @@ def write_barcodes(barcodes, abundances, output_dir):
 
 if __name__ == "__main__":
 	print("Running simulations")
-	#summary_file = run_simulations()
+	summary_file = run_simulations()
 	summary_file = '%ssummary.txt' % sys.argv[1]
 	print("Evaluating simulations")
 	summary_processed_file = evaluate_simulations(summary_file)
