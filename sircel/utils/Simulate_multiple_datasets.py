@@ -70,7 +70,7 @@ def eval_single_file(simulation_output_dir):
 	pred_barcodes = get_barcodes_set(
 		'%s/threshold_paths.txt' % simulation_output_dir)
 	true_positives = true_barcodes & pred_barcodes
-	num_unassigned = get_num_unassigned(sim_dat_dir)
+	num_unassigned = get_num_unassigned(simulation_output_dir)
 	
 	num_tp = len(true_positives)				#number of false positive bc
 	num_fp = len(pred_barcodes) - num_tp	#number of true positive bc
