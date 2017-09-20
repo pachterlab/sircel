@@ -100,7 +100,7 @@ def get_num_unassigned(simulation_output_dir):
 	fq_fname = '%s/reads_split/cell_unassigned_barcodes.fastq.gz' % \
 		(simulation_output_dir)
 	try:
-		inf = open(true_bc_file, 'r')
+		inf = open(fq_fname, 'r')
 	except FileNotFoundError:	
 		return -1
 	
@@ -362,7 +362,7 @@ def write_barcodes(barcodes, abundances, output_dir):
 if __name__ == "__main__":
 	print("Running simulations")
 	#summary_file = run_simulations()
-	summary_file = '%s/summary.txt' % sys.argv[1]
+	summary_file = '%ssummary.txt' % sys.argv[1]
 	print("Evaluating simulations")
 	summary_processed_file = evaluate_simulations(summary_file)
 	
