@@ -168,7 +168,7 @@ def run_simulations():
 		'Simulation\tReplicate\tAbundances\tError_type\tPoiss_error\tOutput_dir\tPipeline\n')
 	count = 1
 	for rep in range(0, NUM_REPS):
-		NUM_BARCODES = int(np.random.normal(loc = MEAN_BCS, scale = STDEV_BCS)
+		NUM_BARCODES = int(np.random.normal(loc = MEAN_BCS, scale = STDEV_BCS))
 		true_barcodes = get_barcodes(
 			NUM_BARCODES,
 			BARCODE_LENGTH,
