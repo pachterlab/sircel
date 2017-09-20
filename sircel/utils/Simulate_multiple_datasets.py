@@ -22,6 +22,9 @@ def evaluate_simulations(summary_file):
 	
 	#read summary file
 	summary_data = []
+	
+	print(summary_file)
+	
 	with open (summary_file, 'r') as inf:
 		header = inf.readline().strip().split('\t')
 		for line in inf:
@@ -359,7 +362,7 @@ def write_barcodes(barcodes, abundances, output_dir):
 if __name__ == "__main__":
 	print("Running simulations")
 	#summary_file = run_simulations()
-	summary_file = '%s/summary.txt' % sys.argv[2]
+	summary_file = '%s/summary.txt' % sys.argv[1]
 	print("Evaluating simulations")
 	summary_processed_file = evaluate_simulations(summary_file)
 	
