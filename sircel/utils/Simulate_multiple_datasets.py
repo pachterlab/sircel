@@ -72,7 +72,6 @@ def eval_single_file(simulation_output_dir):
 	true_positives = true_barcodes & pred_barcodes
 	num_unassigned = get_num_unassigned(sim_dat_dir)
 	
-	
 	num_tp = len(true_positives)				#number of false positive bc
 	num_fp = len(pred_barcodes) - num_tp	#number of true positive bc
 	num_fn = len(true_barcodes) - num_tp	#numberof false negative bc
@@ -99,10 +98,8 @@ def eval_single_file(simulation_output_dir):
 def get_num_unassigned(simulation_output_dir):
 	fq_fname = '%s/reads_split/cell_unassigned_barcodes.fastq.gz' % \
 		(simulation_output_dir)
-	try:
-		inf = open(fq_fname, 'r')
-	except FileNotFoundError:	
-		return -1
+	
+	print(fq_fname)
 	
 	num_unassigned = 0
 	fq_file = gzip.open(fq_fname, 'rb')

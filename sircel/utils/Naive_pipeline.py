@@ -225,7 +225,7 @@ def write_split_fastqs(params):
 		os.makedirs(split_dir)
 	output_files = {'batch' : '%s/batch.txt' % (split_dir)}
 	batch_file = open(output_files['batch'], 'w')
-		
+	
 	for cell, cell_offsets in reads_assigned.items():
 		
 		cell_name = 'cell_%s' % cell
