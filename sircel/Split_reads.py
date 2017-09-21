@@ -410,6 +410,9 @@ def get_lmax(second_grad, LOCAL_WINDOW_LEN):
 
 def get_threshold(grad, lmax, num_cells, unique_paths_sorted):
 	#if there is a guess, return the local maximum closest to it
+	if len(lmax) == 0:
+		return len(unique_paths_sorted)
+	
 	if num_cells != None:
 		distance = [np.fabs(i - num_cells) for i in lmax]
 		return lmax[np.argmin(distance)]
