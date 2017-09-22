@@ -93,10 +93,6 @@ def run_all(cmdline_args):
 		reads_unzipped,
 		barcodes_unzipped))
 	
-	#delete temp pickle files
-	for pickled in reads_assigned_pickled:
-		os.unlink(pickled)
-		
 	#update paths list
 	top_paths = update_paths_list(top_paths, reads_per_cell)
 	output_files['thresholded_paths'] = IO_utils.save_paths_text(
