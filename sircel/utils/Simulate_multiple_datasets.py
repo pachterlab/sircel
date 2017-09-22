@@ -36,7 +36,7 @@ def evaluate_simulations(summary_file):
 	get_col = lambda key: entry_to_col[key]
 	
 	new_header = header + [
-		'num_true_pos_bc', 'num_false_pos_bc', 'num_fals_neg_bc', 'bc_tpr', 'bc_fpr', 'unassigned']
+		'num_true_pos_bc', 'num_false_pos_bc', 'num_false_neg_bc', 'bc_tpr', 'bc_fpr', 'unassigned']
 	
 	summary_processed_file = '%s/summary_processed.txt' % output_dir
 	writer = open(summary_processed_file, 'w')
