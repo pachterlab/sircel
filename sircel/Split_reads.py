@@ -473,10 +473,9 @@ def assign_all_reads(params):
 		reads_unzipped, 
 		barcodes_unzipped) = params
 	
-	BUFFER_SIZE = 10000
-	PICKLE_SIZE = 1000000
+	BUFFER_SIZE = 100000
 	MAX_KMER_SIZE = args['barcode_end'] - args['barcode_start']
-	MIN_KMER_SIZE = 7
+	MIN_KMER_SIZE = 6
 	
 	reads_assigned_db, reads_assigned_pipe = IO_utils.initialize_redis_pipeline()
 	pool = Pool(processes = args['threads'])
