@@ -140,7 +140,7 @@ def get_fraction_correct_reads(pred_bc, simulation_output_dir):
 			fpr += 1.
 	total_reads = tpr + fpr
 	if total_reads == 0:
-		reutrn (0, 0)
+		return (0, 0)
 	
 	tpr /= total_reads
 	fpr /= total_reads
