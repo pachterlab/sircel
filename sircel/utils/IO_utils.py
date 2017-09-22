@@ -10,6 +10,7 @@ import io
 import pickle
 from collections import deque
 from itertools import islice
+import redis
 
 np.random.seed(0)
 
@@ -305,7 +306,24 @@ def read_from_pickle(fnames_lst, key):
 			values = values + chunk[key]
 	return values
 	
+def initialize_redis_pipeline(db=0):
+	redis_db = redis.StrictRedis(host="localhost", port=6379, db=db)#redis
 	
+	redis_db.flushall()
+	redis_pipe = redis_db.pipeline()
+	return redis_db, redis_pipe
+
+def get_from_db(kmer_idx_pipe, keys):
+	for key in keys:
+		kmer_idx_pipe.get(key)
+	pipe_out = kmer_idx_pipe.execute()	
+	entries = []
+	for entry in pipe_out:
+		#entry is a comma separated bytestring of ints. return just the list
+		if(entry != None):
+			offsets = [int(i) for i in entry.decode('utf-8').split(',')[0:-1]]
+			entries.append(offsets)
+	return entries	
 	
 	
 	
