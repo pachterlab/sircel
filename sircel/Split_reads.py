@@ -79,7 +79,7 @@ def run_all(cmdline_args):
 	consensus_bcs = set([tup[0] for tup in top_paths])
 	
 	print('Assigning reads by kmer compatability')
-	reads_assigned_pickled = assign_all_reads(
+	reads_assigned_db, reads_assigned_pipe = assign_all_reads(
 		(consensus_bcs,
 		reads_unzipped, 
 		barcodes_unzipped))
@@ -87,7 +87,8 @@ def run_all(cmdline_args):
 	print('Splitting reads by cell')
 	output_files['split'], reads_per_cell = write_split_fastqs(
 		(consensus_bcs,
-		reads_assigned_pickled,
+		reads_assigned_db, 
+		reads_assigned_pipe,
 		output_dir,
 		reads_unzipped,
 		barcodes_unzipped))
@@ -409,15 +410,19 @@ def get_lmax(second_grad, LOCAL_WINDOW_LEN):
 	return lmax
 
 def get_threshold(grad, lmax, num_cells, unique_paths_sorted):
-	#if there is a guess, return the local maximum closest to it
+	#if there is no lmax, return the number of paths
 	if len(lmax) == 0:
 		return len(unique_paths_sorted)
 	
+	#if there is an expected number of cells, 
+	#filter local maxima to those nearest to the lmax
 	if num_cells != None:
+		MAX_DIST = 250
+		lmax_filtered = []
 		distance = [np.fabs(i - num_cells) for i in lmax]
-		return lmax[np.argmin(distance)]
+		lmax = [d for d in distance if d < MAX_DIST]
 	
-	#else, return the local max with highest value (steepest inflection)
+	#return the local max with highest value (steepest inflection)
 	try:
 		threshold = lmax[0]
 	except IndexError:
@@ -473,18 +478,20 @@ def assign_all_reads(params):
 	MAX_KMER_SIZE = args['barcode_end'] - args['barcode_start']
 	MIN_KMER_SIZE = 7
 	
+	reads_assigned_db, reads_assigned_pipe = IO_utils.initialize_redis_pipeline()
 	pool = Pool(processes = args['threads'])
 	
 	print('\tMapping kmers to consensus barcodes')
 	kmer_map = map_kmers_to_bcs(consensus_bcs, MIN_KMER_SIZE, MAX_KMER_SIZE)
-	reads_assigned = initialize_reads_assigned(consensus_bcs)
+	
+	#reads_assigned = initialize_reads_assigned(consensus_bcs)
+	#pickle_files = []
 	
 	print('\tAssigning reads to consensus barcodes')
 	read_count = 0
 	num_unassigned = 0
 	reads_f = open(reads_unzipped, 'rb')
 	barcodes_f = open(barcodes_unzipped, 'rb')
-	pickle_files = []
 		
 	for reads_chunk, barcodes_chunk in zip(
 		IO_utils.get_read_chunks(
@@ -517,22 +524,27 @@ def assign_all_reads(params):
 		for (assignment, offset1, offset2) in assignments:
 			if(assignment == 'unassigned'):
 				num_unassigned += 1
-			reads_assigned[assignment].append((offset1, offset2))
+			#reads_assigned[assignment].append((offset1, offset2))
+			reads_assigned_pipe.append(
+			 	assignment.encode('utf-8'), 
+			 	('%i,%i,' % (offset1, offset2)).encode('utf-8'))
+				
+		reads_assigned_pipe.execute()
 		print('\tProcessed %i reads' % read_count)
 		
 		#pickle dump read assignments every 10m reads
-		if read_count % PICKLE_SIZE == 0:
-			pickle_files.append(IO_utils.write_to_pickle(reads_assigned))
-			reads_assigned = initialize_reads_assigned(consensus_bcs)
-			
-	pickle_files.append(IO_utils.write_to_pickle(reads_assigned))
+		#if read_count % PICKLE_SIZE == 0:
+		#	pickle_files.append(IO_utils.write_to_pickle(reads_assigned))
+		#	reads_assigned = initialize_reads_assigned(consensus_bcs)		
+	#pickle_files.append(IO_utils.write_to_pickle(reads_assigned))
 	
 	reads_f.close()
 	barcodes_f.close()
 	pool.close()
 	
 	print('\t%i reads could not be assigned' % num_unassigned)
-	return pickle_files
+	#return pickle_files
+	return reads_assigned_db, reads_assigned_pipe
 
 def initialize_reads_assigned(consensus_bcs):
 	reads_assigned = {}
@@ -659,7 +671,8 @@ def update_paths_list(top_paths, reads_per_cell):
 def write_split_fastqs(params):
 	import gzip
 	(	consensus_bcs,
-		reads_assigned_pickled,
+		reads_assigned_db,
+		reads_assigned_pipe,
 		output_dir,
 		reads_unzipped,
 		barcodes_unzipped) = params
@@ -674,7 +687,13 @@ def write_split_fastqs(params):
 	consensus_bcs.add('unassigned')
 	
 	for cell in consensus_bcs:
-		cell_offsets = IO_utils.read_from_pickle(reads_assigned_pickled, cell)
+		
+		try:
+			cell_offsets = IO_utils.get_from_db(reads_assigned_pipe, [cell])[0]
+		except IndexError:
+			pass
+		
+		#cell_offsets = IO_utils.read_from_pickle(reads_assigned_pickled, cell)
 		cell_name = 'cell_%s' % cell
 		
 		#initialie all readers and writers
@@ -694,10 +713,12 @@ def write_split_fastqs(params):
 		
 		reads_iter = IO_utils.read_fastq_random(
 			reads_f, 
-			offsets = [tup[0] for tup in cell_offsets])
+			offsets = 
+				[cell_offsets[i] for i in range(len(cell_offsets)) if i % 2 == 0])
 		barcodes_iter = IO_utils.read_fastq_random(
 			barcodes_f,
-			offsets = [tup[1] for tup in cell_offsets])
+			offsets = 
+				[cell_offsets[i] for i in range(len(cell_offsets)) if i % 2 == 1])
 		reads_in_cell = 0
 		while(True):
 			try:
