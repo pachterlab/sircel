@@ -129,7 +129,10 @@ def get_next_complete_read(fq, pos):
 	fq.seek(pos)
 	lines = deque(islice(fq, 4))
 	while not is_valid_fq_entry(lines):
-		_ = lines.popleft()
+		try:
+			_ = lines.popleft()
+		except IndexError:
+			raise StopIteration
 		lines.append(next(fq))
 	return lines
 	
