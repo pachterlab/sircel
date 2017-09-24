@@ -112,7 +112,7 @@ def read_fastq_random(fq, offsets = None):
 			try:
 				pos = offsets.pop()
 			except IndexError:
-				break			
+				raise StopIteration			
 		try:
 			lines = get_next_complete_read(fq, pos)
 			yield (bytes_to_str(lines), pos)
@@ -142,6 +142,12 @@ def is_valid_fq_entry(lines):
 		line 4: phred score, same len as seq
 	"""
 	get_first_char = lambda lines: lines[0].decode('utf-8')[0]
+	try:
+		get_first_char(lines)
+	except IndexError:
+		return False
+	
+	
 	if get_first_char(lines) != '@':
 		return False
 	if len(lines[1]) != len(lines[3]):

@@ -136,7 +136,6 @@ def threshold_bcs(kmer_counts, output_dir):
 			lmax,
 			threshold,
 			LOCAL_WINDOW_LEN))
-	
 	return set(tup[0] for tup in top_paths), plt_name
 
 def assign_all_reads(params):
