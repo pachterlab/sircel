@@ -378,7 +378,7 @@ def threshold_paths(output_dir, paths, num_cells):
 
 	path_weights = [tup[1] for tup in unique_paths_sorted]
 	for i in range(25):
-		path_weights.append(0)
+		path_weights.append(1)
 	
 	grad = [-1 * i for i in \
 				local_lin_fit(np.log10(path_weights),
