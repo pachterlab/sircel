@@ -415,9 +415,8 @@ def get_threshold(grad, lmax, num_cells, unique_paths_sorted):
 	if num_cells != None:
 		MAX_DIST = 250
 		lmax_thresholded = []
-		for local_max in lmax:
-			distance = np.fabs(i - num_cells) 
-			if distance <= MAX_DISTANCE:
+		for i in lmax:
+			if np.fabs(i - num_cells)  <= MAX_DISTANCE:
 				lmax_thresholded.append(lmax[i])
 		lmax = lmax_thresholded
 	
