@@ -377,6 +377,9 @@ def threshold_paths(output_dir, paths, num_cells):
 			return unique_paths_sorted, {}
 
 	path_weights = [tup[1] for tup in unique_paths_sorted]
+	for i in range(25):
+		path_weights.append(0)
+	
 	grad = [-1 * i for i in \
 				local_lin_fit(np.log10(path_weights),
 				window_len=LOCAL_WINDOW_LEN)]   
@@ -425,10 +428,10 @@ def get_threshold(grad, lmax, num_cells, unique_paths_sorted):
 		threshold = lmax[0]
 	except IndexError:
 		return len(unique_paths_sorted)
-	for z in lmax:
-		if(grad[z] > grad[threshold]):
-			threshold = z
-	return threshold
+	for i in lmax:
+		if(grad[i] > grad[threshold]):
+			threshold = i
+	return min(threshold, len(unique_paths_sorted))
 
 def local_lin_fit(y, window_len=10):
 	from scipy.optimize import curve_fit
