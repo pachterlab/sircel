@@ -417,7 +417,7 @@ def get_threshold(grad, lmax, num_cells, unique_paths_sorted):
 		lmax_thresholded = []
 		for i in lmax:
 			if np.fabs(i - num_cells)  <= MAX_DISTANCE:
-				lmax_thresholded.append(lmax[i])
+				lmax_thresholded.append(i)
 		lmax = lmax_thresholded
 	
 	#return the local max with highest value (steepest inflection)
