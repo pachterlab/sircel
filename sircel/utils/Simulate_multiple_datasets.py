@@ -37,7 +37,11 @@ def evaluate_simulations(summary_file):
 	get_col = lambda key: entry_to_col[key]
 	
 	new_header = header + [
-		'num_true_pos_bc', 'num_false_pos_bc', 'num_false_neg_bc', 'bc_tpr', 'bc_fpr', 'unassigned']
+		'true_positive_bcs', 
+		'false_positive_bcs', 
+		'false_negative_bcs', 
+		'unassigned_reads',
+		'assignment_consistency']
 	
 	summary_processed_file = '%s/summary_processed.txt' % output_dir
 	writer = open(summary_processed_file, 'w')
@@ -46,17 +50,15 @@ def evaluate_simulations(summary_file):
 	for simulation_entry in summary_data:
 		simulation_dir = simulation_entry[get_col('Output_dir')]
 		
-		(num_tp,		#number of true pos barcodes
-			num_fp,	#number of false pos barcodes
-			num_fn,	#number of false neg barcodes
-			bc_tpr,	#true positive rate (list) of barcode assignments
-			bc_fpr,
-			num_unassigned) = eval_single_file(simulation_dir)
+		(num_tp,
+			num_fp,
+			num_fn,
+			num_unassigned,
+			barcodes_consistency) = eval_single_file(simulation_dir)
 		#save all this data
-		bc_tpr_str = ','.join([str(i) for i in bc_tpr])
-		bc_fpr_str = ','.join([str(i) for i in bc_fpr])
+		barcodes_consistency_str = ','.join([str(i) for i in barcodes_consistency])
 		simulation_entry += [
-			num_tp, num_fp, num_fn, bc_tpr_str, bc_fpr_str, num_unassigned]
+			num_tp, num_fp, num_fn, num_unassigned, barcodes_consistency_str]
 		printer = ('\t'.join([str(i) for i in simulation_entry]))
 		writer.write(printer + '\n')
 	writer.close()
@@ -68,9 +70,6 @@ def eval_single_file(simulation_output_dir):
 	"""
 	number of cells
 	number of cells detected
-	
-	
-	
 	"""
 	
 	sim_dat_dir = simulation_output_dir[0:simulation_output_dir.rindex('/')]
@@ -79,46 +78,44 @@ def eval_single_file(simulation_output_dir):
 	pred_barcodes = get_barcodes_set(
 		'%s/threshold_paths.txt' % simulation_output_dir)
 	
-	
-	true_positives = get_true_pos(true_barcodes, pred_barcodes)
+	num_tp, num_fp, bcs_map = get_true_pos(true_barcodes, pred_barcodes)
 	num_unassigned = get_num_unassigned(simulation_output_dir)
-	
-	num_tp = len(true_positives)				#number of false positive bc
-	num_fp = len(pred_barcodes) - num_tp	#number of true positive bc
 	num_fn = len(true_barcodes) - num_tp	#numberof false negative bc
 	
-	
-	#print(num_tp, num_fp, num_fn)
-	
 	#for each true positive barcode, get fraction of correct reads
-	barcodes_tpr = []
-	barcodes_fpr = []
+	barcodes_consistency = []
 	for bc in pred_barcodes:
-		(bc_tpr, bc_fpr) = get_fraction_correct_reads(
-			bc, simulation_output_dir)
-		barcodes_tpr.append(bc_tpr)
-		barcodes_fpr.append(bc_fpr)
+		consistent_assignments = get_fraction_consistent(
+			bc, simulation_output_dir, bcs_map)
+		barcodes_consistency.append(consistent_assignments)
 	
-	return (num_tp,
+	return (
+		num_tp,
 		num_fp,
 		num_fn,
-		barcodes_tpr,
-		barcodes_fpr,
-		num_unassigned)
+		num_unassigned,
+		barcodes_consistency)
 
 def get_true_pos(true_bc, pred_bc):
 	num_true_pos = 0
 	num_false_pos = 0
 	
+	bcs_map = {}
 	for bc in pred_bc:
 		if bc in true_bc:
 			num_true_pos += 1
+			bcs_map[bc] = bc
 		elif get_closest_lev(bc, true_bc) <= 1:
 			num_true_pos += 1
+			bcs_map[bc] = true_bc
 		else:
 			num_false_pos += 1
 	
-	return num_true_pos, num_false_pos
+	total_bcs = len(true_bc)
+	return (
+		num_true_pos / total_bcs,
+		num_false_pos / total_bcs,
+		bcs_map)
 
 def get_closest_lev(bc, true_bcs):
 	min_lev = None
@@ -128,7 +125,6 @@ def get_closest_lev(bc, true_bcs):
 			min_lev = lev
 	return min_lev
 	
-
 def get_num_unassigned(simulation_output_dir):
 	fq_fname = '%s/reads_split/cell_unassigned_barcodes.fastq.gz' % \
 		(simulation_output_dir)
@@ -140,7 +136,6 @@ def get_num_unassigned(simulation_output_dir):
 		num_unassigned += 1
 	return num_unassigned
 		
-
 def get_barcodes_set(true_bc_file):
 	barcodes = set()
 	try:
@@ -153,33 +148,25 @@ def get_barcodes_set(true_bc_file):
 	inf.close()
 	return barcodes
 
-def get_fraction_correct_reads(pred_bc, simulation_output_dir):
+def get_fraction_consistent(pred_bc, simulation_output_dir):
 	fq_fname = '%s/reads_split/cell_%s_barcodes.fastq.gz' % \
 		(simulation_output_dir, pred_bc)
 	if not os.path.exists(fq_fname):
 		return (0,0)
+	
 	fq_file = gzip.open(fq_fname, 'rb')
 	fq_iter = IO_utils.read_fastq_sequential(fq_file)
 	
-	tpr = 0.
-	fpr = 0.
+	assignments = Counter()
+	total_reads = 0
 	for (lines, _) in fq_iter:
 		read_name = lines[0]
 		assigned_bc = read_name.split(':')[-1]
-		true_bc = read_name.split(':')[-2].split('_')[0]	
-		
-		if(assigned_bc == true_bc):
-			tpr += 1.
-		else:
-			fpr += 1.
-	total_reads = tpr + fpr
-	if total_reads == 0:
-		return (0, 0)
+		assignments.update([assigned_bc])
+		total_reads += 1
 	
-	tpr /= total_reads
-	fpr /= total_reads
-	
-	return(tpr, fpr)
+	common_bc, count = assignments.most_common()[0]
+	return count / total_reads
 
 def run_simulations():
 	ALPHABET = ['A', 'C', 'G', 'T']
