@@ -86,7 +86,7 @@ def eval_single_file(simulation_output_dir):
 	barcodes_consistency = []
 	for bc in pred_barcodes:
 		consistent_assignments = get_fraction_consistent(
-			bc, simulation_output_dir, bcs_map)
+			bc, simulation_output_dir)
 		barcodes_consistency.append(consistent_assignments)
 	
 	return (
