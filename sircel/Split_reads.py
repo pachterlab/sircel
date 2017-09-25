@@ -377,15 +377,20 @@ def threshold_paths(output_dir, paths, num_cells):
 			return unique_paths_sorted, {}
 
 	path_weights = [tup[1] for tup in unique_paths_sorted]
-	for i in range(25):
-		path_weights.append(1)
-	
+	for i in range(2 * LOCAL_WINDOW_LEN):
+		path_weights.append(1)	
 	grad = [-1 * i for i in \
-				local_lin_fit(np.log10(path_weights),
+				local_lin_fit(nplog10(path_weights),
 				window_len=LOCAL_WINDOW_LEN)]   
+		
 	second_grad = local_lin_fit(grad, window_len = LOCAL_WINDOW_LEN)
 	lmax = get_lmax(second_grad, LOCAL_WINDOW_LEN)
-	threshold = get_threshold(grad, lmax, num_cells, unique_paths_sorted)
+	threshold = get_threshold(
+		grad, 
+		lmax, 
+		num_cells, 
+		unique_paths_sorted
+		LOCAL_WINDOW_LEN)
 	top_paths = unique_paths_sorted[0:threshold]
 
 	print('\t%i paths remain after thresholding' % len(top_paths))
@@ -395,8 +400,7 @@ def threshold_paths(output_dir, paths, num_cells):
 			grad,
 			second_grad,
 			lmax,
-			threshold,
-			LOCAL_WINDOW_LEN))
+			threshold))
 	
 	return top_paths, threshold_out
 
