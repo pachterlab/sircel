@@ -163,7 +163,7 @@ def get_fraction_consistent(pred_bc, simulation_output_dir):
 	total_reads = 0
 	for (lines, _) in fq_iter:
 		read_name = lines[0]
-		assigned_bc = read_name.split(':')[-1]
+		assigned_bc = read_name.split(':')[-2].split('_')[0]
 		assignments.update([assigned_bc])
 		total_reads += 1
 	
