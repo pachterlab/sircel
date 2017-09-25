@@ -389,7 +389,7 @@ def threshold_paths(output_dir, paths, num_cells):
 		grad, 
 		lmax, 
 		num_cells, 
-		unique_paths_sorted
+		unique_paths_sorted,
 		LOCAL_WINDOW_LEN)
 	top_paths = unique_paths_sorted[0:threshold]
 
