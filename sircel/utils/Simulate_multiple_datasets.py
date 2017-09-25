@@ -17,6 +17,7 @@ from sircel.utils import IO_utils
 from sircel.Sircel_master import get_args, run_all
 from sircel.utils.Naive_pipeline import run_naive_pipeline
 from Levenshtein import distance
+from collections import Counter
 
 def evaluate_simulations(summary_file):
 	output_dir = sys.argv[1]
