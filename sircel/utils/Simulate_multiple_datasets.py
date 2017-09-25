@@ -167,8 +167,9 @@ def get_fraction_consistent(pred_bc, simulation_output_dir):
 		assignments.update([assigned_bc])
 		total_reads += 1
 	
-	print(common_bc, count)
 	common_bc, count = assignments.most_common()[0]
+	print(common_bc, count)
+
 	return count / total_reads
 
 def run_simulations():
