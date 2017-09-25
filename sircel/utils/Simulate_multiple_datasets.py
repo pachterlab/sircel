@@ -49,6 +49,7 @@ def evaluate_simulations(summary_file):
 	writer.write('\t'.join(new_header) + '\n')
 	
 	for simulation_entry in summary_data:
+		print('Evaluating simulation %s' % simulation_entry)
 		simulation_dir = simulation_entry[get_col('Output_dir')]
 		
 		(num_tp,
@@ -81,7 +82,7 @@ def eval_single_file(simulation_output_dir):
 	
 	num_tp, num_fp, bcs_map = get_true_pos(true_barcodes, pred_barcodes)
 	num_unassigned = get_num_unassigned(simulation_output_dir)
-	num_fn = len(true_barcodes) - num_tp	#numberof false negative bc
+	num_fn = len(true_barcodes) - num_tp * len(pred_barcodes)
 	
 	#for each true positive barcode, get fraction of correct reads
 	barcodes_consistency = []
@@ -112,7 +113,7 @@ def get_true_pos(true_bc, pred_bc):
 		else:
 			num_false_pos += 1
 	
-	total_bcs = len(true_bc)
+	total_bcs = len(pred_bc)
 	return (
 		num_true_pos / total_bcs,
 		num_false_pos / total_bcs,
@@ -166,6 +167,7 @@ def get_fraction_consistent(pred_bc, simulation_output_dir):
 		assignments.update([assigned_bc])
 		total_reads += 1
 	
+	print(common_bc, count)
 	common_bc, count = assignments.most_common()[0]
 	return count / total_reads
 
