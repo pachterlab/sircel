@@ -16,6 +16,7 @@ import subprocess
 from sircel.utils import IO_utils
 from sircel.Sircel_master import get_args, run_all
 from sircel.utils.Naive_pipeline import run_naive_pipeline
+from Levenshtein import distance
 
 def evaluate_simulations(summary_file):
 	output_dir = sys.argv[1]
@@ -64,12 +65,22 @@ def evaluate_simulations(summary_file):
 	return summary_processed_file
 
 def eval_single_file(simulation_output_dir):
+	"""
+	number of cells
+	number of cells detected
+	
+	
+	
+	"""
+	
 	sim_dat_dir = simulation_output_dir[0:simulation_output_dir.rindex('/')]
 	true_barcodes = get_barcodes_set(
 		'%s/true_barcodes.txt' % (sim_dat_dir))
 	pred_barcodes = get_barcodes_set(
 		'%s/threshold_paths.txt' % simulation_output_dir)
-	true_positives = true_barcodes & pred_barcodes
+	
+	
+	true_positives = get_true_pos(true_barcodes, pred_barcodes)
 	num_unassigned = get_num_unassigned(simulation_output_dir)
 	
 	num_tp = len(true_positives)				#number of false positive bc
@@ -94,6 +105,29 @@ def eval_single_file(simulation_output_dir):
 		barcodes_tpr,
 		barcodes_fpr,
 		num_unassigned)
+
+def get_true_pos(true_bc, pred_bc):
+	num_true_pos = 0
+	num_false_pos = 0
+	
+	for bc in pred_bc:
+		if bc in true_bc:
+			num_true_pos += 1
+		elif get_closest_lev(bc, true_bc) <= 1:
+			num_true_pos += 1
+		else:
+			num_false_pos += 1
+	
+	return num_true_pos, num_false_pos
+
+def get_closest_lev(bc, true_bcs):
+	min_lev = None
+	for true_bc in true_bcs:
+		lev = distance(true_bc, bc)
+		if min_lev == None or lev < min_lev:
+			min_lev = lev
+	return min_lev
+	
 
 def get_num_unassigned(simulation_output_dir):
 	fq_fname = '%s/reads_split/cell_unassigned_barcodes.fastq.gz' % \
@@ -364,7 +398,7 @@ def write_barcodes(barcodes, abundances, output_dir):
 
 if __name__ == "__main__":
 	print("Running simulations")
-	summary_file = run_simulations()
+	#summary_file = run_simulations()
 	summary_file = '%ssummary.txt' % sys.argv[1]
 	print("Evaluating simulations")
 	summary_processed_file = evaluate_simulations(summary_file)
