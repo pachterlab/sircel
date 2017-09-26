@@ -114,9 +114,10 @@ def get_true_pos(true_bc, pred_bc):
 		if bc in true_bc:
 			num_true_pos += 1
 			true_bcs_detected.add(bc)
-		elif get_closest_lev(bc, true_bc) <= 1:
+		min_lev, closest = get_closest_lev(bc, true_bc)
+		if min_lev <= 1:
 			num_true_pos += 1
-			true_bcs_detected.add(true_bc)
+			true_bcs_detected.add(closest)
 		else:
 			num_false_pos += 1
 	
@@ -125,11 +126,13 @@ def get_true_pos(true_bc, pred_bc):
 
 def get_closest_lev(bc, true_bcs):
 	min_lev = None
+	closest = None
 	for true_bc in true_bcs:
 		lev = distance(true_bc, bc)
 		if min_lev == None or lev < min_lev:
 			min_lev = lev
-	return min_lev
+			closest = true_bc
+	return min_lev, closest
 	
 def get_num_unassigned(simulation_output_dir):
 	fq_fname = '%s/reads_split/cell_unassigned_barcodes.fastq.gz' % \
