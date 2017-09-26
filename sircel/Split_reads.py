@@ -442,7 +442,7 @@ def get_threshold(params):
 	except IndexError:
 		return len(unique_paths_sorted)
 	for i in lmax:		
-		if(grad[i - LOCAL_WINDOW_LEN] > grad[threshold - LOCAL_WINDOW_LEN]):
+		if(grad[i - LOCAL_WINDOW_LEN / 2] > grad[threshold - LOCAL_WINDOW_LEN / 2]):
 			threshold = i
 	return min(threshold, len(unique_paths_sorted))
 
