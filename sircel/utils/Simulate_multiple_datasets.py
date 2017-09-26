@@ -116,7 +116,7 @@ def get_true_pos(true_bc, pred_bc):
 			num_false_pos += 1
 	
 	total_pred_bcs = len(pred_bc)
-	num_false_negs = len(set(bcs_map.values()) - set(true_bc))
+	num_false_negs = len(set(true_bc) - set(bcs_map.values()))
 	
 	print(num_true_pos, num_false_pos, num_false_negs)
 	return (num_true_pos, num_false_pos, num_false_negs)
