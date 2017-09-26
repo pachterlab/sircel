@@ -38,10 +38,12 @@ def evaluate_simulations(summary_file):
 	get_col = lambda key: entry_to_col[key]
 	
 	new_header = header + [
-		'true_positive_bcs', 
-		'false_positive_bcs', 
-		'false_negative_bcs', 
-		'unassigned_reads',
+		'num_true_cells',
+		'num_pred_cells',
+		'num_true_pos', 
+		'num_false_pos', 
+		'num_false_neg', 
+		'num_unassigned',
 		'assignment_consistency']
 	
 	summary_processed_file = '%s/summary_processed.txt' % output_dir
@@ -52,7 +54,9 @@ def evaluate_simulations(summary_file):
 		print('Evaluating simulation %s' % simulation_entry)
 		simulation_dir = simulation_entry[get_col('Output_dir')]
 		
-		(num_tp,
+		(num_true_cells,
+			num_pred_cells,
+			num_tp,
 			num_fp,
 			num_fn,
 			num_unassigned,
@@ -82,8 +86,7 @@ def eval_single_file(simulation_output_dir):
 	
 	num_true_cells = len(true_barcodes)
 	num_pred_cells = len(pred_barcodes)
-	
-	num_tp, num_fp, num_fn, bcs_map = get_true_pos(true_barcodes, pred_barcodes)
+	num_tp, num_fp, num_fn = get_true_pos(true_barcodes, pred_barcodes)
 	num_unassigned = get_num_unassigned(simulation_output_dir)
 	
 	#for each true positive barcode, get fraction of correct reads
@@ -94,6 +97,8 @@ def eval_single_file(simulation_output_dir):
 		barcodes_consistency.append(consistent_assignments)
 	
 	return (
+		num_true_cells,
+		num_pred_cells,
 		num_tp,
 		num_fp,
 		num_fn,
@@ -115,10 +120,7 @@ def get_true_pos(true_bc, pred_bc):
 		else:
 			num_false_pos += 1
 	
-	total_pred_bcs = len(pred_bc)
 	num_false_negs = len(set(true_bc) - set(bcs_map.values()))
-	
-	print(num_true_pos, num_false_pos, num_false_negs)
 	return (num_true_pos, num_false_pos, num_false_negs)
 
 def get_closest_lev(bc, true_bcs):
