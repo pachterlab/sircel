@@ -119,7 +119,7 @@ def get_true_pos(true_bc, pred_bc):
 	return (
 		num_true_pos / total_pred_bcs,
 		num_false_pos / total_pred_bcs,
-		num_false_neg / len(true_bc)
+		num_false_neg / len(true_bc),
 		bcs_map)
 
 def get_closest_lev(bc, true_bcs):
