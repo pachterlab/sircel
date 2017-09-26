@@ -378,7 +378,8 @@ def threshold_paths(output_dir, paths, num_cells):
 
 	path_weights = [tup[1] for tup in unique_paths_sorted]
 	for i in range(2 * LOCAL_WINDOW_LEN):
-		path_weights.append(2)	
+		path_weights.append(2)
+	
 	grad = [-1 * i for i in \
 				local_lin_fit(np.log10(path_weights),
 				window_len=LOCAL_WINDOW_LEN)]   
@@ -387,6 +388,7 @@ def threshold_paths(output_dir, paths, num_cells):
 	lmax = get_lmax(second_grad, LOCAL_WINDOW_LEN)
 	threshold = get_threshold(
 		grad, 
+		second_grad,
 		lmax, 
 		num_cells, 
 		unique_paths_sorted)
@@ -412,7 +414,7 @@ def get_lmax(second_grad, LOCAL_WINDOW_LEN):
 			lmax.append(int(i + LOCAL_WINDOW_LEN))
 	return lmax
 
-def get_threshold(grad, lmax, num_cells, unique_paths_sorted):
+def get_threshold(grad, second_grad, lmax, num_cells, unique_paths_sorted):
 	#if there is no lmax, return the number of paths
 	if len(lmax) == 0:
 		return len(unique_paths_sorted)
@@ -432,7 +434,7 @@ def get_threshold(grad, lmax, num_cells, unique_paths_sorted):
 	except IndexError:
 		return len(unique_paths_sorted)
 	for i in lmax:
-		print(i, grad[i])
+		print(i, grad[i], second_grad[i])
 		
 		if(grad[i] > grad[threshold]):
 			threshold = i
