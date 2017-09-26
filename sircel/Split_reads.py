@@ -386,12 +386,13 @@ def threshold_paths(output_dir, paths, num_cells):
 	second_grad = local_lin_fit(grad, window_len = LOCAL_WINDOW_LEN)
 	
 	lmax = get_lmax(second_grad, LOCAL_WINDOW_LEN)
-	threshold = get_threshold(
+	threshold = get_threshold((
 		grad, 
 		second_grad,
 		lmax, 
 		num_cells, 
-		unique_paths_sorted)
+		unique_paths_sorted,
+		LOCAL_WINDOW_LEN))
 	top_paths = unique_paths_sorted[0:threshold]
 
 	print('\t%i paths remain after thresholding' % len(top_paths))
@@ -414,7 +415,14 @@ def get_lmax(second_grad, LOCAL_WINDOW_LEN):
 			lmax.append(int(i + LOCAL_WINDOW_LEN))
 	return lmax
 
-def get_threshold(grad, second_grad, lmax, num_cells, unique_paths_sorted):
+def get_threshold(params):
+	(grad, 
+		second_grad, 
+		lmax, 
+		num_cells, 
+		unique_paths_sorted, 
+		LOCAL_WINDOW_LEN) = params
+	
 	#if there is no lmax, return the number of paths
 	if len(lmax) == 0:
 		return len(unique_paths_sorted)
