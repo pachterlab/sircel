@@ -410,7 +410,6 @@ def get_lmax(second_grad, LOCAL_WINDOW_LEN):
 	for i in range(len(second_grad) - 1):
 		if(second_grad[i] > 0 and second_grad[i + 1] <= 0):
 			lmax.append(int(i + LOCAL_WINDOW_LEN))
-	print(lmax)			
 	return lmax
 
 def get_threshold(grad, lmax, num_cells, unique_paths_sorted):
@@ -427,9 +426,14 @@ def get_threshold(grad, lmax, num_cells, unique_paths_sorted):
 			if np.fabs(i - num_cells)  <= MAX_DISTANCE:
 				lmax_thresholded.append(i)
 		lmax = lmax_thresholded
-	print(lmax)
 	#return the local max with highest value (steepest inflection)
+	try:
+		threshold = lmax[0]
+	except IndexError:
+		return len(unique_paths_sorted)
 	for i in lmax:
+		print(i, grad[i])
+		
 		if(grad[i] > grad[threshold]):
 			threshold = i
 	return min(threshold, len(unique_paths_sorted))
