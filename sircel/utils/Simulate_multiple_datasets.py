@@ -80,6 +80,11 @@ def eval_single_file(simulation_output_dir):
 	pred_barcodes = get_barcodes_set(
 		'%s/threshold_paths.txt' % simulation_output_dir)
 	
+	num_true_cells = len(true_barcodes)
+	num_pred_cells = len(pred_barcodes)
+	
+	print(num_true_cells, num_pred_cells)
+	
 	num_tp, num_fp, num_fn, bcs_map = get_true_pos(true_barcodes, pred_barcodes)
 	num_unassigned = get_num_unassigned(simulation_output_dir)
 	
@@ -114,13 +119,13 @@ def get_true_pos(true_bc, pred_bc):
 	
 	total_pred_bcs = len(pred_bc)
 	false_negs = set(bcs_map.values()) - set(true_bc)
-	print(false_negs)
 	
-	return (
+	ret = (
 		num_true_pos / total_pred_bcs,
 		num_false_pos / total_pred_bcs,
-		num_false_neg / len(true_bc),
-		bcs_map)
+		len(false_negs) / len(true_bc))
+	
+	return ret
 
 def get_closest_lev(bc, true_bcs):
 	min_lev = None
