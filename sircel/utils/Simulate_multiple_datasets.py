@@ -119,7 +119,7 @@ def get_true_pos(true_bc, pred_bc):
 	num_false_negs = len(set(bcs_map.values()) - set(true_bc))
 	
 	print(num_true_pos, num_false_pos, num_false_negs)
-	return (num_true_pos, num_false_pos num_false_negs)
+	return (num_true_pos, num_false_pos, num_false_negs)
 
 def get_closest_lev(bc, true_bcs):
 	min_lev = None
