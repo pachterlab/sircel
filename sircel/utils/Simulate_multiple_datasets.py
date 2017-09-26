@@ -64,7 +64,13 @@ def evaluate_simulations(summary_file):
 		#save all this data
 		barcodes_consistency_str = ','.join([str(i) for i in barcodes_consistency])
 		simulation_entry += [
-			num_tp, num_fp, num_fn, num_unassigned, barcodes_consistency_str]
+			num_true_cells,
+			num_pred_cells,
+			num_tp,
+			num_fp,
+			num_fn,
+			num_unassigned,
+			barcodes_consistency_str]
 		printer = ('\t'.join([str(i) for i in simulation_entry]))
 		writer.write(printer + '\n')
 	writer.close()
@@ -115,7 +121,7 @@ def get_true_pos(true_bc, pred_bc):
 			num_true_pos += 1
 			true_bcs_detected.add(bc)
 		min_lev, closest = get_closest_lev(bc, true_bc)
-		if min_lev <= 1:
+		elif min_lev <= 1:
 			num_true_pos += 1
 			true_bcs_detected.add(closest)
 		else:
