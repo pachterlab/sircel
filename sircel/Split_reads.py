@@ -436,13 +436,15 @@ def get_threshold(params):
 			if np.fabs(i - num_cells)  <= MAX_DISTANCE:
 				lmax_thresholded.append(i)
 		lmax = lmax_thresholded
+		
+	change_coords = lambda i : int(i - LOCAL_WINDOW_LEN / 2)
 	#return the local max with highest value (steepest inflection)
 	try:
 		threshold = lmax[-1]
 	except IndexError:
 		return len(unique_paths_sorted)
 	for i in lmax:		
-		if(grad[i - LOCAL_WINDOW_LEN / 2] > grad[threshold - LOCAL_WINDOW_LEN / 2]):
+		if(grad[change_coords(i)] > grad[change_coords(i)]):
 			threshold = i
 	return min(threshold, len(unique_paths_sorted))
 
