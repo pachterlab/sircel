@@ -399,7 +399,8 @@ def threshold_paths(output_dir, paths, num_cells):
 			grad,
 			second_grad,
 			lmax,
-			threshold))
+			threshold,
+			LOCAL_WINDOW_LEN))
 	
 	return top_paths, threshold_out
 
