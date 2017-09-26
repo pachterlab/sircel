@@ -114,6 +114,8 @@ def threshold_bcs(kmer_counts, output_dir):
 		key = lambda tup: tup[1],
 		reverse = True)	
 	y = [tup[1] for tup in kmer_counts_lst]
+	for i in range(2*LOCAL_WINDOW_LEN):
+		y.append(1)
 	x = list(range(len(y)))
 	
 	print('\tComputing gradient')
@@ -123,7 +125,13 @@ def threshold_bcs(kmer_counts, output_dir):
 	print('\tComputing second gradient') 
 	second_grad = local_lin_fit(grad, window_len = LOCAL_WINDOW_LEN)
 	lmax = get_lmax(second_grad, LOCAL_WINDOW_LEN)
-	threshold = get_threshold(grad, lmax, None, kmer_counts_lst)
+	threshold = get_threshold((
+		grad, 
+		second_grad,
+		lmax, 
+		None, 
+		kmer_counts_lst,
+		LOCAL_WINDOW_LEN))
 	top_paths = kmer_counts_lst[0:threshold]
 	
 	print('\tThreshold is %i' % threshold)
