@@ -380,7 +380,7 @@ def threshold_paths(output_dir, paths, num_cells):
 	for i in range(2 * LOCAL_WINDOW_LEN):
 		path_weights.append(1)	
 	grad = [-1 * i for i in \
-				local_lin_fit(nplog10(path_weights),
+				local_lin_fit(np.log10(path_weights),
 				window_len=LOCAL_WINDOW_LEN)]   
 		
 	second_grad = local_lin_fit(grad, window_len = LOCAL_WINDOW_LEN)
