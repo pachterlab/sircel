@@ -120,13 +120,7 @@ def get_true_pos(true_bc, pred_bc):
 		else:
 			num_false_pos += 1
 	
-	try:
-		j = set(bcs_map.values())
-	except TypeError:
-		for v in bcs_map.values():
-			print(v)
-	
-	num_false_negs = len(true_bc - set(bcs_map.values()))
+	num_false_negs = len(true_bc - set(list(bcs_map.values())))
 	return (num_true_pos, num_false_pos, num_false_negs)
 
 def get_closest_lev(bc, true_bcs):
