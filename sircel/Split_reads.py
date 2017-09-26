@@ -378,7 +378,7 @@ def threshold_paths(output_dir, paths, num_cells):
 
 	path_weights = [tup[1] for tup in unique_paths_sorted]
 	for i in range(2 * LOCAL_WINDOW_LEN):
-		path_weights.append(1)	
+		path_weights.append(np.random.randint(low = 0, high = 5))	
 	grad = [-1 * i for i in \
 				local_lin_fit(np.log10(path_weights),
 				window_len=LOCAL_WINDOW_LEN)]   
@@ -428,7 +428,7 @@ def get_threshold(grad, lmax, num_cells, unique_paths_sorted):
 		lmax = lmax_thresholded
 	#return the local max with highest value (steepest inflection)
 	try:
-		threshold = lmax[0]
+		threshold = lmax[-1]
 	except IndexError:
 		return len(unique_paths_sorted)
 	for i in lmax:
