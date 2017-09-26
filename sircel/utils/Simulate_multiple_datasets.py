@@ -120,12 +120,13 @@ def get_true_pos(true_bc, pred_bc):
 		if bc in true_bc:
 			num_true_pos += 1
 			true_bcs_detected.add(bc)
-		min_lev, closest = get_closest_lev(bc, true_bc)
-		elif min_lev <= 1:
-			num_true_pos += 1
-			true_bcs_detected.add(closest)
 		else:
-			num_false_pos += 1
+			min_lev, closest = get_closest_lev(bc, true_bc)
+			if min_lev <= 1:
+				num_true_pos += 1
+				true_bcs_detected.add(closest)
+			else:
+				num_false_pos += 1
 	
 	num_false_negs = len(true_bc - true_bcs_detected)
 	return (num_true_pos, num_false_pos, num_false_negs)
