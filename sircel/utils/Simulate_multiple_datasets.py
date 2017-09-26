@@ -123,7 +123,8 @@ def get_true_pos(true_bc, pred_bc):
 	try:
 		j = set(bcs_map.values())
 	except TypeError:
-		print(bcs_map)
+		for v in bcs_map.values():
+			print(v)
 	
 	num_false_negs = len(true_bc - set(bcs_map.values()))
 	return (num_true_pos, num_false_pos, num_false_negs)
