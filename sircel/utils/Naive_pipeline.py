@@ -129,7 +129,7 @@ def threshold_bcs(kmer_counts, output_dir):
 		grad, 
 		second_grad,
 		lmax, 
-		None, 
+		500, 
 		kmer_counts_lst,
 		LOCAL_WINDOW_LEN))
 	top_paths = kmer_counts_lst[0:threshold]
