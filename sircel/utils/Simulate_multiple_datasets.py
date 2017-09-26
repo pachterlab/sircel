@@ -109,18 +109,18 @@ def get_true_pos(true_bc, pred_bc):
 	num_true_pos = 0
 	num_false_pos = 0
 	
-	bcs_map = {}
+	true_bcs_detected = set()
 	for bc in pred_bc:
 		if bc in true_bc:
 			num_true_pos += 1
-			bcs_map[bc] = bc
+			true_bcs_detected.add(bc)
 		elif get_closest_lev(bc, true_bc) <= 1:
 			num_true_pos += 1
-			bcs_map[bc] = true_bc
+			true_bcs_detected.add(true_bc)
 		else:
 			num_false_pos += 1
 	
-	num_false_negs = len(true_bc - set(list(bcs_map.values())))
+	num_false_negs = len(true_bc - true_bcs_detected)
 	return (num_true_pos, num_false_pos, num_false_negs)
 
 def get_closest_lev(bc, true_bcs):
