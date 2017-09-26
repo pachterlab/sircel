@@ -80,9 +80,8 @@ def eval_single_file(simulation_output_dir):
 	pred_barcodes = get_barcodes_set(
 		'%s/threshold_paths.txt' % simulation_output_dir)
 	
-	num_tp, num_fp, bcs_map = get_true_pos(true_barcodes, pred_barcodes)
+	num_tp, num_fp, num_fn, bcs_map = get_true_pos(true_barcodes, pred_barcodes)
 	num_unassigned = get_num_unassigned(simulation_output_dir)
-	num_fn = len(true_barcodes) - num_tp * len(pred_barcodes)
 	
 	#for each true positive barcode, get fraction of correct reads
 	barcodes_consistency = []
@@ -113,10 +112,14 @@ def get_true_pos(true_bc, pred_bc):
 		else:
 			num_false_pos += 1
 	
-	total_bcs = len(pred_bc)
+	total_pred_bcs = len(pred_bc)
+	false_negs = set(bcs_map.values()) - set(true_bc)
+	print(false_negs)
+	
 	return (
-		num_true_pos / total_bcs,
-		num_false_pos / total_bcs,
+		num_true_pos / total_pred_bcs,
+		num_false_pos / total_pred_bcs,
+		num_false_neg / len(true_bc)
 		bcs_map)
 
 def get_closest_lev(bc, true_bcs):
@@ -154,7 +157,7 @@ def get_fraction_consistent(pred_bc, simulation_output_dir):
 	fq_fname = '%s/reads_split/cell_%s_barcodes.fastq.gz' % \
 		(simulation_output_dir, pred_bc)
 	if not os.path.exists(fq_fname):
-		return (0,0)
+		return 0
 	
 	fq_file = gzip.open(fq_fname, 'rb')
 	fq_iter = IO_utils.read_fastq_sequential(fq_file)
