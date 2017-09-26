@@ -433,8 +433,9 @@ def get_threshold(grad, second_grad, lmax, num_cells, unique_paths_sorted):
 		threshold = lmax[-1]
 	except IndexError:
 		return len(unique_paths_sorted)
-	for i in lmax:
-		print(i, grad[i], second_grad[i])
+	for i in lmax:		
+		print(i, grad[i - LOCAL_WINDOW_LEN])
+		
 		
 		if(grad[i] > grad[threshold]):
 			threshold = i
