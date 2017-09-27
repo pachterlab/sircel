@@ -123,8 +123,9 @@ def get_true_pos(true_bc, pred_bc):
 		else:
 			min_lev, closest = get_closest_lev(bc, true_bc)
 			if min_lev <= 1:
-				num_true_pos += 1
-				true_bcs_detected.add(closest)
+				if closest not in true_bcs_detected:				
+					num_true_pos += 1
+					true_bcs_detected.add(closest)
 			else:
 				num_false_pos += 1
 	
@@ -400,7 +401,7 @@ def write_barcodes(barcodes, abundances, output_dir):
 
 if __name__ == "__main__":
 	print("Running simulations")
-	summary_file = run_simulations()
+	#summary_file = run_simulations()
 	summary_file = '%ssummary.txt' % sys.argv[1]
 	print("Evaluating simulations")
 	summary_processed_file = evaluate_simulations(summary_file)
