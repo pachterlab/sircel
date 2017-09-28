@@ -324,13 +324,16 @@ def initialize_redis_pipeline(db=0):
 
 def get_from_db(kmer_idx_pipe, keys):
 	for key in keys:
-		kmer_idx_pipe.get(key)
+		if isinstance(key, str):
+			key = key.encode('utf-8')
+		kmer_idx_pipe.lrange(key, 0, -1)
 	pipe_out = kmer_idx_pipe.execute()	
 	entries = []
 	for entry in pipe_out:
 		#entry is a comma separated bytestring of ints. return just the list
 		if(entry != None):
-			entries.append([i for i in entry])
+			entries.append(entry)
+	print(entries)
 	return entries
 	
 	
