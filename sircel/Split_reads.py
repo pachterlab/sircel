@@ -541,9 +541,9 @@ def assign_all_reads(params):
 			if(assignment == 'unassigned'):
 				num_unassigned += 1
 			#reads_assigned[assignment].append((offset1, offset2))
-			reads_assigned_pipe.append(
+			reads_assigned_pipe.rpush(
 			 	assignment.encode('utf-8'), 
-			 	('%i,%i,' % (offset1, offset2)).encode('utf-8'))
+			 	(offset1, offset2))
 				
 		reads_assigned_pipe.execute()
 		print('\tProcessed %i reads' % read_count)
