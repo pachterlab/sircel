@@ -441,7 +441,7 @@ def get_threshold(params):
 	except IndexError:
 		return len(unique_paths_sorted)
 	for i in lmax:		
-		if(grad[change_coords(i)] > grad[change_coords(i)]):
+		if(grad[change_coords(i)] > grad[change_coords(threshold)]):
 			threshold = i
 	return min(threshold, len(unique_paths_sorted))
 
