@@ -348,6 +348,7 @@ def build_subgraph(reads_in_subgraph, barcodes_unzipped):
 def threshold_paths(output_dir, paths, num_cells):
 	LOCAL_WINDOW_LEN = 50
 	MIN_CAPACITY = 0
+	MIN_WEIGHT = 10
 	
 	threshold_out = {
 		'slopes' : '%s/slopes.txt' % output_dir,
@@ -372,9 +373,9 @@ def threshold_paths(output_dir, paths, num_cells):
 		key = lambda tup: tup[1],
 		reverse = True)
 	
-	path_weights = [tup[1] for tup in unique_paths_sorted if tup[1] >= 10]
+	path_weights = [tup[1] for tup in unique_paths_sorted if tup[1] >= MIN_WEIGHT]
 	for i in range(2 * LOCAL_WINDOW_LEN):
-		path_weights.append(2)
+		path_weights.append(MIN_WEIGHT)
 	
 	grad = [-1 * i for i in \
 				local_lin_fit(np.log10(path_weights),
