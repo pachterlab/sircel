@@ -330,9 +330,9 @@ def get_from_db(kmer_idx_pipe, keys):
 	pipe_out = kmer_idx_pipe.execute()	
 	entries = []
 	for entry in pipe_out:
-		#entry is a comma separated bytestring of ints. return just the list
 		if(entry != None):
-			entries.append(entry)
+			entries += ([
+				int(e.decode('utf-8')) for e in entry])
 	print(entries)
 	return entries
 	
