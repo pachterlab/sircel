@@ -519,7 +519,15 @@ def assign_all_reads(params):
 			BUFFER_SIZE = BUFFER_SIZE)):
 		read_count += len(reads_chunk)
 		
-		if not args['split_levenshtein']:
+		if args['split_levenshtein']:
+			assignments = pool.map(assign_read_levenshtein,
+				zip(
+					repeat(consensus_bcs),
+					reads_chunk,
+					barcodes_chunk))		
+		else:
+			#this is a pipeline for reviwer expts only
+			#works quite poorly, see simulation results
 			assignments = pool.map(assign_read_kmers, 
 				zip(
 				repeat(kmer_map),
@@ -527,14 +535,7 @@ def assign_all_reads(params):
 				repeat(MAX_KMER_SIZE),
 				reads_chunk,
 				barcodes_chunk))
-		else:
-			#this is a pipeline for reviwer expts only
-			#works quite poorly, see simulation results
-			assignments = pool.map(assign_read_levenshtein,
-				zip(
-					repeat(consensus_bcs),
-					reads_chunk,
-					barcodes_chunk))
+
 			
 		for (assignment, offset1, offset2) in assignments:
 			if(assignment == 'unassigned'):
