@@ -330,9 +330,8 @@ def get_from_db(kmer_idx_pipe, keys):
 	for entry in pipe_out:
 		#entry is a comma separated bytestring of ints. return just the list
 		if(entry != None):
-			offsets = [int(i) for i in entry.decode('utf-8').split(',')[0:-1]]
-			entries.append(offsets)
-	return entries	
+			entries.append([i for i in entry])
+	return entries
 	
 	
 	
