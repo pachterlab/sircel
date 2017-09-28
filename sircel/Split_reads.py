@@ -371,12 +371,8 @@ def threshold_paths(output_dir, paths, num_cells):
 		unique_paths.values(),
 		key = lambda tup: tup[1],
 		reverse = True)
-
-	if num_cells != None:
-		if num_cells > len(paths):
-			return unique_paths_sorted, {}
-
-	path_weights = [tup[1] for tup in unique_paths_sorted]
+	
+	path_weights = [tup[1] for tup in unique_paths_sorted if tup[1] >= 10]
 	for i in range(2 * LOCAL_WINDOW_LEN):
 		path_weights.append(2)
 	
