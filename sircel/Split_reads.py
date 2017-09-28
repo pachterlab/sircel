@@ -702,7 +702,7 @@ def write_split_fastqs(params):
 	for cell in consensus_bcs:
 		
 		try:
-			cell_offsets = IO_utils.get_from_db(reads_assigned_pipe, [cell])[0]
+			cell_offsets = IO_utils.get_from_db(reads_assigned_pipe, [cell])
 		except IndexError:
 			pass
 		
