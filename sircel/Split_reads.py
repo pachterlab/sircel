@@ -493,11 +493,8 @@ def assign_all_reads(params):
 	reads_assigned_db, reads_assigned_pipe = IO_utils.initialize_redis_pipeline()
 	pool = Pool(processes = args['threads'])
 	
-	print('\tMapping kmers to consensus barcodes')
-	kmer_map = map_kmers_to_bcs(consensus_bcs, MIN_KMER_SIZE, MAX_KMER_SIZE)
-	
-	#reads_assigned = initialize_reads_assigned(consensus_bcs)
-	#pickle_files = []
+	#print('\tMapping kmers to consensus barcodes')
+	#kmer_map = map_kmers_to_bcs(consensus_bcs, MIN_KMER_SIZE, MAX_KMER_SIZE)
 	
 	print('\tAssigning reads to consensus barcodes')
 	read_count = 0
@@ -516,12 +513,13 @@ def assign_all_reads(params):
 			BUFFER_SIZE = BUFFER_SIZE)):
 		read_count += len(reads_chunk)
 		
-		if args['split_levenshtein']:
-			assignments = pool.map(assign_read_levenshtein,
-				zip(
-					repeat(consensus_bcs),
-					reads_chunk,
-					barcodes_chunk))		
+		#if args['split_levenshtein']:
+		assignments = pool.map(assign_read_levenshtein,
+			zip(
+				repeat(consensus_bcs),
+				reads_chunk,
+				barcodes_chunk))		
+		"""
 		else:
 			#this is a pipeline for reviwer expts only
 			#works quite poorly, see simulation results
@@ -532,7 +530,7 @@ def assign_all_reads(params):
 				repeat(MAX_KMER_SIZE),
 				reads_chunk,
 				barcodes_chunk))
-
+		"""
 			
 		for (assignment, offset1, offset2) in assignments:
 			if(assignment == 'unassigned'):
@@ -540,16 +538,10 @@ def assign_all_reads(params):
 			#reads_assigned[assignment].append((offset1, offset2))
 			reads_assigned_pipe.rpush(
 			 	assignment.encode('utf-8'), 
-			 	(offset1, offset2))
+			 	offset1, offset2)
 				
 		reads_assigned_pipe.execute()
 		print('\tProcessed %i reads' % read_count)
-		
-		#pickle dump read assignments every 10m reads
-		#if read_count % PICKLE_SIZE == 0:
-		#	pickle_files.append(IO_utils.write_to_pickle(reads_assigned))
-		#	reads_assigned = initialize_reads_assigned(consensus_bcs)		
-	#pickle_files.append(IO_utils.write_to_pickle(reads_assigned))
 	
 	reads_f.close()
 	barcodes_f.close()
