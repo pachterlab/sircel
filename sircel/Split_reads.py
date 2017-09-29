@@ -505,7 +505,7 @@ def assign_all_reads(params):
 	reads_f = open(reads_unzipped, 'rb')
 	barcodes_f = open(barcodes_unzipped, 'rb')
 	
-	encode = lambda i: str(i).encode(utf-8) 
+	encode = lambda i: str(i).encode('utf-8') 
 	encode_tup = lambda i, j: encode(i) + b',' + encode(j)
 	
 	for reads_chunk, barcodes_chunk in zip(
