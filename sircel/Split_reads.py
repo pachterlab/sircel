@@ -647,7 +647,7 @@ def assign_read_levenshtein(params):
 		(reads_data, reads_offset),
 		(barcodes_data, barcodes_offset)) = params
 	
-	obs_bc = barcodes_data[1].decode('utf-8').strip()[ \
+	obs_bc = barcodes_data[1].strip()[ \
 		args['barcode_start']: args['barcode_end']]
 	
 	min_lev_dist = len(obs_bc)
