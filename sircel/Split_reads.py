@@ -78,7 +78,7 @@ def run_all(cmdline_args):
 	output_files.update(fit_out)
 	consensus_bcs = set([tup[0] for tup in top_paths])
 	
-	print('Assigning reads by kmer compatability')
+	print('Assigning reads')
 	reads_assigned_db, reads_assigned_pipe = assign_all_reads(
 		(consensus_bcs,
 		reads_unzipped, 
@@ -494,7 +494,8 @@ def assign_all_reads(params):
 	pool = Pool(processes = args['threads'])
 	
 	#print('\tMapping kmers to consensus barcodes')
-	#kmer_map = map_kmers_to_bcs(consensus_bcs, MIN_KMER_SIZE, MAX_KMER_SIZE)
+	if not args['split_levenshtein']:
+		kmer_map = map_kmers_to_bcs(consensus_bcs, MIN_KMER_SIZE, MAX_KMER_SIZE)
 	
 	print('\tAssigning reads to consensus barcodes')
 	read_count = 0
@@ -513,16 +514,14 @@ def assign_all_reads(params):
 			BUFFER_SIZE = BUFFER_SIZE)):
 		read_count += len(reads_chunk)
 		
-		#if args['split_levenshtein']:
+		if args['split_levenshtein']:
 		assignments = pool.map(assign_read_levenshtein,
 			zip(
 				repeat(consensus_bcs),
 				reads_chunk,
 				barcodes_chunk))		
-		"""
+		
 		else:
-			#this is a pipeline for reviwer expts only
-			#works quite poorly, see simulation results
 			assignments = pool.map(assign_read_kmers, 
 				zip(
 				repeat(kmer_map),
@@ -530,7 +529,7 @@ def assign_all_reads(params):
 				repeat(MAX_KMER_SIZE),
 				reads_chunk,
 				barcodes_chunk))
-		"""
+		
 			
 		for (assignment, offset1, offset2) in assignments:
 			if(assignment == 'unassigned'):
@@ -645,11 +644,7 @@ def assign_read_levenshtein(params):
 	
 	obs_bc = reads_data[1].strip()[ \
 		args['barcode_start']: args['barcode_end']]
-	#first check for perfect match	
-	if obs_bc in consensus_bcs:
-		return (obs_bc, reads_offset, barcodes_offset)
 	
-	#otherwise minimize levenshtein distance
 	min_lev_dist = None
 	assignment = []
 	for consensus_bc in consensus_bcs:
