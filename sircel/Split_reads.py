@@ -515,11 +515,11 @@ def assign_all_reads(params):
 		read_count += len(reads_chunk)
 		
 		if args['split_levenshtein']:
-		assignments = pool.map(assign_read_levenshtein,
-			zip(
-				repeat(consensus_bcs),
-				reads_chunk,
-				barcodes_chunk))		
+			assignments = pool.map(assign_read_levenshtein,
+				zip(
+					repeat(consensus_bcs),
+					reads_chunk,
+					barcodes_chunk))
 		
 		else:
 			assignments = pool.map(assign_read_kmers, 
