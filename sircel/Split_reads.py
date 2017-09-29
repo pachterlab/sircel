@@ -378,8 +378,8 @@ def threshold_paths(output_dir, paths, num_cells):
 		path_weights.append(MIN_WEIGHT)
 	
 	grad = [-1 * i for i in \
-				local_lin_fit(np.log10(path_weights),
-				window_len=LOCAL_WINDOW_LEN)]   
+				local_lin_fit(path_weights,
+				window_len=LOCAL_WINDOW_LEN)]
 	second_grad = local_lin_fit(grad, window_len = LOCAL_WINDOW_LEN)
 	
 	lmax = get_lmax(second_grad, LOCAL_WINDOW_LEN)
@@ -596,7 +596,7 @@ def assign_read_kmers(params):
 		max_kmer_size,
 		(reads_data, reads_offset),
 		(barcodes_data, barcodes_offset)) = params
-	
+		
 	for kmer_size in range(max_kmer_size, min_kmer_size, -1):
 		read_kmers = IO_utils.get_cyclic_kmers(
 			barcodes_data, 
