@@ -647,20 +647,23 @@ def assign_read_levenshtein(params):
 		(reads_data, reads_offset),
 		(barcodes_data, barcodes_offset)) = params
 	
-	obs_bc = reads_data[1].strip()[ \
+	obs_bc = barcodes_data[1].decode('utf-8').strip()[ \
 		args['barcode_start']: args['barcode_end']]
 	
-	min_lev_dist = None
+	min_lev_dist = len(obs_bc)
 	assignment = []
 	for consensus_bc in consensus_bcs:
 		lev_dist = distance(obs_bc, consensus_bc)
-		if min_lev_dist == None or lev_dist < min_lev_dist:
+		if lev_dist < min_lev_dist:
 			min_lev_dist = lev_dist
 			assignment = [consensus_bc]
 		#in the case of a tie,
 		elif lev_dist == min_lev_dist:
 			assignment.append(consensus_bc)
+		#else do nothing
 	#return the best unique assignment
+	
+	print(assignment)
 	if len(assignment) == 1:
 		return (assignment[0], reads_offset, barcodes_offset)
 	#or don't assign read (in the case of a tie)
