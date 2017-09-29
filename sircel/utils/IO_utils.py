@@ -329,10 +329,14 @@ def get_from_db(kmer_idx_pipe, keys):
 		kmer_idx_pipe.lrange(key, 0, -1)
 	pipe_out = kmer_idx_pipe.execute()	
 	entries = []
+	
+	decode = lambda mystr: [int(i) for i in mystr.decode('utf-8').split(',')]
+	
 	for entry in pipe_out:
 		if(entry != None):
 			for e in entry:
-				entries.append(int(e.decode('utf-8')))
+				offset1, offset2 = decode(e)
+				entries += [offset1, offset2]
 				
 	return entries
 	
