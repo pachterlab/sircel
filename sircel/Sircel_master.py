@@ -80,7 +80,6 @@ def run_all(args):
 		args['reads'] = reads_unzipped
 		args['barcodes'] = barcodes_unzipped
 	
-	args['split_levenshtein'] = True
 	check_split_input(args)
 	output_files, elapsed_time = Split_reads.run_all(args)
 	output_files['args'] = args
