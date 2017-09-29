@@ -332,7 +332,6 @@ def get_from_db(kmer_idx_pipe, keys):
 	for entry in pipe_out:
 		if(entry != None):
 			for e in entry:
-				print(e, int(e.decode('utf-8')))
 				entries.append(int(e.decode('utf-8')))
 				
 	return entries
