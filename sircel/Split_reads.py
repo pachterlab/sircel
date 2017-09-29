@@ -494,15 +494,20 @@ def assign_all_reads(params):
 	pool = Pool(processes = args['threads'])
 	
 	#print('\tMapping kmers to consensus barcodes')
-	if not args['split_levenshtein']:
+	if args['split_levenshtein']:
+		print('\tAssigning reads to consensus barcodes using Levenshtein distance')
+	else:
+		print('\tAssigning reads to consensus barcodes using kmer compatability')
 		kmer_map = map_kmers_to_bcs(consensus_bcs, MIN_KMER_SIZE, MAX_KMER_SIZE)
 	
-	print('\tAssigning reads to consensus barcodes')
 	read_count = 0
 	num_unassigned = 0
 	reads_f = open(reads_unzipped, 'rb')
 	barcodes_f = open(barcodes_unzipped, 'rb')
-		
+	
+	encode = lambda i: i.encode(utf-8) 
+	encode_tup = lambda i, j = encode(i) + b',' + encode(j)
+	
 	for reads_chunk, barcodes_chunk in zip(
 		IO_utils.get_read_chunks(
 			reads_f,
@@ -537,7 +542,7 @@ def assign_all_reads(params):
 			#reads_assigned[assignment].append((offset1, offset2))
 			reads_assigned_pipe.rpush(
 			 	assignment.encode('utf-8'), 
-			 	offset1, offset2)
+			 	encode_tup(offset1, offset2))
 				
 		reads_assigned_pipe.execute()
 		print('\tProcessed %i reads' % read_count)
