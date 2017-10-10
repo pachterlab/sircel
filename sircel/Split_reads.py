@@ -378,8 +378,9 @@ def threshold_paths(output_dir, paths, num_cells):
 		path_weights.append(MIN_WEIGHT)
 	
 	grad = [-1 * i for i in \
-				local_lin_fit(path_weights,
-				window_len=LOCAL_WINDOW_LEN)]
+				local_lin_fit(
+					np.log10(path_weights),
+					window_len=LOCAL_WINDOW_LEN)]
 	second_grad = local_lin_fit(grad, window_len = LOCAL_WINDOW_LEN)
 	
 	lmax = get_lmax(second_grad, LOCAL_WINDOW_LEN)
@@ -663,7 +664,6 @@ def assign_read_levenshtein(params):
 		#else do nothing
 	#return the best unique assignment
 	
-	print(assignment)
 	if len(assignment) == 1:
 		return (assignment[0], reads_offset, barcodes_offset)
 	#or don't assign read (in the case of a tie)
