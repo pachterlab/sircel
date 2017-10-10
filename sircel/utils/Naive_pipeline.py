@@ -177,7 +177,7 @@ def assign_all_reads(params):
 			BUFFER_SIZE = BUFFER_SIZE)):
 		read_count += len(reads_chunk)
 		
-		assignments = pool.map(assign_read_levenshtein, 
+		assignments = pool.map(assign_read, 
 			zip(
 			repeat(consensus_bcs),
 			reads_chunk,
@@ -192,27 +192,23 @@ def assign_all_reads(params):
 	print('\t%i reads could not be assigned' % num_unassigned)
 	return reads_assigned
 	
-def assign_read_levenshtein(params):	
+def assign_read(params):	
 	(consensus_bcs,
 		(reads_data, reads_offset),
 		(barcodes_data, barcodes_offset)) = params
 	
 	obs_bc = reads_data[1].strip()[ \
 		args['barcode_start']: args['barcode_end']]
-	#first check for perfect match	
-	if obs_bc in consensus_bcs:
-		return (obs_bc, reads_offset, barcodes_offset)
 	
-	#otherwise minimize levenshtein distance
-	min_lev_dist = None
+	min_dist = None
 	assignment = []
 	for consensus_bc in consensus_bcs:
-		lev_dist = distance(obs_bc, consensus_bc)
-		if min_lev_dist == None or lev_dist < min_lev_dist:
-			min_lev_dist = lev_dist
+		dist = hamming(obs_bc, consensus_bc)
+		if min_dist == None or dist < min_dist:
+			min_dist = dist
 			assignment = [consensus_bc]
 		#in the case of a tie,
-		elif lev_dist == min_lev_dist:
+		elif dist == min_dist:
 			assignment.append(consensus_bc)
 	#return the best unique assignment
 	if len(assignment) == 1:
