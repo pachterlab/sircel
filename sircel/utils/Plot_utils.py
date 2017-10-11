@@ -27,6 +27,8 @@ def plot_kmer_subsamp_pearson(output_dir, counts_corr_coefs, num_reads):
 	
 	fname = '%s/plots/indexed_reads_correlation.png' % output_dir
 	fig.savefig(fname, dpi = 300)
+	plt.close()
+	
 	return fname
 
 def plot_path_threshold(params):
@@ -63,6 +65,7 @@ def plot_path_threshold(params):
 	plt.tight_layout()
 	fname = '%s/plots/paths_plotted.png' % output_dir
 	fig.savefig(fname, dpi = 300)
+	plt.close()
 	return fname
 
 def plot_nuc_content(output_dir, reads_nuc_content, barcodes_nuc_content):	
@@ -91,6 +94,8 @@ def plot_nuc_content(output_dir, reads_nuc_content, barcodes_nuc_content):
 	
 	fname = '%s/plots/nucleotide_freq_vs_pos.png' % output_dir
 	fig.savefig(fname, dpi = 300)
+	plt.close()
+	
 	return fname
 
 def plot_cell_distance_hmap(output_dir, distances, bc_len):
@@ -130,6 +135,8 @@ def plot_cell_distance_hmap(output_dir, distances, bc_len):
 	plt.tight_layout()
 	fname = '%s/plots/per_cell_edit_distance.png' % output_dir
 	fig.savefig(fname, dpi = 300)
+	plt.close()
+	
 	return fname
 		
 

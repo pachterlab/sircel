@@ -181,8 +181,11 @@ def get_fraction_consistent(pred_bc, simulation_output_dir):
 		assigned_bc = read_name.split(':')[-2].split('_')[0]
 		assignments.update([assigned_bc])
 		total_reads += 1
-	common_bc, count = assignments.most_common()[0]
-	return count / total_reads
+	try:
+		common_bc, count = assignments.most_common()[0]
+		return count / total_reads
+	except ValueError:
+		return 0
 
 def run_simulations():
 	ALPHABET = ['A', 'C', 'G', 'T']
@@ -401,7 +404,7 @@ def write_barcodes(barcodes, abundances, output_dir):
 
 if __name__ == "__main__":
 	print("Running simulations")
-	summary_file = run_simulations()
+	#summary_file = run_simulations()
 	summary_file = '%ssummary.txt' % sys.argv[1]
 	print("Evaluating simulations")
 	summary_processed_file = evaluate_simulations(summary_file)
