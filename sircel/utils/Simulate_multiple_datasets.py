@@ -184,7 +184,7 @@ def get_fraction_consistent(pred_bc, simulation_output_dir):
 	try:
 		common_bc, count = assignments.most_common()[0]
 		return count / total_reads
-	except ValueError:
+	except IndexError:
 		return 0
 
 def run_simulations():
