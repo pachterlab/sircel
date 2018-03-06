@@ -17,7 +17,7 @@ from Levenshtein import distance, hamming
 from itertools import repeat
 
 args = {}
-def run_naive_pipeline(barcodes, reads, output_dir, kallisto = None):
+def run_naive_pipeline(barcodes, reads, output_dir, kallisto_idx = None):
 	global args
 	output_files = {}
 	
@@ -77,7 +77,7 @@ def run_naive_pipeline(barcodes, reads, output_dir, kallisto = None):
 	
 	if kallisto is not None:
 		
-		args['kallisto_idx'] = kallisto
+		args['kallisto_idx'] = kallisto_idx
 		
 		print('Running kallisto')
 		kallisto_dir = '%s/kallisto_outputs' % args['output_dir']
