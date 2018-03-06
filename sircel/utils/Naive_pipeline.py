@@ -78,6 +78,8 @@ def run_naive_pipeline(barcodes, reads, output_dir, kallisto_idx = None):
 	if kallisto_idx is not None:
 		
 		args['kallisto_idx'] = kallisto_idx
+		with (Path(__file__).parent / 'params.json').open() as r:
+			kallisto = json.load(r)['kallisto']
 		
 		print('Running kallisto')
 		kallisto_dir = '%s/kallisto_outputs' % args['output_dir']
