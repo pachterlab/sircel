@@ -101,7 +101,6 @@ def run_naive_pipeline(barcodes, reads, output_dir, kallisto_idx = None):
 	os.unlink(reads_unzipped)
 	os.unlink(barcodes_unzipped)
 	
-	import json
 	with open(output_files['run_outputs'], 'w') as writer:
 		writer.write(json.dumps(output_files, indent=3))
 	
