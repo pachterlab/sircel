@@ -76,6 +76,9 @@ def run_naive_pipeline(barcodes, reads, output_dir, kallisto = None):
 	output_files['run_outputs'] = '%s/run_outputs.json' % args['output_dir']
 	
 	if kallisto is not None:
+		
+		args['kallisto_idx'] = kallisto
+		
 		print('Running kallisto')
 		kallisto_dir = '%s/kallisto_outputs' % args['output_dir']
 		if not os.path.exists(kallisto_dir):
