@@ -9,6 +9,7 @@ import sys
 from sircel.Split_reads import *
 from sircel import IO_utils
 from sircel import Plot_utils
+from sircel.Sircel_master import *
 
 from scipy.signal import savgol_filter as savgol
 from multiprocessing import Pool
@@ -16,7 +17,7 @@ from Levenshtein import distance, hamming
 from itertools import repeat
 
 args = {}
-def run_naive_pipeline(barcodes, reads, output_dir):
+def run_naive_pipeline(barcodes, reads, output_dir, kallisto = None):
 	global args
 	output_files = {}
 	
@@ -73,6 +74,26 @@ def run_naive_pipeline(barcodes, reads, output_dir):
 		barcodes_unzipped))
 	output_files['plt'] = plt
 	output_files['run_outputs'] = '%s/run_outputs.json' % args['output_dir']
+	
+	if kallisto is not None:
+		print('Running kallisto')
+		kallisto_dir = '%s/kallisto_outputs' % args['output_dir']
+		if not os.path.exists(kallisto_dir):
+			os.makedirs(kallisto_dir)
+		output_files['kallisto'] = run_kallisto(
+			args,
+			kallisto,
+			kallisto_dir,
+			output_files)
+		print('Getting transcript compatibility counts')
+		output_files['tcc'] = write_transcript_compatability_counts(
+			args,
+			output_files,
+			kallisto_dir)
+	
+	print('Removing temp files')
+	os.unlink(reads_unzipped)
+	os.unlink(barcodes_unzipped)
 	
 	import json
 	with open(output_files['run_outputs'], 'w') as writer:
@@ -290,7 +311,10 @@ def write_split_fastqs(params):
 	
 	
 if __name__ == '__main__':
-	run_naive_pipeline(sys.argv[1], sys.argv[2], sys.argv[3])
+	if len(sys.argv == 4):
+		run_naive_pipeline(sys.argv[1], sys.argv[2], sys.argv[3], kallisto = None)
+	elif len(sys.argv == 5):
+		run_naive_pipeline(sys.argv[1], sys.argv[2], sys.argv[3], kallisto = sys.argv[4])
 	
 	
 	
