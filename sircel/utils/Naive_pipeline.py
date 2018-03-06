@@ -311,10 +311,8 @@ def write_split_fastqs(params):
 	
 	
 if __name__ == '__main__':
-	if len(sys.argv == 4):
-		run_naive_pipeline(sys.argv[1], sys.argv[2], sys.argv[3], kallisto = None)
-	elif len(sys.argv == 5):
-		run_naive_pipeline(sys.argv[1], sys.argv[2], sys.argv[3], kallisto = sys.argv[4])
+		#run_naive_pipeline(sys.argv[1], sys.argv[2], sys.argv[3], kallisto = None)
+		run_naive_pipeline(sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4])
 	
 	
 	
