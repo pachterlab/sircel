@@ -75,7 +75,7 @@ def run_naive_pipeline(barcodes, reads, output_dir, kallisto_idx = None):
 	output_files['plt'] = plt
 	output_files['run_outputs'] = '%s/run_outputs.json' % args['output_dir']
 	
-	if kallisto is not None:
+	if kallisto_idx is not None:
 		
 		args['kallisto_idx'] = kallisto_idx
 		
