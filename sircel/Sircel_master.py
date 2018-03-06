@@ -124,6 +124,7 @@ def run_kallisto(args, kallisto, kallisto_dir, output_files):
 		'-o',			kallisto_dir,
 		'-t',			str(args['threads']),
 		'--umi']
+		
 	kallisto = subprocess.check_call(kallisto_cmd)
 	kallisto_output = {
 		'tsv' :				'%s/matrix.tsv' % kallisto_dir,
@@ -250,22 +251,22 @@ def get_args(args=None):
 		help='Use barcode / umi positions from Macosko et al Dropseq dataset',
 		required=False,
 		action='store_true')
-	parser.add_argument('--10xgenomics',
-		help='Use barcode / umi positions from 10xGenomics v2 chemistry data',
-		required=False,
-		action='store_true')
+	#parser.add_argument('--10xgenomics',
+	#	help='Use barcode / umi positions from 10xGenomics v2 chemistry data',
+	#	required=False,
+	#	action='store_true')
 	
 	parser.add_argument('--barcodes', 
 		type=str, 
-		help='Cell barcodes file name or comma separarted list. File I1 for 10x genomics', 
+		help='Cell barcodes file name or comma separarted list.', 
 		required=True)
-	parser.add_argument('--umis', 
-		type=str,
-		help='Umis (R1) file name or comma separarted list. Only required for 10x genomics', 
-		required=False)
+	#parser.add_argument('--umis', 
+	#	type=str,
+	#	help='Umis (R1) file name or comma separarted list. Only required for 10x genomics', 
+	#	required=False)
 	parser.add_argument('--reads', 
 		type=str, 
-		help='RNAseq reads file name or comma separarted list. File R2 for 10x genomics', 
+		help='RNAseq reads file name or comma separarted list.', 
 		required=True)
 	parser.add_argument('--output_dir', 
 		type=str, 
@@ -315,11 +316,12 @@ def get_args(args=None):
 		type=int,
 		default=0)
 	
-	#only for reviewer expts. never actually use this!
+	#set this to false only for reviewer expts
 	parser.add_argument('--split_levenshtein',
 		type = bool,
 		help = argparse.SUPPRESS,
-		default = False)
+		default = True)
+		
 
 	return vars(parser.parse_args(args))
 
