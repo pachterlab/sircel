@@ -824,11 +824,11 @@ def get_args():
 		help='Estimated number of cells.',
 		default=None)
 	
-	#only for reviewer expts. never actually use this!
+	#set this to false only for reviewer expts
 	parser.add_argument('--split_levenshtein',
 		type = bool,
 		help = argparse.SUPPRESS,
-		default = False)
+		default = True)
 	
 	return vars(parser.parse_known_args())
 
