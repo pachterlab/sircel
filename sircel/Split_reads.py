@@ -523,6 +523,7 @@ def assign_all_reads(params):
 		if args['split_levenshtein']:
 			assignments = pool.map(assign_read_levenshtein,
 				zip(
+					repeat(args),
 					repeat(consensus_bcs),
 					reads_chunk,
 					barcodes_chunk))
@@ -644,7 +645,8 @@ def get_most_common_bc(kmer_map, read_kmers):
 		return most_common, True, False
 
 def assign_read_levenshtein(params):	
-	(consensus_bcs,
+	(args,
+		consensus_bcs,
 		(reads_data, reads_offset),
 		(barcodes_data, barcodes_offset)) = params
 	
