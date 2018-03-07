@@ -203,11 +203,11 @@ def assign_all_reads(params):
 			BUFFER_SIZE = BUFFER_SIZE)):
 		read_count += len(reads_chunk)
 		
-		assignments = pool.map(assign_read, 
+		assignments = pool.map(assign_read_levenshtein,
 			zip(
-			repeat(consensus_bcs),
-			reads_chunk,
-			barcodes_chunk))
+				repeat(consensus_bcs),
+				reads_chunk,
+				barcodes_chunk))
 		
 		for (assignment, offset1, offset2) in assignments:
 			if(assignment == 'unassigned'):
@@ -218,30 +218,6 @@ def assign_all_reads(params):
 	print('\t%i reads could not be assigned' % num_unassigned)
 	return reads_assigned
 	
-def assign_read(params):	
-	(consensus_bcs,
-		(reads_data, reads_offset),
-		(barcodes_data, barcodes_offset)) = params
-	
-	obs_bc = reads_data[1].strip()[ \
-		args['barcode_start']: args['barcode_end']]
-	
-	min_dist = None
-	assignment = []
-	for consensus_bc in consensus_bcs:
-		dist = hamming(obs_bc, consensus_bc)
-		if min_dist == None or dist < min_dist:
-			min_dist = dist
-			assignment = [consensus_bc]
-		#in the case of a tie,
-		elif dist == min_dist:
-			assignment.append(consensus_bc)
-	#return the best unique assignment
-	if len(assignment) == 1:
-		return (assignment[0], reads_offset, barcodes_offset)
-	#or don't assign read (in the case of a tie)
-	return ('unassigned', reads_offset, barcodes_offset)
-
 def write_split_fastqs(params):
 	import gzip
 	(	reads_assigned,
