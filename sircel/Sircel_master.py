@@ -51,6 +51,17 @@ def run_all(args):
 			IO_utils.unzip(args['barcodes'].split(','))
 		args['reads'] = reads_unzipped
 		args['barcodes'] = barcodes_unzipped
+	else:
+		if args['kmer_size'] == None:
+			args['kmer_size'] = 8
+		print('Unzipping (temporary)')
+		reads_unzipped = \
+			IO_utils.unzip(args['reads'].split(','))
+		barcodes_unzipped = \
+			IO_utils.unzip(args['barcodes'].split(','))
+		args['reads'] = reads_unzipped
+		args['barcodes'] = barcodes_unzipped
+	
 	"""
 	elif args['10xgenomics']:
 		args['barcode_start']	= 0
@@ -69,16 +80,6 @@ def run_all(args):
 		args['reads'] = reads_unzipped
 		args['barcodes'] = barcodes_unzipped	
 	"""
-	else:
-		if args['kmer_size'] == None:
-			args['kmer_size'] = 8
-		print('Unzipping (temporary)')
-		reads_unzipped = \
-			IO_utils.unzip(args['reads'].split(','))
-		barcodes_unzipped = \
-			IO_utils.unzip(args['barcodes'].split(','))
-		args['reads'] = reads_unzipped
-		args['barcodes'] = barcodes_unzipped
 	
 	check_split_input(args)
 	output_files, elapsed_time = Split_reads.run_all(args)
