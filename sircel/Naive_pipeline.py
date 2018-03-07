@@ -205,6 +205,7 @@ def assign_all_reads(params):
 		
 		assignments = pool.map(assign_read_levenshtein,
 			zip(
+				repeat(args),
 				repeat(consensus_bcs),
 				reads_chunk,
 				barcodes_chunk))
