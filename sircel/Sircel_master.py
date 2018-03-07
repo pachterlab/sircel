@@ -51,7 +51,7 @@ def run_all(args):
 			IO_utils.unzip(args['barcodes'].split(','))
 		args['reads'] = reads_unzipped
 		args['barcodes'] = barcodes_unzipped
-		
+	"""
 	elif args['10xgenomics']:
 		args['barcode_start']	= 0
 		args['barcode_end'] 		= 26
@@ -68,7 +68,7 @@ def run_all(args):
 				
 		args['reads'] = reads_unzipped
 		args['barcodes'] = barcodes_unzipped	
-
+	"""
 	else:
 		if args['kmer_size'] == None:
 			args['kmer_size'] = 8
@@ -205,8 +205,8 @@ def get_l1_distance(p,q):
 
 def check_pipeline_input(args, kallisto):
 	
-	assert not (args['10xgenomics'] and args['dropseq']), \
-		'10xgenomics and dropseq options are mutually exclusive'
+	#assert not (args['10xgenomics'] and args['dropseq']), \
+	#	'10xgenomics and dropseq options are mutually exclusive'
 	assert Path(kallisto).is_file() or shutil.which(kallisto), \
 		'Cannot find kallisto executable %s' % kallisto
 	assert os.path.exists(args['reads']), \
@@ -218,9 +218,9 @@ def check_pipeline_input(args, kallisto):
 		assert(os.path.exists(args['kallisto_idx'])), \
 			'Cannot find kallisto index %s' % \
 			args['kallisto_idx']
-	if args['10xgenomics']:
-		assert(os.path.exists(args['umis'])), \
-			'Cannot find reads file %s' % args['umis']
+	#if args['10xgenomics']:
+	#	assert(os.path.exists(args['umis'])), \
+	#		'Cannot find reads file %s' % args['umis']
 
 def check_split_input(args):
 	"""
