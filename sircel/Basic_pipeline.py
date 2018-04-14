@@ -1,5 +1,5 @@
 """
-Naive pipeline
+Basic pipeline
 	Count kmers (full-length barcode seqs)
 	Threshold them (use vasilis approach, including pitfalls)
 	Assign reads to thresholded kmers by Lev or Ham dist
