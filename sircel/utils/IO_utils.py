@@ -86,7 +86,7 @@ def unzip(gzipped_lst):
 		with gz.open(gzipped) as in_file:
 			for lines in grouper(in_file, 4):
 				qual = lines[2][0]
-				lines = b''.join([lines[0], lines[1], qual, lines[3])
+				lines = b''.join([lines[0], lines[1], qual, lines[3]])
 				out_file.write(lines)
 	return out_file.name
 
