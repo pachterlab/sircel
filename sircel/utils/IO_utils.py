@@ -85,8 +85,8 @@ def unzip(gzipped_lst):
 			raise TypeError('File does not appear to be gzipped: %s' % gzipped)
 		with gz.open(gzipped) as in_file:
 			for lines in grouper(in_file, 4):
-				qual = lines[2][0].encode('utf-8')
-				lines = b''.join([lines[0], lines[1], qual, lines[3]])
+				qual = (lines[2].decode('utf-8'))[0]
+				lines = b''.join([lines[0], lines[1], qual.encode('utf-8'), lines[3]])
 				out_file.write(lines)
 	return out_file.name
 
