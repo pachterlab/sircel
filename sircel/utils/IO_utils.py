@@ -155,7 +155,8 @@ def is_valid_fq_entry(lines):
 		return False
 	if len(lines[1]) != len(lines[3]):
 		return False
-	if len(lines[2].strip()) != 1:
+	#if len(lines[2].strip()) != 1:
+	if lines[2].strip()[0] != '+' and lines[2].strip()[0] != '-':
 		return False
 	return True
 	
