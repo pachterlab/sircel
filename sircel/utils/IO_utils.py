@@ -86,8 +86,8 @@ def unzip(gzipped_lst):
 		with gz.open(gzipped) as in_file:
 			for lines in grouper(in_file, 4):
 				qual = lines[2][0]
-				lines = b''.join([lines[0], lines[1], qual, lines[3]])
-				out_file.write(lines)
+				lines = ''.join([lines[0], lines[1], qual, lines[3]])
+				out_file.write(lines.encode('utf-8'))
 	return out_file.name
 
 def get_read_chunks(barcodes_file, random = False, BUFFER_SIZE = 10000):	
