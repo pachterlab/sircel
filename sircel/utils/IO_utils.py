@@ -10,6 +10,7 @@ import io
 import pickle
 from collections import deque
 from itertools import islice
+from itertools import takewhile
 import redis
 
 np.random.seed(0)
@@ -95,10 +96,9 @@ def get_read_chunks(barcodes_file, random = False, BUFFER_SIZE = 10000):
 		barcodes_iter = read_fastq_random(barcodes_file)
 	else:
 		barcodes_iter = read_fastq_sequential(barcodes_file)
-	data_buffer = []
-	while True:
-		next_read = next(barcodes_iter)
-		data_buffer.append(next_read)
+		data_buffer = []
+	for x in takewhile(lambda e: True, barcodes_iter):
+		data_buffer.append(x)
 		
 		if len(data_buffer) == BUFFER_SIZE:
 			yield data_buffer
