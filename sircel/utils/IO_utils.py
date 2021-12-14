@@ -96,7 +96,7 @@ def get_read_chunks(barcodes_file, random = False, BUFFER_SIZE = 10000):
 		barcodes_iter = read_fastq_random(barcodes_file)
 	else:
 		barcodes_iter = read_fastq_sequential(barcodes_file)
-		data_buffer = []
+	data_buffer = []
 	for x in takewhile(lambda e: True, barcodes_iter):
 		data_buffer.append(x)
 		
