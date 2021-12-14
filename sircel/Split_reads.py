@@ -26,7 +26,7 @@ import gc
 import numpy as np
 
 from collections import Counter, namedtuple
-from itertools import repeat, chain
+from itertools import repeat, chain, takewhile
 from multiprocessing import Pool
 from Levenshtein import distance, hamming
 from scipy import signal
@@ -149,12 +149,9 @@ def get_kmer_index(barcodes_unzipped):
 			random = True,
 			BUFFER_SIZE = BUFFER_SIZE)
 	chunk_num = 0
-	while True:
-		try:
-			reads_chunk = next(read_chunks_iter)
-			chunk_num += 1
-		except StopIteration:
-			break
+	for x in takewhile(lambda e: True, read_chunks_iter):
+		reads_chunk = x
+		chunk_num += 1
 								
 		read_count += len(reads_chunk)
 		num_reads.append(read_count)
